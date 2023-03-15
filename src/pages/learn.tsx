@@ -1,3 +1,3 @@
 export default function Learn() {
-    return <>This is learn page.</>
+  return <>This is learn page.</>
 }
