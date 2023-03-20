@@ -9,34 +9,43 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now()) @db.Timestamptz(6)
   name      String    @db.VarChar
   email     String    @unique @db.VarChar
   password  String    @db.VarChar
-  projects  Project[]
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime  @db.Timestamptz(6)
+  projects  UsersOnProjects[]
+  diagrams Diagram[]
 }
 
 model Project {
-  id        Int       @default(autoincrement())
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar
   createdAt DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
-  userId    Int
-  name      String
+  updatedAt DateTime  @updatedAt @db.Timestamptz(6)
+  users UsersOnProjects[]
   diagrams  Diagram[]
-  owner     User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
 
-  @@id([userId, id])
+model UsersOnProjects {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int // relation scalar field (used in the `@relation` attribute above)
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt DateTime @default(now())
+  assignedBy String @db.VarChar
+
+  @@id([userId, projectId])
 }
 
 model Diagram {
-  id        Int      @default(autoincrement())
-  name      String
-  content   String?
+  id        Int      @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId Int
+  name      String @db.VarChar
+  content   String? @db.Text
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
-  userId    Int
-  projectId Int      
-  project   Project  @relation(fields: [userId, projectId], references: [userId, id], onDelete: NoAction, onUpdate: NoAction)
-  
-  @@id([userId, projectId, id])
 }
