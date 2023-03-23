@@ -9,9 +9,9 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar
-  email     String    @unique @db.VarChar
-  password  String    @db.VarChar
+  // user_id uuid references auth.users on delete cascade, supabase上でauth.usersとリレーションする必要あり。
+  email String @db.VarChar @unique
+  username String @db.VarChar @unique
   createdAt DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt DateTime  @db.Timestamptz(6)
   projects  UsersOnProjects[]
