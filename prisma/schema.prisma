@@ -15,7 +15,6 @@ model User {
   createdAt DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt DateTime  @db.Timestamptz(6)
   projects  UsersOnProjects[]
-  diagrams Diagram[]
 }
 
 model Project {
@@ -40,8 +39,6 @@ model UsersOnProjects {
 
 model Diagram {
   id        Int      @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
   project   Project  @relation(fields: [projectId], references: [id])
   projectId Int
   name      String @db.VarChar
