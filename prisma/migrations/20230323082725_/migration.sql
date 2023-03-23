@@ -33,7 +33,6 @@ CREATE TABLE "UsersOnProjects" (
 -- CreateTable
 CREATE TABLE "Diagram" (
     "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
     "projectId" INTEGER NOT NULL,
     "name" VARCHAR NOT NULL,
     "content" TEXT,
@@ -51,9 +50,6 @@ ALTER TABLE "UsersOnProjects" ADD CONSTRAINT "UsersOnProjects_userId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "UsersOnProjects" ADD CONSTRAINT "UsersOnProjects_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Diagram" ADD CONSTRAINT "Diagram_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Diagram" ADD CONSTRAINT "Diagram_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
