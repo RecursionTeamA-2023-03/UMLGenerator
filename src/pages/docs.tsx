@@ -1,4 +1,4 @@
-import Text from '@/learnPage/atoms/text'
+import Text from '@/components/learnPage/atoms/text'
 
 export default function Docs() {
   return (
