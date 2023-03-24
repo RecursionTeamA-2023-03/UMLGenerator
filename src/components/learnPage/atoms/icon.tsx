@@ -66,14 +66,15 @@ export interface IconButtonProps {
   color?: string
   backgroundColor?: string
   fontSize?: string
+  onClick?: React.MouseEventHandler<SVGSVGElement>
 }
 
 function withIconStyle(Icon: typeof SvgIcon): React.ComponentType<IconButtonProps> {
   const IconWithStyle = (props: IconButtonProps) => {
-    const { ...rest } = props
+    const { onClick, ...rest } = props
     return (
       <IconWapper {...rest}>
-        <Icon />
+        <Icon onClick={onClick} />
       </IconWapper>
     )
   }
