@@ -1,6 +1,8 @@
-import styled from 'styled-components'
+import { theme } from '../../../themes'
+import styled, { css } from 'styled-components'
 
 interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger' | 'gray'
   fontSize?: string
   fontWeight?: string
   letterSpacing?: string
@@ -37,6 +39,34 @@ interface ButtonProps {
 }
 
 const Button = styled.button<ButtonProps>`
+  ${({ variant }) => {
+    switch (variant) {
+      case 'primary':
+        return css`
+          color: ${theme.colors.white};
+          background-color: ${theme.colors.primary};
+          border: none;
+        `
+      case 'secondary':
+        return css`
+          color: ${theme.colors.white};
+          background-color: ${theme.colors.secondary};
+          border: none;
+        `
+      case 'danger':
+        return css`
+          color: ${theme.colors.white};
+          background-color: ${theme.colors.danger};
+          border: none;
+        `
+      case 'gray':
+        return css`
+          color: ${theme.colors.black};
+          background-color: ${theme.colors.gray};
+          border: none;
+        `
+    }
+  }}
   font-size: ${({ fontSize }) => fontSize};
   color: ${({ color }) => color};
   background-color: ${({ backgroundColor }) => backgroundColor};
@@ -73,9 +103,15 @@ const Button = styled.button<ButtonProps>`
 `
 
 Button.defaultProps = {
-  padding: '1em',
-  border: 'none',
-  borderRadius: '20%',
+  variant: 'primary',
+  paddingLeft: '8px',
+  paddingRight: '8px',
+  paddingTop: '4px',
+  paddingBottom: '4px',
+  display: 'inline-block',
+  textAlign: 'center',
+  lineHeight: 'inherit',
+  fontSize: 'inherit',
 }
 
 export default Button
