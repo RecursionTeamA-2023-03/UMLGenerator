@@ -24,6 +24,8 @@
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "next": "13.2.4",
+    "node-plantuml-back": "^1.1.2",
+    "plantuml-encoder": "^1.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "^5.3.9",
@@ -31,6 +33,7 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.26",
     "eslint-config-prettier": "^8.7.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
