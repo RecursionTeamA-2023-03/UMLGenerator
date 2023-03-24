@@ -14,22 +14,22 @@ model user {
   username String? @db.VarChar @unique
   createdAt DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt DateTime?  @db.Timestamptz(6)
-  projects  UsersOnProjects[]
+  projects  usersOnProjects[]
 }
 
-model Project {
+model project {
   id        Int       @id @default(autoincrement())
   name      String    @db.VarChar
   createdAt DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt DateTime  @updatedAt @db.Timestamptz(6)
-  users UsersOnProjects[]
-  diagrams  Diagram[]
+  users usersOnProjects[]
+  diagrams  diagram[]
 }
 
-model UsersOnProjects {
-  user       User     @relation(fields: [userId], references: [id])
+model usersOnProjects {
+  user       user     @relation(fields: [userId], references: [id])
   userId     Int // relation scalar field (used in the `@relation` attribute above)
-  project   Project @relation(fields: [projectId], references: [id])
+  project   project @relation(fields: [projectId], references: [id])
   projectId Int // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String @db.VarChar
@@ -37,9 +37,9 @@ model UsersOnProjects {
   @@id([userId, projectId])
 }
 
-model Diagram {
+model diagram {
   id        Int      @id @default(autoincrement())
-  project   Project  @relation(fields: [projectId], references: [id])
+  project   project  @relation(fields: [projectId], references: [id])
   projectId Int
   name      String @db.VarChar
   content   String? @db.Text
