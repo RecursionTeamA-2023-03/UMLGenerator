@@ -1,6 +1,8 @@
-import styled from 'styled-components'
+import { theme } from '../../../themes'
+import styled, { css } from 'styled-components'
 
 interface TextProps {
+  variant?: 'small' | 'medium' | 'large'
   fontSize?: string
   fontColor?: string
   backgroundColor?: string
@@ -28,6 +30,28 @@ interface TextProps {
 }
 
 const Text = styled.span<TextProps>`
+  ${({ variant }) => {
+    switch (variant) {
+      case 'small':
+        return css`
+          font-size: ${theme.fontSizes[0]};
+          letter-spacing: ${theme.letterSpacings[0]};
+          line-height: ${theme.lineHeights[0]};
+        `
+      case 'medium':
+        return css`
+          font-size: ${theme.fontSizes[1]};
+          letter-spacing: ${theme.letterSpacings[1]};
+          line-height: ${theme.lineHeights[1]};
+        `
+      case 'large':
+        return css`
+          font-size: ${theme.fontSizes[2]};
+          letter-spacing: ${theme.letterSpacings[2]};
+          line-height: ${theme.lineHeights[2]};
+        `
+    }
+  }}
   font-size: ${({ fontSize }) => fontSize};
   color: ${({ fontColor }) => fontColor};
   background-color: ${({ backgroundColor }) => backgroundColor};
@@ -53,5 +77,9 @@ const Text = styled.span<TextProps>`
   padding-right: ${({ paddingRight }) => paddingRight};
   padding-bottom: ${({ paddingBottom }) => paddingBottom};
 `
+
+Text.defaultProps = {
+  variant: 'medium',
+}
 
 export default Text

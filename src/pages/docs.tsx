@@ -1,26 +1,20 @@
 import Text from '@/components/learnPage/atoms/text'
+import { theme } from '../themes'
 
 export default function Docs() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Text>This is docPage.</Text>
-      <Text fontColor='red'>フォントカラー</Text>
-      <Text fontSize='2em'>フォントサイズ</Text>
-      <Text backgroundColor='blue'>背景色</Text>
-      <Text display='block' textAlign='center'>
-        配置
+      <Text variant='large' marginLeft='1em'>
+        イントロダクション
       </Text>
-      <Text border='2px white solid' width='10%'>
-        ボーダー
-      </Text>
-      <Text display='block' overflow='auto' fontSize='2em'>
-        はみ出し部分 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-      </Text>
-      <Text backgroundColor='red' margin='30px'>
-        magin
-      </Text>
-      <Text backgroundColor='red' padding='10px'>
-        padding
+      <Text variant='small' marginLeft='1em'>
+        これは練習問題を通してPlantUMLの記述を学んでいくコンテンツです。
+        <br />
+        以下なんかイントロダクション的な説明文
+        <br />
+        学習に躓いた時や、よく使用する構文を知りたい場合はドキュメンテーションページをご確認下さい。
+        <br />
+        また、記述方法のより詳細な情報はPlantUMLを確認下さい。
       </Text>
     </div>
   )
