@@ -7,13 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model user {
   id        Int       @id @default(autoincrement())
   // user_id uuid references auth.users on delete cascade, supabase上でauth.usersとリレーションする必要あり。
   email String @db.VarChar @unique
-  username String @db.VarChar @unique
+  username String? @db.VarChar @unique
   createdAt DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime  @db.Timestamptz(6)
+  updatedAt DateTime?  @db.Timestamptz(6)
   projects  UsersOnProjects[]
 }
 
