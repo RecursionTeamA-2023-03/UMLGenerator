@@ -64,7 +64,7 @@ export default function DiagramEditor({
           </>
         )}
       </div>
-      <UmlEditor setUmlText={setContent} />
+      <UmlEditor umlText={content} setUmlText={setContent} />
       <div
         style={{
           display: 'flex',
