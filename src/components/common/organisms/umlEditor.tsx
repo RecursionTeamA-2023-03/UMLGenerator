@@ -3,5 +3,5 @@ type Props = {
 }
 
 export default function UmlEditor({ setUmlText }: Props) {
-  return <textarea onChange={(e) => setUmlText(e.target.value)} />
+  return <textarea onChange={(e) => setUmlText(e.target.value)} style={{ height: '50vh' }} />
 }
