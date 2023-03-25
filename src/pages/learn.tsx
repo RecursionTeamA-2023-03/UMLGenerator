@@ -1,3 +1,9 @@
+import Layout from '../components/common/templates/layout'
+
 export default function Learn() {
-  return <>This is learn page.</>
+  return (
+    <>
+      <Layout>This is learn page.</Layout>
+    </>
+  )
 }

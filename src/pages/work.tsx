@@ -6,6 +6,7 @@
 // import styles from '@/styles/Home.module.css'
 // import { User, Project, Diagram } from '@prisma/client'
 
+import Layout from '../components/common/templates/layout'
 // type Data = User & {
 //   projects: (Project & {
 //     diagrams: Diagram[]
@@ -18,6 +19,11 @@
 // const fetcher: Fetcher<Data, string> = (...args) => fetch(...args).then((res) => res.json())
 
 export default function Work() {
+  return (
+    <>
+      <Layout>work page</Layout>
+    </>
+  )
   // const router = useRouter()
   // const { id } = router.query
   // const { data, error } = useSWR(`/api/user?id=${id}`, fetcher)
