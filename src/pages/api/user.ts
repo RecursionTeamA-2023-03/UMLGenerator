@@ -9,7 +9,7 @@
 // }
 
 export default async function handler() {
-// this: any, req: NextApiRequest, res: NextApiResponse<Data>
+  // this: any, req: NextApiRequest, res: NextApiResponse<Data>
   // if (req.method === 'GET') {
   //   const { id } = req.query
   //   if (!id) {
