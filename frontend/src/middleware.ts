@@ -32,6 +32,6 @@ export const config = {
 }
  */
 
-export default function middleware(){
-  console.log("middleware called")
+export default function middleware() {
+  console.log('middleware called')
 }
