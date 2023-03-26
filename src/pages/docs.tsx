@@ -1,4 +1,5 @@
 import Button from '@/components/learnPage/atoms/button'
+import { HomeIcon } from '@/components/learnPage/atoms/icon'
 import Text from '@/components/learnPage/atoms/text'
 import { theme } from '../themes'
 
@@ -21,6 +22,7 @@ export default function Docs() {
       <Button variant='secondary'>保存</Button>
       <Button variant='danger'>削除</Button>
       <Button variant='gray'>ダウンロード</Button>
+      <HomeIcon />
     </div>
   )
 }
