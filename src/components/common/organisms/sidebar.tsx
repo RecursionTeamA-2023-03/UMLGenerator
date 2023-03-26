@@ -44,7 +44,7 @@ const SideBar = (v: SideBarProps) => {
             <CloseIcon color='gray' onClick={v.handle} />
           </IconArea>
           <ul>
-            {v.data?.map((i) => (
+            {v.data?.map((i: any) => (
               <li key={i.name}>
                 <Anchor variant='small'>
                   <Link href={`/learn/${i.name}`}>{i.name}</Link>
