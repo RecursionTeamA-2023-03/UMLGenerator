@@ -1,6 +1,8 @@
+import BreadcrumbItem from '@/components/learnPage/atoms/breadcrumbItem'
 import Button from '@/components/learnPage/atoms/button'
 import { HomeIcon } from '@/components/learnPage/atoms/icon'
 import Text from '@/components/learnPage/atoms/text'
+import Link from 'next/link'
 import { theme } from '../themes'
 
 export default function Docs() {
@@ -22,6 +24,17 @@ export default function Docs() {
       <Button variant='secondary'>保存</Button>
       <Button variant='danger'>削除</Button>
       <Button variant='gray'>ダウンロード</Button>
+
+      {/* 以下の<div></div>はmoleculesでbreadcurmbとして実装予定 */}
+      <div>
+        <BreadcrumbItem>
+          <Link href={'/docs'}>イントロダクション</Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <Link href={'/docs/sequence'}>シーケンス図</Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>問題1</BreadcrumbItem>
+      </div>
       <HomeIcon />
     </div>
   )
