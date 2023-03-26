@@ -1,4 +1,4 @@
-import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs'
+/* import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
@@ -29,4 +29,9 @@ export const config = {
   matcher: [
     '/middleware-protected/:path*', //ページの指定 e.g) "/learn"
   ],
+}
+ */
+
+export default function middleware(){
+  console.log("middleware called")
 }

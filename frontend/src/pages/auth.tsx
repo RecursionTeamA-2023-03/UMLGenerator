@@ -47,4 +47,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 } */
 
-export {}
+export default function Auth(){
+
+  return (<h1>supabase削除のため、一旦白紙</h1>)
+}
