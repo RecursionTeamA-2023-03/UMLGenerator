@@ -1,9 +1,7 @@
-const aaa      =    "ssssss";
+const aaa =    'ssssss'
 
 
 
+const b   = 'steta'
 
-
-const b = 'steta';
-
-            const  c =    'stste';
+const c     = 'stste'
