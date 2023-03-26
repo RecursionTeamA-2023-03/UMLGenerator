@@ -8,7 +8,7 @@ export default function UmlGenerator() {
 
   return (
     <>
-      <UmlEditor setUmlText={setUmlText} />
+      <UmlEditor umlText={umlText} setUmlText={setUmlText} />
       <h1>↓↓↓↓↓↓↓↓↓↓</h1>
       <UmlPic umlText={umlText} />
     </>
