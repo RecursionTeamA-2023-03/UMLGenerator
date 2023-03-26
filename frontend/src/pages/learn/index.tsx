@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 import Layout from '../../components/common/templates/layout'
-import Text from '../../components/learnPage/atoms/text'
+import Text from '../../components/common/atoms/text'
 import { theme } from '../../themes'
 
 const tempData = [
