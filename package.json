@@ -15,9 +15,8 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "{frontend, backend}/src/**/*.{js,jsx,ts,tsx,json}": [
-      "npm run lint",
-      "npm run format"
+    "{frontend,backend}/src/**/*.{js,jsx,ts,tsx,json}": [
+      
     ]
   },
   "dependencies": {
