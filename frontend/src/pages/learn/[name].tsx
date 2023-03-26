@@ -1,5 +1,5 @@
-import Layout from '@/components/common/templates/layout'
-import Text from '@/components/learnPage/atoms/text'
+import Layout from '../../components/common/templates/layout'
+import Text from '../../components/common/atoms/text'
 
 const tempData = [
   {
