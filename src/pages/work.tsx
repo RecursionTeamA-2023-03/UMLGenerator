@@ -7,11 +7,9 @@ import MyBoard from '@/components/workPage/templates/myBoard'
 import ProjectBoard from '@/components/workPage/templates/projectBoard'
 import TemplateBoard from '@/components/workPage/templates/templateBoard'
 
-
 // const fetcher: Fetcher<Data, string> = (...args) => fetch(...args).then((res) => res.json())
 
 export default function Work() {
-  
   // const router = useRouter()
   // const { id } = router.query
   // const { data, error } = useSWR(`/api/user?id=${id}`, fetcher)
