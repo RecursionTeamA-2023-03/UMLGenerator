@@ -16,8 +16,8 @@
   },
   "lint-staged": {
     "{frontend, backend}/src/**/*.{js,jsx,ts,tsx,json}": [
-      "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .gitignore .",
-      "prettier \"**/*.{js,jsx,ts,tsx}\" --write"
+      "npm run lint",
+      "npm run format"
     ]
   },
   "dependencies": {
