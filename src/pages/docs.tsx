@@ -1,5 +1,6 @@
 import BreadcrumbItem from '@/components/learnPage/atoms/breadcrumbItem'
 import Button from '@/components/learnPage/atoms/button'
+import { HomeIcon } from '@/components/learnPage/atoms/icon'
 import Text from '@/components/learnPage/atoms/text'
 import Link from 'next/link'
 import { theme } from '../themes'
@@ -34,6 +35,7 @@ export default function Docs() {
         </BreadcrumbItem>
         <BreadcrumbItem>問題1</BreadcrumbItem>
       </div>
+      <HomeIcon />
     </div>
   )
 }

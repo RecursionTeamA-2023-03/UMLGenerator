@@ -17,7 +17,15 @@
     ]
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.14",
     "@prisma/client": "^4.11.0",
+    "@supabase/auth-helpers-nextjs": "^0.5.6",
+    "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/auth-ui-react": "^0.3.5",
+    "@supabase/supabase-js": "^2.12.1",
     "@types/node": "18.15.3",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
