@@ -2,50 +2,36 @@
   "name": "udg",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint --dir src",
-    "format": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .gitignore . && prettier \"**/*.{js,jsx,ts,tsx}\" --write",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "format": "npm run format --workspaces",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json}": [
-      "npm run format"
+    "{frontend, backend}/src/**/*.{js,jsx,ts,tsx,json}": [
+      "eslint --fix",
+      "prettier --write"
     ]
   },
   "dependencies": {
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
-    "@mui/icons-material": "^5.11.11",
-    "@mui/material": "^5.11.14",
-    "@prisma/client": "^4.11.0",
-    "@supabase/auth-helpers-nextjs": "^0.5.6",
-    "@supabase/auth-helpers-react": "^0.3.1",
-    "@supabase/auth-ui-react": "^0.3.5",
-    "@supabase/supabase-js": "^2.12.1",
-    "@types/node": "18.15.3",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
-    "eslint": "8.36.0",
-    "eslint-config-next": "13.2.4",
-    "next": "13.2.4",
-    "node-plantuml-back": "^1.1.2",
-    "plantuml-encoder": "^1.4.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "styled-components": "^5.3.9",
-    "swr": "^2.1.0",
     "typescript": "4.9.5"
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.26",
+    "eslint": "8.36.0",
+    "eslint-config-next": "13.2.4",
     "eslint-config-prettier": "^8.7.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.4",
-    "prisma": "^4.11.0"
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint-plugin-prettier": "^4.0.0"
   }
 }

@@ -1,0 +1,8 @@
+{
+  "extends": ["../.eslintrc.json", "next"],
+  "settings": {
+    "next": {
+      "rootDir": "./"
+    }
+  }
+}
