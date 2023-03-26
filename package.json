@@ -10,8 +10,7 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces",
-    "format": "npm run format --workspaces",
-    "prepare": "husky install"
+    "format": "npm run format --workspaces"
   },
   "dependencies": {
     "typescript": "4.9.5"
