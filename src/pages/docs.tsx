@@ -1,3 +1,4 @@
+import Button from '@/components/learnPage/atoms/button'
 import Text from '@/components/learnPage/atoms/text'
 import { theme } from '../themes'
 
@@ -16,6 +17,10 @@ export default function Docs() {
         <br />
         また、記述方法のより詳細な情報はPlantUMLを確認下さい。
       </Text>
+      <Button>Sing up</Button>
+      <Button variant='secondary'>保存</Button>
+      <Button variant='danger'>削除</Button>
+      <Button variant='gray'>ダウンロード</Button>
     </div>
   )
 }
