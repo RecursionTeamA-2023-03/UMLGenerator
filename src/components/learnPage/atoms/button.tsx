@@ -1,21 +1,22 @@
 import { theme } from '../../../themes'
 import styled, { css } from 'styled-components'
 
-interface TextProps {
-  variant?: 'small' | 'medium' | 'large'
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger' | 'gray'
   fontSize?: string
-  fontColor?: string
-  backgroundColor?: string
   fontWeight?: string
   letterSpacing?: string
   lineHeight?: string
   textAlign?: string
+  color?: string
+  backgroundColor?: string
   width?: string
   height?: string
   minWidth?: string
   minHeight?: string
-  border?: string
   display?: string
+  border?: string
+  borderRadius?: string
   overflow?: string
   margin?: string
   marginTop?: string
@@ -27,33 +28,47 @@ interface TextProps {
   paddingLeft?: string
   paddingRight?: string
   paddingBottom?: string
+  pseudoClass?: {
+    hover?: {
+      backgroundColor?: string
+    }
+    disabled?: {
+      backgroundColor?: string
+    }
+  }
 }
 
-const Text = styled.span<TextProps>`
+const Button = styled.button<ButtonProps>`
   ${({ variant }) => {
     switch (variant) {
-      case 'small':
+      case 'primary':
         return css`
-          font-size: ${theme.fontSizes[0]};
-          letter-spacing: ${theme.letterSpacings[0]};
-          line-height: ${theme.lineHeights[0]};
+          color: ${theme.colors.white};
+          background-color: ${theme.colors.primary};
+          border: none;
         `
-      case 'medium':
+      case 'secondary':
         return css`
-          font-size: ${theme.fontSizes[1]};
-          letter-spacing: ${theme.letterSpacings[1]};
-          line-height: ${theme.lineHeights[1]};
+          color: ${theme.colors.white};
+          background-color: ${theme.colors.secondary};
+          border: none;
         `
-      case 'large':
+      case 'danger':
         return css`
-          font-size: ${theme.fontSizes[2]};
-          letter-spacing: ${theme.letterSpacings[2]};
-          line-height: ${theme.lineHeights[2]};
+          color: ${theme.colors.white};
+          background-color: ${theme.colors.danger};
+          border: none;
+        `
+      case 'gray':
+        return css`
+          color: ${theme.colors.black};
+          background-color: ${theme.colors.gray};
+          border: none;
         `
     }
   }}
   font-size: ${({ fontSize }) => fontSize};
-  color: ${({ fontColor }) => fontColor};
+  color: ${({ color }) => color};
   background-color: ${({ backgroundColor }) => backgroundColor};
   font-weight: ${({ fontWeight }) => fontWeight};
   letter-spacing: ${({ letterSpacing }) => letterSpacing};
@@ -65,6 +80,7 @@ const Text = styled.span<TextProps>`
   min-height: ${({ minHeight }) => minHeight};
   display: ${({ display }) => display};
   border: ${({ border }) => border};
+  border-radius: ${({ borderRadius }) => borderRadius};
   overflow: ${({ overflow }) => overflow};
   margin: ${({ margin }) => margin};
   margin-top: ${({ marginTop }) => marginTop};
@@ -76,10 +92,26 @@ const Text = styled.span<TextProps>`
   padding-left: ${({ paddingLeft }) => paddingLeft};
   padding-right: ${({ paddingRight }) => paddingRight};
   padding-bottom: ${({ paddingBottom }) => paddingBottom};
+  &:hover {
+    background-color: ${({ pseudoClass }) => pseudoClass?.hover?.backgroundColor};
+    opacity: 0.7;
+  }
+  &:disabled {
+    background-color: ${({ pseudoClass }) => pseudoClass?.disabled?.backgroundColor};
+    opacity: 0.5;
+  }
 `
 
-Text.defaultProps = {
-  variant: 'medium',
+Button.defaultProps = {
+  variant: 'primary',
+  paddingLeft: '8px',
+  paddingRight: '8px',
+  paddingTop: '4px',
+  paddingBottom: '4px',
+  display: 'inline-block',
+  textAlign: 'center',
+  lineHeight: 'inherit',
+  fontSize: 'inherit',
 }
 
-export default Text
+export default Button
