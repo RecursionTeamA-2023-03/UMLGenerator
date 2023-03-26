@@ -26,6 +26,10 @@ export default function UmlPic({ umlText }: Props) {
     <div>Loading...</div>
   ) : (
     // eslint-disable-next-line @next/next/no-img-element
-    <img style={{ width: '50%' }} src={`data:image/png;base64, ${data}`} alt='your uml diagram' />
+    <img
+      style={{ width: '60%', height: 'auto' }}
+      src={`data:image/png;base64, ${data}`}
+      alt='your uml diagram'
+    />
   )
 }
