@@ -1,7 +1,11 @@
 import Layout from '@/components/common/templates/layout'
 import Text from '@/components/learnPage/atoms/text'
+import LearnTemplate from '@/components/learnPage/templates/learnTemplate'
 
 const tempData = [
+  {
+    name: 'イントロダクション',
+  },
   {
     name: 'シーケンス図',
   },
@@ -47,9 +51,5 @@ export const getStaticProps = async (context: any) => {
 }
 
 export default function LearnContent({ data }: any) {
-  return (
-    <Layout>
-      <Text variant='large'>{data.name}</Text>
-    </Layout>
-  )
+  return <LearnTemplate data={tempData} title={data.name} />
 }

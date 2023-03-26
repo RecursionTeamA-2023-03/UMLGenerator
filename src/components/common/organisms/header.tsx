@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import Text from '../atoms/text'
 
 const HeaderArea = styled.header`
-  height: 20%;
   background-color: ${theme.colors.secondary};
   padding: 0.5em 1em;
   display: flex;
@@ -20,9 +19,9 @@ const Anchor = styled(Text)`
     text-decoration: underline;
   }
 `
-const Header = () => {
+const Header = ({ className }: any) => {
   return (
-    <HeaderArea>
+    <HeaderArea className={className}>
       <Nav>
         <Anchor>
           <Link href={'/'}>UDG</Link>

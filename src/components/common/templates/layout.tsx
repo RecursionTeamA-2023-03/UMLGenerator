@@ -1,3 +1,5 @@
+import styled from 'styled-components'
+import Separator from '../atoms/separator'
 import Header from '../organisms/header'
 
 interface LayoutProps {

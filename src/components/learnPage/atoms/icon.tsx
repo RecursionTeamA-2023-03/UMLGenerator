@@ -81,6 +81,7 @@ function withIconStyle(Icon: typeof SvgIcon): React.ComponentType<IconButtonProp
   return IconWithStyle
 }
 
+export default withIconStyle
 export const CloseIcon = withIconStyle(Close)
 
 export const HomeIcon = withIconStyle(Home)

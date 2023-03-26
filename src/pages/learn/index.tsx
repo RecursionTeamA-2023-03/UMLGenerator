@@ -1,3 +1,5 @@
+import SideBar from '@/components/common/organisms/sidebar'
+import LearnTemplate from '@/components/learnPage/templates/learnTemplate'
 import Link from 'next/link'
 import styled from 'styled-components'
 import Layout from '../../components/common/templates/layout'
@@ -5,6 +7,9 @@ import Text from '../../components/learnPage/atoms/text'
 import { theme } from '../../themes'
 
 const tempData = [
+  {
+    name: 'イントロダクション',
+  },
   {
     name: 'シーケンス図',
   },
@@ -31,27 +36,6 @@ const tempData = [
   },
 ]
 
-const Anchor = styled(Text)`
-  &:hover {
-    text-decoration: underline;
-  }
-`
-
 export default function Learn() {
-  return (
-    <Layout>
-      <div>
-        <Text variant='large' marginLeft='1em'>
-          イントロダクション
-        </Text>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {tempData.map((i) => (
-            <Anchor variant='small' key={i.name}>
-              <Link href={`/learn/${i.name}`}>{i.name}</Link>
-            </Anchor>
-          ))}
-        </div>
-      </div>
-    </Layout>
-  )
+  return <LearnTemplate data={tempData} title={'イントロダクション'} />
 }
