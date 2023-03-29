@@ -118,3 +118,5 @@ export const ArrowDownIcon = withIconStyle(KeyboardArrowDown)
 export const ArrowRightIcon = withIconStyle(KeyboardArrowRight)
 
 export const ContentCopyIcon = withIconStyle(ContentCopy)
+
+export default withIconStyle
