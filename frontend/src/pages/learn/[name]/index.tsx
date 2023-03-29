@@ -87,7 +87,7 @@ export default function LearnContent({ data }: any) {
       <Text fontColor={theme.colors.black}>
         ここは練習問題です↓
         <br />
-        {data.problems.map((i) => (
+        {data.problems.map((i: any) => (
           <li key={i}>
             <Text variant='small' fontColor={theme.colors.black}>
               <Link href={`/learn/${data.name}/${i}`}>{i}</Link>
