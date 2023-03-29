@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+      args:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=${POSTGRES_DB}
+    container_name: postgresql-db
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ./db/data:/var/lib/mysql
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    container_name: nest-backend
+    expose:
+      - 3000
+    environment:
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASS: ${POSTGRES_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app/src
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    depends_on:
+      - app
+    environment:
+      NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
+      NEST_HOST: ${NEST_HOST}
+      NEST_PORT: 3000
+      NGINX_MAX_BODY: ${NGINX_MAX_BODY}
+      NGINX_PORT: ${NGINX_PORT}
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
