@@ -52,7 +52,7 @@ const tempData = [
 export const getStaticPaths = async () => {
   const paths = tempData
     .map((diagram) => {
-      const problemPath = diagram.problems.map((i) => {
+      const problemPath = diagram.problems.map((i: any) => {
         return {
           params: {
             name: diagram.name,
