@@ -3,6 +3,8 @@ import LearnTemplate from '../../../components/learnPage/templates/learnTemplate
 import { theme } from '../../../themes'
 import React from 'react'
 import { useRouter } from 'next/router'
+import Editor from '@/components/common/atoms/editor'
+import NewEditor from '@/components/common/atoms/editor'
 
 const tempData = [
   {
@@ -79,6 +81,7 @@ export default function Problem({ data }: any) {
   return (
     <LearnTemplate data={tempData} title={data.name} problemNo={router.problem}>
       <Text fontColor={theme.colors.black}>ここは例題{router.problem}</Text>
+      <NewEditor />
     </LearnTemplate>
   )
 }
