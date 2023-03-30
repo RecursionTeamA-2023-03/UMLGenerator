@@ -2,43 +2,38 @@ version: '3.9'
 
 services:
   db:
-    build:
-      context: ./db
-      dockerfile: Dockerfile
-      args:
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-        - POSTGRES_DB=${POSTGRES_DB}
-    container_name: postgresql-db
+    image: postgres:15.2-alpine
+    container_name: db
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: "Asia/Tokyo"
     expose:
       - 5432
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
     volumes:
-      - ./db/data:/var/lib/mysql
+      - ./db/data:/var/lib/postgresql/data
   app:
     build:
       context: ./backend
-      dockerfile: Dockerfile-dev
+      dockerfile: Dockerfile.dev
     container_name: nest-backend
     expose:
       - 3000
     environment:
       PORT: 3000
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: ${POSTGRES_DB}
-      DB_USER: ${POSTGRES_USER}
-      DB_PASS: ${POSTGRES_PASSWORD}
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
     depends_on:
       db:
         condition: service_healthy
     volumes:
       - ./backend/src:/app/src
+      - ./backend/test:/app/test
+      - ./backend/prisma:/app/prisma
   nginx:
     build:
       context: ./nginx
