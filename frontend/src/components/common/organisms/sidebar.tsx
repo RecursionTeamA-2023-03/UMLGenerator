@@ -44,9 +44,9 @@ const SideBar = (v: SideBarProps) => {
           </IconArea>
           <ul>
             {v.data?.map((i: any) => (
-              <li key={i.name}>
+              <li key={i.id}>
                 <Anchor variant='small'>
-                  <Link href={`/learn/${i.name}`}>{i.name}</Link>
+                  <Link href={`/learn/${i.id}`}>{i.id}</Link>
                 </Anchor>
               </li>
             ))}

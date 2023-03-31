@@ -1,36 +1,20 @@
 import Text from '../../components/common/atoms/text'
 import LearnTemplate from '@/components/learnPage/templates/learnTemplate'
+import { getDiagramsData } from '../../../lib/diagram'
 
-const tempData = [
-  {
-    name: 'シーケンス図',
-  },
-  {
-    name: 'ユースケース図',
-  },
-  {
-    name: 'クラス図',
-  },
-  {
-    name: 'オブジェクト図',
-  },
-  {
-    name: 'アクティビティ図',
-  },
-  {
-    name: 'コンポーネント図',
-  },
-  {
-    name: '状態遷移図',
-  },
-  {
-    name: 'タイミング図',
-  },
-]
+export const getStaticProps = async () => {
+  const data = getDiagramsData()
+  return {
+    props: {
+      data,
+    },
+  }
+}
 
-export default function Learn() {
+export default function Learn({ data }: any) {
+  console.log(data)
   return (
-    <LearnTemplate data={tempData}>
+    <LearnTemplate sidebarData={data} data={data}>
       <div>
         <Text variant='large' marginLeft='1em'>
           イントロダクション
