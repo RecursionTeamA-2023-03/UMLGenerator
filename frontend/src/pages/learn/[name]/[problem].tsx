@@ -3,6 +3,7 @@ import LearnTemplate from '../../../components/learnPage/templates/learnTemplate
 import { theme } from '../../../themes'
 import React from 'react'
 import { useRouter } from 'next/router'
+import MonacoEditor from '@/components/common/atoms/editor'
 
 const tempData = [
   {
@@ -75,10 +76,10 @@ export const getStaticProps = async (context: any) => {
 
 export default function Problem({ data }: any) {
   const router = useRouter().query
-  console.log(router)
   return (
     <LearnTemplate data={tempData} title={data.name} problemNo={router.problem}>
       <Text fontColor={theme.colors.black}>ここは例題{router.problem}</Text>
+      <MonacoEditor />
     </LearnTemplate>
   )
 }

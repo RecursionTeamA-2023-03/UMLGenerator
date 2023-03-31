@@ -27,6 +27,7 @@ export default function App({ Component, pageProps }: AppProps<{ initialSession:
 import { theme } from '@/themes'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'styled-components'
+//import '../styles/global.css'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
