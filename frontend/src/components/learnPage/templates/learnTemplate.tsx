@@ -45,7 +45,7 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
                 <>
                   <BreadcrumbItem>
                     <Text variant='small'>
-                      <Link href={`/learn/${data.id}`}>{data.id}</Link>
+                      <Link href={`/learn/${data.id}`}>{data.diagram}</Link>
                     </Text>
                   </BreadcrumbItem>
                   <BreadcrumbItem>

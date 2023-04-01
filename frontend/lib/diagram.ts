@@ -6,7 +6,19 @@ import html from 'remark-html'
 
 const diagramDirectory = path.join(process.cwd(), 'public', 'learn', 'diagrams')
 
-export function getDiagramsData() {
+export const getIntroductionData = async () => {
+  const fullPath = path.join(process.cwd(), 'public', 'learn', 'introduction', 'introduction.md')
+  const fileContent = fs.readFileSync(fullPath, 'utf8')
+  const matterResult = matter(fileContent)
+  const content = await remark().use(html).process(matterResult.content)
+  const contentHTML = content.toString()
+  return {
+    contentHTML,
+    ...matterResult.data,
+  }
+}
+
+export const getAllDiagramsData = () => {
   const directories = ['sequence', 'usecase']
   const allDiagramsData = directories.map((directory) => {
     const fullPath = path.join(diagramDirectory, directory, `${directory}.md`)
@@ -32,7 +44,7 @@ export const getAllDiagramIds = () => {
   })
 }
 
-export const getDiagramData = async (id) => {
+export const getDiagramData = async (id: string) => {
   const fullPath = path.join(diagramDirectory, `${id}/${id}.md`)
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const matterResult = matter(fileContents)
@@ -45,7 +57,7 @@ export const getDiagramData = async (id) => {
   }
 }
 
-export function getProblemIds(id) {
+export const getProblemIds = (id: string) => {
   const currPath = path.join(diagramDirectory, `${id}/problems`)
   const fileNames = fs.readdirSync(currPath, 'utf8')
   const problemsData = fileNames.map((fileName) => {

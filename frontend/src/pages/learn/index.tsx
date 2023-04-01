@@ -1,23 +1,24 @@
 import Text from '../../components/common/atoms/text'
 import LearnTemplate from '@/components/learnPage/templates/learnTemplate'
-import { getDiagramsData } from '../../../lib/diagram'
+import { getAllDiagramsData, getDiagramData, getIntroductionData } from '../../../lib/diagram'
 
 export const getStaticProps = async () => {
-  const data = getDiagramsData()
+  const diagramData = getAllDiagramsData()
+  const contentData = await getIntroductionData()
   return {
     props: {
-      data,
+      diagramData,
+      contentData,
     },
   }
 }
 
-export default function Learn({ data }: any) {
-  console.log(data)
+export default function Learn({ diagramData, contentData }: any) {
   return (
-    <LearnTemplate sidebarData={data} data={data}>
+    <LearnTemplate sidebarData={diagramData} data={contentData}>
       <div>
-        <Text variant='large' marginLeft='1em'>
-          イントロダクション
+        <Text variant='small' marginLeft='1em'>
+          <div dangerouslySetInnerHTML={{ __html: contentData.contentHTML }} />
         </Text>
       </div>
     </LearnTemplate>
