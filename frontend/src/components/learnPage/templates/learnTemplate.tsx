@@ -19,6 +19,7 @@ interface LearnTemplateProps {
 }
 
 const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplateProps) => {
+  console.log(data)
   const [isShow, setIsShow] = useState(true)
   const switchSideBar = () => setIsShow(!isShow)
   return (
@@ -45,7 +46,7 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
                 <>
                   <BreadcrumbItem>
                     <Text variant='small'>
-                      <Link href={`/learn/${data.id}`}>{data.diagram}</Link>
+                      <Link href={`/learn/${data.diagram}`}>{data.diagram}</Link>
                     </Text>
                   </BreadcrumbItem>
                   <BreadcrumbItem>
