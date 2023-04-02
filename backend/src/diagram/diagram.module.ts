@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common'
-import { DiagramController } from './diagram.controller'
 import { DiagramService } from './diagram.service'
+import { ProjectModule } from '../project/project.module'
+import { PrismaModule } from '../prisma/prisma.module'
 
 @Module({
-  controllers: [DiagramController],
+  imports: [PrismaModule, ProjectModule],
+  exports: [DiagramService],
   providers: [DiagramService],
 })
 export class DiagramModule {}
