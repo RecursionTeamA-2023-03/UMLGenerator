@@ -2,7 +2,7 @@ import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
 
-const postsDirectory = join(process.cwd(), '_cheatSheets')
+const postsDirectory = join(process.cwd(), 'public/cheatSheets')
 
 /**
  * postsDirectory 以下のディレクトリ名を取得する
@@ -48,7 +48,6 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
  */
 export function getAllPosts(fields: string[] = []) {
   const slugs = getPostSlugs()
-  const posts = slugs
-    .map((slug) => getPostBySlug(slug, fields))
+  const posts = slugs.map((slug) => getPostBySlug(slug, fields))
   return posts
 }

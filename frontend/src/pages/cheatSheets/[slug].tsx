@@ -1,18 +1,24 @@
 import { NextPage, InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
-import Head from "next/head";
-import styles from "../../styles/Home.module.css";
 import { getAllPosts, getPostBySlug } from "../api/cheatSheets/getMdFiles";
 import markdownToHtml from "../api/cheatSheets/markdownToHtml";
+import styled from 'styled-components'
+import Header from "@/components/common/organisms/header";
+import { useState } from "react";
+import SideBar from "@/components/cheetSheetsPage/organisms/sidebar";
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+const ContentArea = styled.div`
+  display: flex;
+  height: 100vh;
+`
 
 /**
  * 記事のパスを取得する
  */
 export const getStaticPaths = async () => {
   const posts = getAllPosts(["slug"]);
-  console.log(posts)
   return {
     paths: posts.map((post:any) => {
       return {
@@ -30,13 +36,14 @@ export const getStaticPaths = async () => {
  */
 export const getStaticProps = async ({ params }: any) => {
   const post = getPostBySlug(params.slug, ["slug", "title", "date", "content"]);
-
+  const posts = getAllPosts(["slug"]);
   // Markdown を HTML に変換する
   const content = await markdownToHtml(post.content);
-  console.log(content);
+
   // content を詰め直して返す
   return {
     props: {
+      posts,
       post: {
         ...post,
         content,
@@ -45,29 +52,23 @@ export const getStaticProps = async ({ params }: any) => {
   };
 };
 
-const Post: NextPage<Props> = ({ post }) => {
-  console.log(post);
-  const router = useRouter();
-  // if (!router.isFallback && !post?.slug) {
-  //   return <ErrorPage statusCode={404} />;
-  // }
-  return (
-    <div className={styles.container}>
+const Post: NextPage<Props> = ({posts, post }) => {
+  const [isShow, setIsShow] = useState(true)
+  const switchSideBar = () => setIsShow(!isShow)
 
-      <main className={styles.main}>
-        <article>
-          {/* <h1 className={styles.title}>{post.title}</h1> */}
-          <div className={styles.grid}>
-            <div>
-              {/* <p>{post.date}</p> */}
-              <div dangerouslySetInnerHTML={{ __html: post.content }} />
-            </div>
-          </div>
-        </article>
+  return (
+    <div style={{ backgroundColor: 'white' }}>
+      <Header />
+      <main>
+      <ContentArea>
+      {isShow ? (
+            <SideBar data={posts} handle={switchSideBar} flag={true} />
+          ) : (
+            <SideBar handle={switchSideBar} flag={false} />
+          )}
+        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      </ContentArea>
       </main>
-      <footer className={styles.footer}>
-        <p>Powered by Next.js.</p>
-      </footer>
     </div>
   );
 };

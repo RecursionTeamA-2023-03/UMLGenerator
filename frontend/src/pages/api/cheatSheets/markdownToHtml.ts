@@ -1,5 +1,5 @@
-import { remark } from "remark";
-import html from "remark-html";
+import { remark } from 'remark'
+import html from 'remark-html'
 
 /**
  * Markdown を解析して HTML にして返す
@@ -7,8 +7,8 @@ import html from "remark-html";
  * @returns HTML
  */
 const markdownToHtml = async (markdown: string) => {
-  const result = await remark().use(html).process(markdown);
-  return result.toString();
-};
+  const result = await remark().use(html).process(markdown)
+  return result.toString()
+}
 
-export default markdownToHtml;
+export default markdownToHtml
