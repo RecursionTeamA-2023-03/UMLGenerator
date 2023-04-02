@@ -48,7 +48,6 @@ export class DiagramService {
         id: diagramId,
       },
       data: {
-        updatedAt: new Date(),
         ...dto,
       },
     })
