@@ -1,6 +1,6 @@
 import Text from '../../components/common/atoms/text'
 import LearnTemplate from '@/components/learnPage/templates/learnTemplate'
-import { getAllDiagramsData, getDiagramData, getIntroductionData } from '../../../lib/diagram'
+import { getAllDiagramsData, getIntroductionData } from '../../../lib/diagram'
 
 export const getStaticProps = async () => {
   const diagramData = getAllDiagramsData()

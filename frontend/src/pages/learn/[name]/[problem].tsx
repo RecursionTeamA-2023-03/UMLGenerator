@@ -2,7 +2,6 @@ import Text from '../../../components/common/atoms/text'
 import LearnTemplate from '../../../components/learnPage/templates/learnTemplate'
 import { theme } from '../../../themes'
 import React from 'react'
-import { useRouter } from 'next/router'
 import MonacoEditor from '@/components/common/atoms/editor'
 import { getAllDiagramsData, getProblemIds } from 'lib/diagram'
 
@@ -37,7 +36,7 @@ export const getStaticProps = async ({ params }: any) => {
   }
 }
 
-export default function Problem({ currDiagramData, currProblem, allData }: any) {
+export default function Problem({ currProblem, allData }: any) {
   return (
     <LearnTemplate sidebarData={allData} data={currProblem} problemNo={currProblem.id}>
       <Text variant='small' fontColor={theme.colors.black}>
