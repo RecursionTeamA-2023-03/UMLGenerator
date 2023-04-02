@@ -28,6 +28,7 @@ ENV PATH="$JAVA_HOME/bin:$PATH"
 # copy app files
 COPY --chown=node:node . .
 
+
 # set trace shell command and build app
 RUN set -x && npm run build
 
