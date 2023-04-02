@@ -47,7 +47,7 @@ export class ProjectController {
     return this.projectService.getProjectById(req.user.id, projectId)
   }
 
-  @Get(':projectId/users')
+  @Get(':projectId/members')
   getProjectMembersById(
     @Req() req: Request,
     @Param('projectId', ParseIntPipe) projectId: number,
@@ -77,7 +77,7 @@ export class ProjectController {
     return this.projectService.createProject(req.user.id, dto)
   }
 
-  @Post(':projectId')
+  @Post(':projectId/member')
   createProjectMemberByEmail(
     @Req() req: Request,
     @Param('projectId', ParseIntPipe) projectId: number,

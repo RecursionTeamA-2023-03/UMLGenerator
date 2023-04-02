@@ -82,17 +82,27 @@ export class ProjectService {
   async deleteProjectById(userId: number, projectId: number): Promise<void> {
     await this.getProjectById(userId, projectId) // check permission and existance
 
-    await this.prisma.project.delete({
-      where: {
-        id: projectId,
-      },
+    await this.prisma.$transaction(async (prisma) => {
+      await prisma.diagram.deleteMany({
+        where: { projectId: projectId },
+      })
+
+      await prisma.projectUser.deleteMany({
+        where: { projectId: projectId },
+      })
+
+      await prisma.project.delete({
+        where: {
+          id: projectId,
+        },
+      })
     })
   }
 
   async getProjectMembersById(userId: number, projectId: number): Promise<ProjectMember[]> {
     await this.getProjectById(userId, projectId) // check permission and existance
 
-    const owners = await this.prisma.projectUser.findMany({
+    const members = await this.prisma.projectUser.findMany({
       where: { projectId: projectId },
       select: {
         user: {
@@ -103,7 +113,7 @@ export class ProjectService {
         },
       },
     })
-    return owners.map((o) => o.user)
+    return members.map((o) => o.user)
   }
 
   async createProjectMemberByEmail(
@@ -141,6 +151,11 @@ export class ProjectService {
     const targetUser = await this.prisma.user.findUnique({
       where: { email: dto.email },
     })
+    if (!targetUser) throw new ForbiddenException('User does not exist')
+
+    const members = await this.getProjectMembersById(userId, projectId)
+    if (members.length <= 1)
+      throw new ForbiddenException('User is only menber, so cannot remove from members')
 
     await this.prisma.projectUser.delete({
       where: {
