@@ -21,12 +21,13 @@ COPY --chown=node:node package*.json ./
 RUN npm install
 
 # set environment variables
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 ENV PATH="$JAVA_HOME/bin:$PATH"
+ENV FRONTEND_URL="https://uml-generator-dev.vercel.app"
 
 # copy app files
 COPY --chown=node:node . .
 
 # run app
-CMD [ "npm", "start" ]
+CMD [ "sh", "-c", "npx prisma migrate deploy && npx prisma generate && npm run start:dev" ]
