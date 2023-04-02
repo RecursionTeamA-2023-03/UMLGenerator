@@ -15,8 +15,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-    volumes:
-      - ./db/data:/var/lib/postgresql/data
   app:
     build:
       context: ./backend
@@ -27,6 +25,7 @@ services:
     environment:
       PORT: 3000
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
+      JWT_SECRET: ${JWT_SECRET}
     depends_on:
       db:
         condition: service_healthy

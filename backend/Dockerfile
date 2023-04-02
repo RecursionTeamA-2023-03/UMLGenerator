@@ -24,13 +24,14 @@ RUN npm install
 ENV NODE_ENV=production
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 ENV PATH="$JAVA_HOME/bin:$PATH"
+ENV FRONTEND_URL="https://uml-diagram-generator.vercel.app"
 
 # copy app files
 COPY --chown=node:node . .
 
 
-# set trace shell command and build app
-RUN set -x && npm run build
+# set trace shell command
+RUN set -x
 
 # run app
-CMD [ "node", "dist/main.js" ]
+CMD [ "npx", "prisma", "migrate", "deploy", "&&", "npx", "prisma", "generate", "&&", "npm", "run", "build", "&&", "node", "dist/main.js" ]

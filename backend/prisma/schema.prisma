@@ -15,7 +15,7 @@ model User {
   createdAt DateTime @default(now())
   name      String
   email     String   @unique
-  password  String
+  hashedPassword  String
   projects  ProjectUser[]
 }
 
