@@ -1,39 +1,24 @@
 import Text from '../../components/common/atoms/text'
 import LearnTemplate from '@/components/learnPage/templates/learnTemplate'
+import { getAllDiagramsData, getIntroductionData } from '../../../lib/diagram'
 
-const tempData = [
-  {
-    name: 'シーケンス図',
-  },
-  {
-    name: 'ユースケース図',
-  },
-  {
-    name: 'クラス図',
-  },
-  {
-    name: 'オブジェクト図',
-  },
-  {
-    name: 'アクティビティ図',
-  },
-  {
-    name: 'コンポーネント図',
-  },
-  {
-    name: '状態遷移図',
-  },
-  {
-    name: 'タイミング図',
-  },
-]
+export const getStaticProps = async () => {
+  const diagramData = getAllDiagramsData()
+  const contentData = await getIntroductionData()
+  return {
+    props: {
+      diagramData,
+      contentData,
+    },
+  }
+}
 
-export default function Learn() {
+export default function Learn({ diagramData, contentData }: any) {
   return (
-    <LearnTemplate data={tempData}>
+    <LearnTemplate sidebarData={diagramData} data={contentData}>
       <div>
-        <Text variant='large' marginLeft='1em'>
-          イントロダクション
+        <Text variant='small' marginLeft='1em'>
+          <div dangerouslySetInnerHTML={{ __html: contentData.contentHTML }} />
         </Text>
       </div>
     </LearnTemplate>

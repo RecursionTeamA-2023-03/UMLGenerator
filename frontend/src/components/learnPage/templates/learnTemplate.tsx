@@ -12,13 +12,14 @@ const ContentArea = styled.div`
   height: 100vh;
 `
 interface LearnTemplateProps {
+  sidebarData?: any
   data?: any
-  title?: any
   problemNo?: any
   children: React.ReactNode
 }
 
-const LearnTemplate = ({ children, data, title, problemNo }: LearnTemplateProps) => {
+const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplateProps) => {
+  console.log(data)
   const [isShow, setIsShow] = useState(true)
   const switchSideBar = () => setIsShow(!isShow)
   return (
@@ -27,13 +28,13 @@ const LearnTemplate = ({ children, data, title, problemNo }: LearnTemplateProps)
       <main>
         <ContentArea>
           {isShow ? (
-            <SideBar data={data} handle={switchSideBar} flag={true} />
+            <SideBar data={sidebarData} handle={switchSideBar} flag={true} />
           ) : (
             <SideBar handle={switchSideBar} flag={false} />
           )}
           <div>
             <Text variant='large' marginLeft='1em' fontColor={theme.colors.black}>
-              {title}
+              {data.title}
             </Text>
             <div>
               <BreadcrumbItem>
@@ -45,7 +46,7 @@ const LearnTemplate = ({ children, data, title, problemNo }: LearnTemplateProps)
                 <>
                   <BreadcrumbItem>
                     <Text variant='small'>
-                      <Link href={`/learn/${title}`}>{title}</Link>
+                      <Link href={`/learn/${data.diagram}`}>{data.diagram}</Link>
                     </Text>
                   </BreadcrumbItem>
                   <BreadcrumbItem>
@@ -57,7 +58,7 @@ const LearnTemplate = ({ children, data, title, problemNo }: LearnTemplateProps)
               ) : (
                 <BreadcrumbItem>
                   <Text variant='small' fontColor={theme.colors.black}>
-                    {title}
+                    {data.id}
                   </Text>
                 </BreadcrumbItem>
               )}

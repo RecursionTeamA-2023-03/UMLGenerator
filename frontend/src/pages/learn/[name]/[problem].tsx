@@ -2,59 +2,17 @@ import Text from '../../../components/common/atoms/text'
 import LearnTemplate from '../../../components/learnPage/templates/learnTemplate'
 import { theme } from '../../../themes'
 import React from 'react'
-import { useRouter } from 'next/router'
-
-const tempData = [
-  {
-    name: 'シーケンス図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'ユースケース図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'クラス図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'オブジェクト図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'アクティビティ図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'コンポーネント図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: '状態遷移図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'タイミング図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-]
+import MonacoEditor from '@/components/common/atoms/editor'
+import { getAllDiagramsData, getProblemIds } from 'lib/diagram'
 
 export const getStaticPaths = async () => {
-  const paths = tempData
+  const paths = getAllDiagramsData()
     .map((diagram) => {
-      const problemPath = diagram.problems.map((i: any) => {
+      const problemPath = getProblemIds(diagram.id).map((i: any) => {
         return {
           params: {
-            name: diagram.name,
-            problem: i,
+            name: diagram.id,
+            problem: i.id,
           },
         }
       })
@@ -64,21 +22,27 @@ export const getStaticPaths = async () => {
   return { paths, fallback: false }
 }
 
-export const getStaticProps = async (context: any) => {
-  const data = tempData.find((v) => v.name === context.params.name)
+export const getStaticProps = async ({ params }: any) => {
+  const currDiagramData = getAllDiagramsData().find((v) => v.id === params.name)
+  const currProblem = getProblemIds(params.name).find((v) => v.id === params.problem)
+  console.log(currProblem)
+  const allData = getAllDiagramsData()
   return {
     props: {
-      data,
+      currDiagramData,
+      currProblem,
+      allData,
     },
   }
 }
 
-export default function Problem({ data }: any) {
-  const router = useRouter().query
-  console.log(router)
+export default function Problem({ currProblem, allData }: any) {
   return (
-    <LearnTemplate data={tempData} title={data.name} problemNo={router.problem}>
-      <Text fontColor={theme.colors.black}>ここは例題{router.problem}</Text>
+    <LearnTemplate sidebarData={allData} data={currProblem} problemNo={currProblem.id}>
+      <Text variant='small' fontColor={theme.colors.black}>
+        <div dangerouslySetInnerHTML={{ __html: currProblem.content }} />
+      </Text>
+      <MonacoEditor />
     </LearnTemplate>
   )
 }

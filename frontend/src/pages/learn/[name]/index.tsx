@@ -3,97 +3,46 @@ import LearnTemplate from '../../../components/learnPage/templates/learnTemplate
 import { theme } from '../../../themes'
 import React from 'react'
 import Link from 'next/link'
-
-const tempData = [
-  {
-    name: 'シーケンス図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'ユースケース図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'クラス図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'オブジェクト図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'アクティビティ図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'コンポーネント図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: '状態遷移図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-  {
-    name: 'タイミング図',
-    description: 'nodata',
-    problems: ['problem1', 'problem2,'],
-  },
-]
+import { getAllDiagramIds, getDiagramData, getAllDiagramsData, getProblemIds } from 'lib/diagram'
 
 export const getStaticPaths = async () => {
-  const data = tempData
-  const paths = data.map((v) => {
-    return {
-      params: {
-        name: v.name,
-        description: v.description,
-        problem: v.problems[0],
-      },
-    }
-  })
+  const paths = getAllDiagramIds()
+  console.log(paths)
   return {
     paths,
     fallback: false,
   }
 }
 
-export const getStaticProps = async (context: any) => {
-  const data = tempData.find((v) => v.name === context.params.name)
+export const getStaticProps = async ({ params }: any) => {
+  const allDiagramData = getAllDiagramsData()
+  const currDiagramData = await getDiagramData(params.name)
+  const problems = getProblemIds(params.name)
   return {
     props: {
-      data,
+      allDiagramData,
+      currDiagramData,
+      problems,
     },
   }
 }
 
-export default function LearnContent({ data }: any) {
-  console.log(data)
+export default function LearnContent({ allDiagramData, currDiagramData, problems }: any) {
+  console.log(problems)
   return (
-    <LearnTemplate data={tempData} title={data.name}>
-      <Text fontColor={theme.colors.black}>
-        ここは説明です↓
-        <br />
-        {data.description}
+    <LearnTemplate sidebarData={allDiagramData} data={currDiagramData}>
+      <Text variant='small' fontColor={theme.colors.black}>
+        <div dangerouslySetInnerHTML={{ __html: currDiagramData.diagramContentHTML }} />
       </Text>
       <br />
-      <Text fontColor={theme.colors.black}>
-        ここは練習問題です↓
-        <br />
-        {data.problems.map((i: any) => (
-          <li key={i}>
-            <Text variant='small' fontColor={theme.colors.black}>
-              <Link href={`/learn/${data.name}/${i}`}>{i}</Link>
-            </Text>
-          </li>
-        ))}
-      </Text>
+      <Text fontColor={theme.colors.black}>ここは練習問題です↓</Text>
+      {problems.map((id: any) => {
+        return (
+          <Text as='p' key={id.id} fontColor={theme.colors.black}>
+            <Link href={`/learn/${currDiagramData.id}/${id.id}`}>{id.id}</Link>
+          </Text>
+        )
+      })}
     </LearnTemplate>
   )
 }
