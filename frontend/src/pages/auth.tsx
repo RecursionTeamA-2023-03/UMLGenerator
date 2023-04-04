@@ -47,7 +47,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 } */
 
-export default function Auth(){
+import AuthTemplate from '@/components/authPage/templates/authTemplate'
 
-  return (<h1>supabase削除のため、一旦白紙</h1>)
+export default function Auth() {
+  return <AuthTemplate />
 }
