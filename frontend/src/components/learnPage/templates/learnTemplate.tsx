@@ -19,7 +19,6 @@ interface LearnTemplateProps {
 }
 
 const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplateProps) => {
-  console.log(data)
   const [isShow, setIsShow] = useState(true)
   const switchSideBar = () => setIsShow(!isShow)
   return (

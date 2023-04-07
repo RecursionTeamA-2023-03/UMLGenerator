@@ -34,12 +34,11 @@ const Header = () => {
   const { data, isError } = useQueryUser()
   useEffect(() => {
     setIsLoggedIn(!isError && data)
-    if (isLoggedIn) handleLogout()
   }, [data, isError])
 
   const handleLogout = async () => {
     setIsLoggedIn(false)
-    queryClient.removeQueries['user']
+    queryClient.removeQueries(['user'])
     await axios.post(`http://localhost/auth/logout`)
     router.push('/auth')
   }
