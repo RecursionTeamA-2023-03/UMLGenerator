@@ -48,7 +48,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 } */
 
 import AuthTemplate from '@/components/authPage/templates/authTemplate'
+import Text from '@/components/common/atoms/text'
+import Layout from '@/components/common/templates/layout'
 
 export default function Auth() {
-  return <AuthTemplate />
+  return (
+    <Layout>
+      <AuthTemplate />
+    </Layout>
+  )
 }
