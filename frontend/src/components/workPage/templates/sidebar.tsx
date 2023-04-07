@@ -1,5 +1,5 @@
-import { useState, Dispatch, SetStateAction } from 'react'
-import styled, { keyframes } from 'styled-components'
+import { useState } from 'react'
+import styled from 'styled-components'
 import { Project, Diagram } from '@/interfaces/dataTypes'
 import Icon from '../atoms/icon'
 import SelectProjects from '../organisms/selectProjects'
