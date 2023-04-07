@@ -38,7 +38,7 @@ export default function MyBoard({
 
 const Container = styled.div`
   width: 100%;
-  padding-left: 300px;
+  padding-left: 5px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

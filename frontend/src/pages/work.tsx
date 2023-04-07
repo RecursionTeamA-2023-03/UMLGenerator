@@ -3,6 +3,7 @@ import useSWR, { Fetcher } from 'swr'
 import { Project, Diagram, User } from '@/interfaces/dataTypes'
 import { isProject, isDiagram } from '@/types/data.guard'
 import styled from 'styled-components'
+import Header from '@/components/common/organisms/header'
 import Sidebar from '@/components/workPage/templates/sidebar'
 import DiagramEditor from '@/components/workPage/templates/diagramEditor'
 import MyBoard from '@/components/workPage/templates/myBoard'
@@ -221,67 +222,89 @@ export default function Work() {
     setDiagramId(null)
   }
 
-  if (error) return <div>Failed to load</div>
-  if (!data || isLoading) return <div>Loading...</div>
+  if (error) return (
+    <div>
+      <Header />
+      <main>
+        <h2>Fail to load</h2>
+      </main>
+    </div>
+  )
+  if (!data || isLoading) return (
+    <div>
+      <Header />
+      <main>
+        <h2>Loading</h2>
+      </main>
+    </div>
+  )
 
   return (
-    <Container>
-      <Sidebar
-        projects={data.projects}
-        isMyBoard={isMyBoard}
-        handleSelectBoard={handleSelectBoard}
-        projectId={projectId}
-        diagramId={diagramId}
-        handleSelectProject={handleSelectProject}
-        handleSelectDiagram={handleSelectDiagram}
-        addProject={handleAddProject}
-      />
-      {isMyBoard ? (
-        projectId ? (
-          diagramId ? (
-            <DiagramEditor
-              projectId={projectId}
-              diagram={
-                data.projects
-                  .find((p) => p.id === projectId)
-                  ?.diagrams.find((d) => d.id === diagramId) as Diagram
-              }
-              editDiagramName={handleEditDiagramName}
-              editDiagramContent={handleEditDiagramContent}
-              deleteDiagram={handleDeleteDiagram}
-            />
-          ) : (
-            <ProjectBoard
-              project={
-                data.projects.find((p) => p.id === projectId) as Project & { diagrams: Diagram[] }
-              }
-              editProjectName={handleEditProjectName}
-              handleSelectDiagram={handleSelectDiagram}
-              addDiagram={handleAddDiagram}
-              deleteProject={handleDeleteProject}
-            />
-          )
-        ) : (
-          <MyBoard
+    <div>
+      <Header />
+      <main>
+        <Container>
+          <Sidebar
             projects={data.projects}
-            editProjectName={handleEditProjectName}
-            addDiagram={handleAddDiagram}
+            isMyBoard={isMyBoard}
+            handleSelectBoard={handleSelectBoard}
+            projectId={projectId}
+            diagramId={diagramId}
+            handleSelectProject={handleSelectProject}
             handleSelectDiagram={handleSelectDiagram}
+            addProject={handleAddProject}
           />
-        )
-      ) : (
-        <TemplateBoard />
-      )}
-    </Container>
+          {isMyBoard ? (
+            projectId ? (
+              diagramId ? (
+                <DiagramEditor
+                  projectId={projectId}
+                  diagram={
+                    data.projects
+                      .find((p) => p.id === projectId)
+                      ?.diagrams.find((d) => d.id === diagramId) as Diagram
+                  }
+                  editDiagramName={handleEditDiagramName}
+                  editDiagramContent={handleEditDiagramContent}
+                  deleteDiagram={handleDeleteDiagram}
+                />
+              ) : (
+                <ProjectBoard
+                  project={
+                    data.projects.find((p) => p.id === projectId) as Project & {
+                      diagrams: Diagram[]
+                    }
+                  }
+                  editProjectName={handleEditProjectName}
+                  handleSelectDiagram={handleSelectDiagram}
+                  addDiagram={handleAddDiagram}
+                  deleteProject={handleDeleteProject}
+                />
+              )
+            ) : (
+              <MyBoard
+                projects={data.projects}
+                editProjectName={handleEditProjectName}
+                addDiagram={handleAddDiagram}
+                handleSelectDiagram={handleSelectDiagram}
+              />
+            )
+          ) : (
+            <TemplateBoard />
+          )}
+        </Container>
+      </main>
+    </div>
   )
 }
 
 const Container = styled.div`
   width: 100%;
   min-height: 100vh;
-  padding: 30px;
+  padding: 5px;
   display: flex;
   flex-direction: row;
+  align-items: stretch;
   background-color: white;
   color: black;
 `
