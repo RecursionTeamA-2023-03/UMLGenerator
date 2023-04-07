@@ -34,6 +34,7 @@ const Header = () => {
   const { data, isError } = useQueryUser()
   useEffect(() => {
     setIsLoggedIn(!isError && data)
+    if (isLoggedIn) handleLogout()
   }, [data, isError])
 
   const handleLogout = async () => {
