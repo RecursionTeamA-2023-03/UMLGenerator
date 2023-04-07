@@ -4,7 +4,7 @@ import DiagramsInProject from '../organisms/diagramsInProject'
 import styled from 'styled-components'
 
 type Props = {
-  projects: (Project & { diagrams: Diagram[] })[]
+  projects?: (Project & { diagrams: Diagram[] })[]
   editProjectName: (id: number, name: string) => void
   addDiagram: (projectId: number) => void
   handleSelectDiagram: (dId: number, pId?: number) => void
@@ -19,7 +19,7 @@ export default function MyBoard({
   return (
     <Container>
       <CurrentDiagrams projects={projects} handleSelectDiagram={handleSelectDiagram} />
-      {projects.map((p) => {
+      {projects?.map((p) => {
         return (
           <DiagramsInProject
             key={p.id}

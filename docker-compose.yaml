@@ -19,7 +19,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
-    container_name: nest-backend
+    container_name: nest-server
     expose:
       - 3000
     environment:
@@ -33,6 +33,13 @@ services:
       - ./backend/src:/app/src
       - ./backend/test:/app/test
       - ./backend/prisma:/app/prisma
+  servlet:
+    image: plantuml/plantuml-server:jetty
+    container_name: plantuml-server
+    expose:
+      - 8080
+    environment:
+      - BASE_URL=plantuml
   nginx:
     build:
       context: ./nginx
@@ -42,8 +49,10 @@ services:
       - app
     environment:
       NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
-      NEST_HOST: ${NEST_HOST}
+      NEST_HOST: nest-server
       NEST_PORT: 3000
+      PLANTUML_HOST: plantuml-server
+      PLANTUML_PORT: 8080
       NGINX_MAX_BODY: ${NGINX_MAX_BODY}
       NGINX_PORT: ${NGINX_PORT}
     ports:
