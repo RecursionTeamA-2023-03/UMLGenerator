@@ -14,7 +14,8 @@ const fetcher: Fetcher<string, string> = async (url) => {
 export default function UmlPic({ umlText }: Props) {
   const plantUmlEncoder = require('plantuml-encoder') // eslint-disable-line
   const encodedText = plantUmlEncoder.encode(umlText)
-  const { data, error } = useSWR(`/api/uml/png/${encodedText}`, fetcher)
+  const url = process.env.AWS_IP_ADDRESS || 'localhost'
+  const { data, error } = useSWR(`http://${url}/plantuml/png/${encodedText}`, fetcher)
 
   if (error) {
     // log for debug

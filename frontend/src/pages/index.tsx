@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import UmlGenerator from '@/components/common/templates/umlGenerator'
 import Layout from '../components/common/templates/layout'
 
 export default function Home() {
@@ -14,7 +13,7 @@ export default function Home() {
       </Head>
       <Layout>
         <main className={styles.main}>
-          <UmlGenerator />
+          <h1>ここがAuth Page</h1>
         </main>
       </Layout>
     </>
