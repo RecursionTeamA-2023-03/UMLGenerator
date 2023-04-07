@@ -21,7 +21,6 @@ async function bootstrap() {
         secure: false, // if https connection then true
       },
       value: (req: Request) => {
-        console.log(req.headers)
         return req.header('csrf-token')
       },
     }),
