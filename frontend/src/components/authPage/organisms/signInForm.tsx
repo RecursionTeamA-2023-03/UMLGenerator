@@ -18,7 +18,7 @@ const SignInForm = () => {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     try {
       await axios.post(`http://localhost/auth/login`, {
@@ -31,7 +31,7 @@ const SignInForm = () => {
     }
   }
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event
     switch (target.id) {
       case 'email':
