@@ -10,7 +10,7 @@ import MyBoard from '@/components/workPage/templates/myBoard'
 import ProjectBoard from '@/components/workPage/templates/projectBoard'
 import TemplateBoard from '@/components/workPage/templates/templateBoard'
 
-type Data = (Project & { diagrams: Diagram[]})[]
+type Data = (Project & { diagrams: Diagram[]})[] | []
 
 const fetcher: Fetcher<Data, string> = (...args) => fetch(...args).then((res) => res.json())
 const api_url = process.env.AWS_IP_ADDRESS || 'localhost'
