@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import useSWR, { Fetcher } from 'swr'
-import { Project, Diagram, User } from '@/interfaces/dataTypes'
+import { Project, Diagram } from '@/interfaces/dataTypes'
 import { isProject, isDiagram } from '@/types/data.guard'
 import styled from 'styled-components'
 import Header from '@/components/common/organisms/header'
@@ -10,9 +10,7 @@ import MyBoard from '@/components/workPage/templates/myBoard'
 import ProjectBoard from '@/components/workPage/templates/projectBoard'
 import TemplateBoard from '@/components/workPage/templates/templateBoard'
 
-type Data = User & {
-  projects: (Project & { diagrams: Diagram[]})[]
-}
+type Data = (Project & { diagrams: Diagram[]})[]
 
 const fetcher: Fetcher<Data, string> = (...args) => fetch(...args).then((res) => res.json())
 const api_url = process.env.AWS_IP_ADDRESS || 'localhost'
@@ -60,13 +58,13 @@ export default function Work() {
     if(response.error || !isProject(response)) return
     const newProject = {...response, diagrams: []}
     
-    mutate({ ...data, projects: [...data.projects, newProject]})
+    mutate([ ...data, newProject ])
   }
 
   const getUniqueProjectName = (name = 'Project_1') => {
     if(!data) return
     let nextProjectName = name
-    data.projects?.forEach((p) => {
+    data?.forEach((p) => {
       if (p.name === nextProjectName) {
         const nameArray = nextProjectName.split('_')
         if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
@@ -95,10 +93,10 @@ export default function Work() {
 
     if(response.error || !isProject(response)) return
     
-    mutate({ ...data, projects: data.projects.map(p=>{
+    mutate(data.map(p=>{
       if(p.id !== id) return p
       else return { ...response, diagrams: p.diagrams }
-    })})
+    }))
   }
 
   const handleDeleteProject = async (id: number) => {
@@ -113,7 +111,7 @@ export default function Work() {
 
     if(response.error) return
     
-    mutate({ ...data, projects: data.projects.filter(p=> p.id !== id)})
+    mutate(data.filter(p=> p.id !== id))
   
     handleRefreshPage()
   }
@@ -133,17 +131,17 @@ export default function Work() {
 
     if(response.error || !isDiagram(response)) return
     
-    mutate({ ...data, projects: data.projects.map(p=>{
+    mutate(data.map(p=>{
       if(p.id !== id) return p
       else return {...p, diagrams: [...p.diagrams, response]}
-    })})
+    }))
   }
 
   const getUniqueDiagramName = (projectId: number, name = 'Diagram_1') => {
     if(!data) return
 
     let nextDiagramName = name
-    const targetProject = data.projects.find((p) => p.id === projectId)
+    const targetProject = data.find((p) => p.id === projectId)
     targetProject?.diagrams?.forEach((d) => {
       if (d.name === nextDiagramName) {
         const nameArray = nextDiagramName.split('_')
@@ -173,13 +171,13 @@ export default function Work() {
 
     if(response.error || !isDiagram(response)) return
     
-    mutate({ ...data, projects: data.projects.map(p=>{
+    mutate(data.map(p=>{
       if(p.id !== pId) return p
       else return {...p, diagrams: p.diagrams.map(d=>{
         if(d.id !== dId) return d
         else return response
       })}
-    })})
+    }))
   }
 
   const handleEditDiagramContent = async (pId: number, dId: number, content: string) => {
@@ -194,13 +192,13 @@ export default function Work() {
 
     if(response.error || !isDiagram(response)) return
     
-    mutate({ ...data, projects: data.projects.map(p=>{
+    mutate(data.map(p=>{
       if(p.id !== pId) return p
       else return {...p, diagrams: p.diagrams.map(d=>{
         if(d.id !== dId) return d
         else return response
       })}
-    })})
+    }))
   }
 
   const handleDeleteDiagram = async (pId: number, dId: number) => {
@@ -214,10 +212,10 @@ export default function Work() {
 
     if(response.error) return
     
-    mutate({ ...data, projects: data.projects.map(p=>{
+    mutate(data.map(p=>{
       if(p.id!==pId) return p
       else return {...p, diagrams: p.diagrams.filter(d=>d.id!==dId)}
-    })})
+    }))
 
     setDiagramId(null)
   }
@@ -245,7 +243,7 @@ export default function Work() {
       <main>
         <Container>
           <Sidebar
-            projects={data.projects}
+            projects={data}
             isMyBoard={isMyBoard}
             handleSelectBoard={handleSelectBoard}
             projectId={projectId}
@@ -260,8 +258,7 @@ export default function Work() {
                 <DiagramEditor
                   projectId={projectId}
                   diagram={
-                    data.projects
-                      .find((p) => p.id === projectId)
+                    data.find((p) => p.id === projectId)
                       ?.diagrams.find((d) => d.id === diagramId) as Diagram
                   }
                   editDiagramName={handleEditDiagramName}
@@ -271,7 +268,7 @@ export default function Work() {
               ) : (
                 <ProjectBoard
                   project={
-                    data.projects.find((p) => p.id === projectId) as Project & {
+                    data.find((p) => p.id === projectId) as Project & {
                       diagrams: Diagram[]
                     }
                   }
@@ -283,7 +280,7 @@ export default function Work() {
               )
             ) : (
               <MyBoard
-                projects={data.projects}
+                projects={data}
                 editProjectName={handleEditProjectName}
                 addDiagram={handleAddDiagram}
                 handleSelectDiagram={handleSelectDiagram}
