@@ -25,7 +25,7 @@ const SignInForm = () => {
         email: email,
         password: password,
       })
-      router.push('/')
+      router.push('/learn')
     } catch (e) {
       alert(e)
     }
@@ -69,10 +69,10 @@ const SignInForm = () => {
       <Button
         width='100%'
         onClick={() => {
-          router.push(`/auth/signUp`)
+          router.push(`/`)
         }}
       >
-        新規登録
+        新規登録はこちら
       </Button>
     </Container>
   )

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
 export const useQueryUser = () => {
+  const router = useRouter()
   const getUser = async () => {
     const { data } = await axios.get(`http://localhost/user`)
     return data
@@ -11,7 +12,7 @@ export const useQueryUser = () => {
     queryKey: ['user'],
     queryFn: getUser,
     onError: (err: any) => {
-      if (err.response.status === 401 || err.response.status === 403) return false
+      if (err.response.status === 401 || err.response.status === 403) return router.push('/')
     },
   })
 }

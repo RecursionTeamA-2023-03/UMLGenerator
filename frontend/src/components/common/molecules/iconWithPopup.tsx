@@ -42,7 +42,7 @@ const IconWithPopup = (props: IconWithPopupProps) => {
           {props.isLoggedIn ? (
             <LogoutIcon onClick={props.onLogout} />
           ) : (
-            <Link href={'/auth'}>{props.popupText}</Link>
+            <Link href={'/signIn'}>{props.popupText}</Link>
           )}
         </PopupBadge>
       )}

@@ -33,7 +33,7 @@ const SignUpForm = () => {
         email: email,
         password: password,
       })
-      router.push('/')
+      router.push('/learn')
     } catch (e) {
       alert(e)
     }

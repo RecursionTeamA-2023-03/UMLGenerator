@@ -31,16 +31,16 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const router = useRouter()
   const queryClient = useQueryClient()
-  const { data, isError } = useQueryUser()
+  const { data, isSuccess } = useQueryUser()
   useEffect(() => {
-    setIsLoggedIn(!isError && data)
-  }, [data, isError])
+    setIsLoggedIn(data && isSuccess)
+  }, [data, isSuccess])
 
   const handleLogout = async () => {
     setIsLoggedIn(false)
     queryClient.removeQueries(['user'])
     await axios.post(`http://localhost/auth/logout`)
-    router.push('/auth')
+    router.push('/signIn')
   }
   return (
     <HeaderArea>
@@ -49,21 +49,24 @@ const Header = () => {
           <Link href={'/'}>UDG</Link>
         </Anchor>
         {isLoggedIn && (
-          <Anchor>
-            <Link href={'/work'}>Work</Link>
-          </Anchor>
+          <>
+            <Anchor>
+              <Link href={'/work'}>Work</Link>
+            </Anchor>
+
+            <Anchor>
+              <Link href={'/learn'}>Learn</Link>
+            </Anchor>
+            <Anchor>
+              <Link href={'/cheatSheets'}>CheatSheets</Link>
+            </Anchor>
+          </>
         )}
-        <Anchor>
-          <Link href={'/learn'}>Learn</Link>
-        </Anchor>
-        <Anchor>
-          <Link href={'/cheatSheets'}>CheatSheets</Link>
-        </Anchor>
       </Nav>
       <Nav>
         <Anchor>
           <IconWithPopup
-            popupText={isLoggedIn ? 'Logout' : 'SingIn/SingUp'}
+            popupText={isLoggedIn ? 'Logout' : 'SingIn'}
             isLoggedIn={isLoggedIn}
             onLogout={handleLogout}
           />

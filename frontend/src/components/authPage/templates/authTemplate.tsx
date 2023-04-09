@@ -18,15 +18,15 @@ const AuthTemplate = () => {
     <>
       <main>
         <ContentArea>
-          {router.asPath == '/auth' ? (
-            <>
-              <Text variant='medium'>LOGIN</Text>
-              <SignInForm />
-            </>
-          ) : (
+          {router.asPath == '/' ? (
             <>
               <Text variant='medium'>SIGNUP</Text>
               <SignUpForm />
+            </>
+          ) : (
+            <>
+              <Text variant='medium'>LOGIN</Text>
+              <SignInForm />
             </>
           )}
         </ContentArea>
