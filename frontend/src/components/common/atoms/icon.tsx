@@ -22,27 +22,6 @@ import {
   ContentCopy,
 } from '@mui/icons-material'
 
-interface IconProps {
-  fontSize?: string
-  color?: string
-  width?: string
-  height?: string
-  backgroundColor?: string
-  display?: string
-}
-
-const IconComponent = styled.div<IconProps>`
-font-size: ${({ fontSize }) => fontSize}
-color: ${({ color }) => color}
-width: ${({ width }) => width}
-height: ${({ height }) => height}
-background-color: ${({ backgroundColor }) => backgroundColor}
-display: inline-block
-svg {
-    display: block;
-}
-`
-
 interface IconWrapperProps {
   fontSize?: string
   width?: string
@@ -51,13 +30,13 @@ interface IconWrapperProps {
   backgroundColor?: string
 }
 
-const IconWapper = styled.div<IconWrapperProps>`
+const IconWrapper = styled.div<IconWrapperProps>`
   display: inline-block;
   font-size: ${({ fontSize }) => fontSize};
   width: ${({ width }) => width};
-  heigth: ${({ height }) => height};
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  color: ${({ color }) => color};
+  height: ${({ height }) => height};
+  background-color: ${({ backgroundColor }) => backgroundColor || 'transparent'};
+  color: ${({ color }) => color || 'inherit'};
   svg {
     display: block;
   }
@@ -73,9 +52,9 @@ function withIconStyle(Icon: typeof SvgIcon): React.ComponentType<IconButtonProp
   const IconWithStyle = (props: IconButtonProps) => {
     const { onClick, ...rest } = props
     return (
-      <IconWapper {...rest}>
-        <Icon onClick={onClick} />
-      </IconWapper>
+      <IconWrapper {...rest}>
+        <Icon onClick={onClick} fontSize='inherit' />
+      </IconWrapper>
     )
   }
   return IconWithStyle
