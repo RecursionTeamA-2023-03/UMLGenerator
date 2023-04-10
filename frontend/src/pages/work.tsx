@@ -12,7 +12,17 @@ import TemplateBoard from '@/components/workPage/templates/templateBoard'
 
 type Data = (Project & { diagrams: Diagram[]})[] | []
 
-const fetcher: Fetcher<Data, string> = (...args) => fetch(...args).then((res) => res.json())
+const fetcher: Fetcher<Data, string> = async (url:string) => {
+  const res = await fetch(url)
+ 
+  // もしステータスコードが 200-299 の範囲内では無い場合、
+  // レスポンスをパースして投げようとします。
+  if (!res.ok) {
+    const error = new Error(`An error occurred while fetching the data.\nStatus: ${res.status}\n${await res.json()}`)
+    throw error
+  }
+  return res.json()
+}
 const api_url = process.env.AWS_IP_ADDRESS || 'localhost'
 
 export default function Work() {
