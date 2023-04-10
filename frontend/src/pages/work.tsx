@@ -1,32 +1,33 @@
 import { useState } from 'react'
+import useSWR, { Fetcher } from 'swr'
 import { Project, Diagram } from '@/interfaces/dataTypes'
+import { isProject, isDiagram } from '@/types/data.guard'
 import styled from 'styled-components'
+import Header from '@/components/common/organisms/header'
 import Sidebar from '@/components/workPage/templates/sidebar'
 import DiagramEditor from '@/components/workPage/templates/diagramEditor'
 import MyBoard from '@/components/workPage/templates/myBoard'
 import ProjectBoard from '@/components/workPage/templates/projectBoard'
 import TemplateBoard from '@/components/workPage/templates/templateBoard'
 
-// const fetcher: Fetcher<Data, string> = (...args) => fetch(...args).then((res) => res.json())
+type Data = (Project & { diagrams: Diagram[]})[] | []
+
+const fetcher: Fetcher<Data, string> = async (url:string) => {
+  const res = await fetch(url)
+ 
+  // もしステータスコードが 200-299 の範囲内では無い場合、
+  // レスポンスをパースして投げようとします。
+  if (!res.ok) {
+    const error = new Error(`An error occurred while fetching the data.\nStatus: ${res.status}\n${await res.json()}`)
+    throw error
+  }
+  return res.json()
+}
+const api_url = process.env.AWS_IP_ADDRESS || 'localhost'
 
 export default function Work() {
-  // const router = useRouter()
-  // const { id } = router.query
-  // const { data, error } = useSWR(`/api/user?id=${id}`, fetcher)
-
-  // if (error) return <div>Failed to load</div>
-  // if (!data) return <div>Loading...</div>
-  // data --> projects
-
-  const [projects, setProjects] = useState<(Project & { diagrams: Diagram[] })[]>([
-    {
-      id: 1,
-      name: '下書き',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      diagrams: [],
-    },
-  ])
+  const { data, error, isLoading, mutate } = useSWR(`http://${api_url}/api/project`, fetcher)
+  
   const [isMyBoard, setIsMyBoard] = useState<boolean>(true)
   const [projectId, setProjectId] = useState<number | null>(null)
   const [diagramId, setDiagramId] = useState<number | null>(null)
@@ -51,34 +52,29 @@ export default function Work() {
 
   const handleRefreshPage = () => handleSelectBoard(true)
 
-  const handleAddProject = () => {
-    const nextProjectId = getUniqueProjectId()
+  const handleAddProject = async () => {
     const nextProjectName = getUniqueProjectName()
-    const project = {
-      id: nextProjectId,
-      name: nextProjectName,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      diagrams: [],
-    }
 
     // db update api call here
     // if response is error then return
 
-    setProjects([...projects, project])
-  }
+    if(!data || !nextProjectName) return
+    
+    const response = await fetch(`http://${api_url}/api/project`, {
+      method: 'POST',
+      body: JSON.stringify({name: nextProjectName})
+    }).then((res) => res.json())
 
-  const getUniqueProjectId = () => {
-    let nextProjectId = 1
-    projects.forEach((p) => {
-      nextProjectId = nextProjectId <= p.id ? p.id + 1 : nextProjectId
-    })
-    return nextProjectId
+    if(response.error || !isProject(response)) return
+    const newProject = {...response, diagrams: []}
+    
+    mutate([ ...data, newProject ])
   }
 
   const getUniqueProjectName = (name = 'Project_1') => {
+    if(!data) return
     let nextProjectName = name
-    projects.forEach((p) => {
+    data?.forEach((p) => {
       if (p.name === nextProjectName) {
         const nameArray = nextProjectName.split('_')
         if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
@@ -92,79 +88,71 @@ export default function Work() {
     return nextProjectName
   }
 
-  const handleEditProjectName = (id: number, name: string) => {
+  const handleEditProjectName = async (id: number, name: string) => {
     const nextProjectName = getUniqueProjectName(name)
 
     // db update api call here
     // if response is error then return
 
-    setProjects((projects) =>
-      projects.map((p) => {
-        if (p.id === id) {
-          return {
-            ...p,
-            name: nextProjectName,
-            updatedAt: new Date(),
-          }
-        } else {
-          return p
-        }
-      }),
-    )
+    if(!data || !nextProjectName) return
+
+    const response = await fetch(`http://${api_url}/api/project/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({name: nextProjectName})
+    }).then((res) => res.json())
+
+    if(response.error || !isProject(response)) return
+    
+    mutate(data.map(p=>{
+      if(p.id !== id) return p
+      else return { ...response, diagrams: p.diagrams }
+    }))
   }
 
-  const handleAddDiagram = (projectId: number) => {
-    const nextDiagramId = getUniqueDiagramId(projectId)
-    const nextDiagramName = getUniqueDiagramName(projectId)
-    if (!nextDiagramId || !nextDiagramName) {
-      console.log('Invalid projectId')
-      return
-    }
-
-    const diagram = {
-      id: nextDiagramId,
-      name: nextDiagramName,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      content: '',
-    }
-
+  const handleDeleteProject = async (id: number) => {
     // db update api call here
     // if response is error then return
 
-    setProjects((projects) =>
-      projects.map((p) => {
-        if (p.id === projectId) {
-          return { ...p, updatedAt: new Date(), diagrams: [...p.diagrams, diagram] }
-        } else {
-          return p
-        }
-      }),
-    )
-  }
+    if(!data) return
 
-  const handleDeleteProject = (id: number) => {
-    // db update api call here
-    // if response is error then return
+    const response = await fetch(`http://${api_url}/api/project/${id}`, {
+      method: 'DELETE',
+    }).then(res => res.json())
 
-    setProjects((projects) => projects.filter((p) => p.id !== id))
+    if(response.error) return
+    
+    mutate(data.filter(p=> p.id !== id))
+  
     handleRefreshPage()
   }
 
-  const getUniqueDiagramId = (projectId: number) => {
-    let nextDiagramId = 1
-    const targetProject = projects.find((p) => p.id === projectId)
-    targetProject?.diagrams.forEach((d) => {
-      nextDiagramId = nextDiagramId <= d.id ? d.id + 1 : nextDiagramId
-    })
+  const handleAddDiagram = async (id: number) => {
+    const nextDiagramName = getUniqueDiagramName(id)
+    
+    // db update api call here
+    // if response is error then return
 
-    return targetProject ? nextDiagramId : null
+    if(!data || !nextDiagramName) return
+
+    const response = await fetch(`http://${api_url}/api/project/${id}/diagram`, {
+      method: 'POST',
+      body: JSON.stringify({name: nextDiagramName})
+    }).then((res) => res.json())
+
+    if(response.error || !isDiagram(response)) return
+    
+    mutate(data.map(p=>{
+      if(p.id !== id) return p
+      else return {...p, diagrams: [...p.diagrams, response]}
+    }))
   }
 
   const getUniqueDiagramName = (projectId: number, name = 'Diagram_1') => {
+    if(!data) return
+
     let nextDiagramName = name
-    const targetProject = projects.find((p) => p.id === projectId)
-    targetProject?.diagrams.forEach((d) => {
+    const targetProject = data.find((p) => p.id === projectId)
+    targetProject?.diagrams?.forEach((d) => {
       if (d.name === nextDiagramName) {
         const nameArray = nextDiagramName.split('_')
         if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
@@ -178,141 +166,152 @@ export default function Work() {
     return targetProject ? nextDiagramName : null
   }
 
-  const handleEditDiagramName = (projectId: number, diagramId: number, name: string) => {
-    const nextDiagramName = getUniqueDiagramName(projectId, name)
-    if (!nextDiagramName) {
-      console.log('Invalid projectId')
-      return
-    }
+  const handleEditDiagramName = async (pId: number, dId: number, name: string) => {
+    const nextDiagramName = getUniqueDiagramName(pId, name)
 
     // db update api call here
     // if response is error then return
 
-    setProjects((projects) =>
-      projects.map((p) => {
-        if (p.id === projectId) {
-          return {
-            ...p,
-            updatedAt: new Date(),
-            diagrams: p.diagrams.map((d) => {
-              if (d.id === diagramId) {
-                return { ...d, name: nextDiagramName as string, updatedAt: new Date() }
-              } else {
-                return d
-              }
-            }),
-          }
-        } else {
-          return p
-        }
-      }),
-    )
+    if(!data || !nextDiagramName) return
+
+    const response = await fetch(`http://${api_url}/api/project/${pId}/diagram/${dId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({name: nextDiagramName})
+    }).then((res) => res.json())
+
+    if(response.error || !isDiagram(response)) return
+    
+    mutate(data.map(p=>{
+      if(p.id !== pId) return p
+      else return {...p, diagrams: p.diagrams.map(d=>{
+        if(d.id !== dId) return d
+        else return response
+      })}
+    }))
   }
 
-  const handleEditDiagramContent = (projectId: number, diagramId: number, content: string) => {
+  const handleEditDiagramContent = async (pId: number, dId: number, content: string) => {
     // db update api call here
     // if response is error then return
+    if(!data) return
 
-    setProjects((projects) =>
-      projects.map((p) => {
-        if (p.id === projectId) {
-          return {
-            ...p,
-            updatedAt: new Date(),
-            diagrams: p.diagrams.map((d) => {
-              if (d.id === diagramId) {
-                return { ...d, updatedAt: new Date(), content: content }
-              } else {
-                return d
-              }
-            }),
-          }
-        } else {
-          return p
-        }
-      }),
-    )
+    const response = await fetch(`http://${api_url}/api/project/${pId}/diagram/${dId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({content: content})
+    }).then((res) => res.json())
+
+    if(response.error || !isDiagram(response)) return
+    
+    mutate(data.map(p=>{
+      if(p.id !== pId) return p
+      else return {...p, diagrams: p.diagrams.map(d=>{
+        if(d.id !== dId) return d
+        else return response
+      })}
+    }))
   }
 
-  const handleDeleteDiagram = (projectId: number, diagramId: number) => {
+  const handleDeleteDiagram = async (pId: number, dId: number) => {
     // db update api call here
     // if response is error then return
+    if(!data) return
+
+    const response = await fetch(`http://${api_url}/api/project/${pId}/diagram/${dId}`, {
+      method: 'DELETE',
+    }).then(res => res.json())
+
+    if(response.error) return
+    
+    mutate(data.map(p=>{
+      if(p.id!==pId) return p
+      else return {...p, diagrams: p.diagrams.filter(d=>d.id!==dId)}
+    }))
 
     setDiagramId(null)
-
-    setProjects((projects) =>
-      projects.map((p) => {
-        if (p.id === projectId) {
-          return {
-            ...p,
-            updatedAt: new Date(),
-            diagrams: p.diagrams.filter((d) => d.id !== diagramId),
-          }
-        } else {
-          return p
-        }
-      }),
-    )
   }
 
+  if (error) return (
+    <div>
+      <Header />
+      <main>
+        <h2>Fail to load</h2>
+      </main>
+    </div>
+  )
+  if (!data || isLoading) return (
+    <div>
+      <Header />
+      <main>
+        <h2>Loading</h2>
+      </main>
+    </div>
+  )
+
   return (
-    <Container>
-      <Sidebar
-        projects={projects}
-        isMyBoard={isMyBoard}
-        handleSelectBoard={handleSelectBoard}
-        projectId={projectId}
-        diagramId={diagramId}
-        handleSelectProject={handleSelectProject}
-        handleSelectDiagram={handleSelectDiagram}
-        addProject={handleAddProject}
-      />
-      {isMyBoard ? (
-        projectId ? (
-          diagramId ? (
-            <DiagramEditor
-              projectId={projectId}
-              diagram={
-                projects
-                  .find((p) => p.id === projectId)
-                  ?.diagrams.find((d) => d.id === diagramId) as Diagram
-              }
-              editDiagramName={handleEditDiagramName}
-              editDiagramContent={handleEditDiagramContent}
-              deleteDiagram={handleDeleteDiagram}
-            />
-          ) : (
-            <ProjectBoard
-              project={
-                projects.find((p) => p.id === projectId) as Project & { diagrams: Diagram[] }
-              }
-              editProjectName={handleEditProjectName}
-              handleSelectDiagram={handleSelectDiagram}
-              addDiagram={handleAddDiagram}
-              deleteProject={handleDeleteProject}
-            />
-          )
-        ) : (
-          <MyBoard
-            projects={projects}
-            editProjectName={handleEditProjectName}
-            addDiagram={handleAddDiagram}
+    <div>
+      <Header />
+      <main>
+        <Container>
+          <Sidebar
+            projects={data}
+            isMyBoard={isMyBoard}
+            handleSelectBoard={handleSelectBoard}
+            projectId={projectId}
+            diagramId={diagramId}
+            handleSelectProject={handleSelectProject}
             handleSelectDiagram={handleSelectDiagram}
+            addProject={handleAddProject}
           />
-        )
-      ) : (
-        <TemplateBoard />
-      )}
-    </Container>
+          {isMyBoard ? (
+            projectId ? (
+              diagramId ? (
+                <DiagramEditor
+                  projectId={projectId}
+                  diagram={
+                    data.find((p) => p.id === projectId)
+                      ?.diagrams.find((d) => d.id === diagramId) as Diagram
+                  }
+                  editDiagramName={handleEditDiagramName}
+                  editDiagramContent={handleEditDiagramContent}
+                  deleteDiagram={handleDeleteDiagram}
+                />
+              ) : (
+                <ProjectBoard
+                  project={
+                    data.find((p) => p.id === projectId) as Project & {
+                      diagrams: Diagram[]
+                    }
+                  }
+                  editProjectName={handleEditProjectName}
+                  handleSelectDiagram={handleSelectDiagram}
+                  addDiagram={handleAddDiagram}
+                  deleteProject={handleDeleteProject}
+                />
+              )
+            ) : (
+              <MyBoard
+                projects={data}
+                editProjectName={handleEditProjectName}
+                addDiagram={handleAddDiagram}
+                handleSelectDiagram={handleSelectDiagram}
+              />
+            )
+          ) : (
+            <TemplateBoard />
+          )}
+        </Container>
+      </main>
+    </div>
   )
 }
 
 const Container = styled.div`
   width: 100%;
   min-height: 100vh;
-  padding: 30px;
+  padding: 5px;
   display: flex;
   flex-direction: row;
+  align-items: stretch;
   background-color: white;
   color: black;
 `

@@ -4,7 +4,7 @@ import { AuthService } from './auth.service'
 import { SignUpDto, LoginDto } from './dto/auth.dto'
 import { Csrf, Msg } from './interfaces/auth.interface'
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

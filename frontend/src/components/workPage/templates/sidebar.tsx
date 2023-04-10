@@ -1,5 +1,5 @@
-import { useState, Dispatch, SetStateAction } from 'react'
-import styled, { keyframes } from 'styled-components'
+import { useState } from 'react'
+import styled from 'styled-components'
 import { Project, Diagram } from '@/interfaces/dataTypes'
 import Icon from '../atoms/icon'
 import SelectProjects from '../organisms/selectProjects'
@@ -32,56 +32,38 @@ export default function Sidebar({
   }
   return (
     <Container>
-      <Content>
-        {!sideBar ? (
-          <ClosedSideBar>
+      {!sideBar ? (
+        <ClosedSideBar>
+          <button onClick={handleChangeSideBar}>
+            <Icon srcPath='/right-arrow.png' />
+          </button>
+        </ClosedSideBar>
+      ) : (
+        <OpenSideBar>
+          <section>
             <button onClick={handleChangeSideBar}>
-              <Icon srcPath='/right-arrow.png' />
+              <Icon srcPath='/right-arrow.png' degree={180} />
             </button>
-          </ClosedSideBar>
-        ) : (
-          <OpenSideBar>
-            <section>
-              <button onClick={handleChangeSideBar}>
-                <Icon srcPath='/right-arrow.png' degree={180} />
-              </button>
-              <SelectBoards isMyBoard={isMyBoard} handleSelectBoard={handleSelectBoard} />
-            </section>
-            <hr style={{ width: '90%', border: 'solid 2px', color: 'gray' }} />
-            <section>
-              <SelectProjects
-                projects={projects}
-                projectId={projectId}
-                addProject={addProject}
-                handleSelectProject={handleSelectProject}
-              />
-            </section>
-          </OpenSideBar>
-        )}
-      </Content>
+            <SelectBoards isMyBoard={isMyBoard} handleSelectBoard={handleSelectBoard} />
+          </section>
+          <hr style={{ width: '90%', border: 'solid 2px', color: 'gray' }} />
+          <section>
+            <SelectProjects
+              projects={projects}
+              projectId={projectId}
+              addProject={addProject}
+              handleSelectProject={handleSelectProject}
+            />
+          </section>
+        </OpenSideBar>
+      )}
     </Container>
   )
 }
 
-const appearFromRight = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-`
-
 const Container = styled.div`
-  height: 100%;
+  height: 100vh;
   color: black;
-  display: flex;
-`
-
-const Content = styled.div`
-  height: 100%;
   display: flex;
 `
 
@@ -92,9 +74,6 @@ const ClosedSideBar = styled.div`
   border: 3px solid grey;
   border-radius: 5px;
 
-  position: fixed;
-  left: 0;
-  top: 0;
   background: white;
 
   background: white;
@@ -120,16 +99,13 @@ const ClosedSideBar = styled.div`
 `
 
 const OpenSideBar = styled.div`
-  min-width: 60px;
+  min-width: 150px;
   max-width: 300px;
   height: 100%;
   padding: 5px;
   border: 3px solid grey;
   border-radius: 5px;
 
-  position: fixed;
-  left: 0;
-  top: 0;
   background: white;
 
   display: flex-start;
@@ -143,7 +119,7 @@ const OpenSideBar = styled.div`
     flex-direction: column;
     justify-content: start;
 
-    max-width: 240px;
+    min-width: 150px;
 
     background: white;
     border-radius: 0 12px 12px 0;

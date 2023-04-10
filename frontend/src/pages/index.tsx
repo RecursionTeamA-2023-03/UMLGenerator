@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import UmlGenerator from '@/components/common/templates/umlGenerator'
 import Layout from '../components/common/templates/layout'
 import AuthTemplate from '@/components/authPage/templates/authTemplate'
 

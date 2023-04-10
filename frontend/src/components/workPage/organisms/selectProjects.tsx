@@ -2,7 +2,7 @@ import { Project, Diagram } from '@/interfaces/dataTypes'
 import Icon from '../atoms/icon'
 
 type Props = {
-  projects: (Project & { diagrams: Diagram[] })[]
+  projects?: (Project & { diagrams: Diagram[] })[]
   projectId: number | null
   addProject: () => void
   handleSelectProject: (id: number) => void
@@ -23,7 +23,7 @@ export default function SelectProjects({
         </button>
       </div>
 
-      {projects.map((p) => {
+      {projects?.map((p) => {
         return (
           <div key={p.id}>
             <button
