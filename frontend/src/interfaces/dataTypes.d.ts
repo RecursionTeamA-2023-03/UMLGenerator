@@ -1,8 +1,8 @@
 export interface User {
-  id: number;
-  createdAt: Date;
-  name: string;
-  email: string;
+  id: number
+  createdAt: Date
+  name: string
+  email: string
 }
 
 export interface Project {
