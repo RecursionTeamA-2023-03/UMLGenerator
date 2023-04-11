@@ -38,7 +38,11 @@ export function isUser(user: unknown): user is User {
     user !== null &&
     'id' in user &&
     'name' in user &&
+    'createdAt' in user &&
+    'email' in user && 
     typeof user.id === 'number' &&
-    typeof user.name === 'string'
+    typeof user.name === 'string' &&
+    user.createdAt instanceof Date &&
+    typeof user.email === 'string'
   )
 }

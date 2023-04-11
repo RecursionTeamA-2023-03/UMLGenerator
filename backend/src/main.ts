@@ -8,10 +8,6 @@ import * as csurf from 'csurf'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
-  app.enableCors({
-    credentials: true,
-    origin: ['http://localhost:3000', process.env.FRONTEND_URL],
-  })
   app.use(cookieParser())
   app.use(
     csurf({

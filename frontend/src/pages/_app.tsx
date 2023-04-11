@@ -42,10 +42,10 @@ const queryClient = new QueryClient({
 })
 
 export default function App({ Component, pageProps }: AppProps) {
+  axios.defaults.withCredentials = true
   useEffect(() => {
-    axios.defaults.withCredentials = true
     const getCsrfToken = async () => {
-      const { data } = await axios.get(`http://localhost/auth/csrf`)
+      const { data } = await axios.get(`http://${process.env.AWS_IP_ADDRESS || 'localhost'}/api/auth/csrf`)
       axios.defaults.headers.common['csrf-token'] = data.csrfToken
     }
     getCsrfToken()
