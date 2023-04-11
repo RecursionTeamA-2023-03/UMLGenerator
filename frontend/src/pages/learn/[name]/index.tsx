@@ -7,7 +7,6 @@ import { getAllDiagramIds, getDiagramData, getAllDiagramsData, getProblemIds } f
 
 export const getStaticPaths = async () => {
   const paths = getAllDiagramIds()
-  console.log(paths)
   return {
     paths,
     fallback: false,
@@ -28,7 +27,6 @@ export const getStaticProps = async ({ params }: any) => {
 }
 
 export default function LearnContent({ allDiagramData, currDiagramData, problems }: any) {
-  console.log(problems)
   return (
     <LearnTemplate sidebarData={allDiagramData} data={currDiagramData}>
       <Text variant='small' fontColor={theme.colors.black}>

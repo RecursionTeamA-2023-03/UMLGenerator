@@ -27,7 +27,7 @@ import { CreateDiagramDto, UpdateDiagramDto } from '../diagram/dto/diagram.dto'
 import { Project, Diagram } from '@prisma/client'
 
 @UseGuards(AuthGuard('jwt'))
-@Controller('project')
+@Controller('api/project')
 export class ProjectController {
   constructor(
     private readonly projectService: ProjectService,

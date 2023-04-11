@@ -25,7 +25,6 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }: any) => {
   const currDiagramData = getAllDiagramsData().find((v) => v.id === params.name)
   const currProblem = getProblemIds(params.name).find((v) => v.id === params.problem)
-  console.log(currProblem)
   const allData = getAllDiagramsData()
   return {
     props: {

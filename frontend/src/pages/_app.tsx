@@ -27,12 +27,34 @@ export default function App({ Component, pageProps }: AppProps<{ initialSession:
 import { theme } from '@/themes'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'styled-components'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 //import '../styles/global.css'
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+})
+
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    axios.defaults.withCredentials = true
+    const getCsrfToken = async () => {
+      const { data } = await axios.get(`http://localhost/auth/csrf`)
+      axios.defaults.headers.common['csrf-token'] = data.csrfToken
+    }
+    getCsrfToken()
+  }, [])
   return (
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }

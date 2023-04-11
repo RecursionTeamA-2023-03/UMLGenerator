@@ -1,7 +1,6 @@
 export interface User {
   id: number
   name: string
-  projects: Project[]
 }
 
 export interface Project {
@@ -9,7 +8,6 @@ export interface Project {
   name: string
   createdAt: Date
   updatedAt: Date
-  diagrams: Diagram[]
 }
 
 export interface Diagram {
