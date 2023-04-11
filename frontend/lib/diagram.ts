@@ -19,7 +19,7 @@ export const getIntroductionData = async () => {
 }
 
 export const getAllDiagramsData = () => {
-  const directories = ['sequence', 'usecase']
+  const directories = ['sequence', 'usecase', 'activity']
   const allDiagramsData = directories.map((directory) => {
     const fullPath = path.join(diagramDirectory, directory, `${directory}.md`)
     const fileContents = fs.readFileSync(fullPath, 'utf8')
@@ -65,10 +65,13 @@ export const getProblemIds = (id: string) => {
     const fullPath = path.join(currPath, fileName)
     const fileContents = fs.readFileSync(fullPath, 'utf8')
     const matterResult = matter(fileContents)
+    const problemContent = matterResult.content
+    const problemHTML = remark().use(html).processSync(problemContent).toString()
 
     return {
       id,
-      content: matterResult.content,
+      content: problemContent,
+      htmlContent: problemHTML,
       ...matterResult.data,
     }
   })

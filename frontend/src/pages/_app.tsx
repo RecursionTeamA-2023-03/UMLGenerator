@@ -45,7 +45,7 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     axios.defaults.withCredentials = true
     const getCsrfToken = async () => {
-      const { data } = await axios.get(`http://localhost/auth/csrf`)
+      const { data } = await axios.get(`http://localhost/api/auth/csrf`)
       axios.defaults.headers.common['csrf-token'] = data.csrfToken
     }
     getCsrfToken()

@@ -19,7 +19,7 @@ const SignUpForm = () => {
     event.preventDefault()
     try {
       await axios.post(
-        `http://localhost/auth/signup`,
+        `http://localhost/api/auth/signup`,
         {
           name: username,
           email: email,
@@ -29,7 +29,7 @@ const SignUpForm = () => {
           headers: { 'csrf-token': axios.defaults.headers.common['csrf-token'] },
         },
       )
-      await axios.post(`http://localhost/auth/login`, {
+      await axios.post(`http://localhost/api/auth/login`, {
         email: email,
         password: password,
       })

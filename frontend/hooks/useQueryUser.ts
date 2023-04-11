@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 export const useQueryUser = () => {
   const router = useRouter()
   const getUser = async () => {
-    const { data } = await axios.get(`http://localhost/user`)
+    const { data } = await axios.get(`http://localhost/api/user`)
     return data
   }
   return useQuery({

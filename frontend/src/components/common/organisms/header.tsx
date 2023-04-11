@@ -39,7 +39,7 @@ const Header = () => {
   const handleLogout = async () => {
     setIsLoggedIn(false)
     queryClient.removeQueries(['user'])
-    await axios.post(`http://localhost/auth/logout`)
+    await axios.post(`http://localhost/api/auth/logout`)
     router.push('/signIn')
   }
   return (
