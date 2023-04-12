@@ -23,7 +23,6 @@
     "axios": "^1.3.4",
     "eslint": "^8.37.0",
     "fs": "^0.0.1-security",
-    "gray-matter": "^4.0.3",
     "js-cookie": "^3.0.1",
     "next": "13.2.4",
     "node-plantuml-back": "^1.1.2",
@@ -32,6 +31,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "remark": "^14.0.2",
+    "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.2",
     "styled-components": "^5.3.9",
     "swr": "^2.1.0"
