@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import DiagramsInProject from '../organisms/diagramsInProject'
 
 type Props = {
-  project: Project & { diagrams: Diagram[] }
+  project?: Project & { diagrams: Diagram[] }
   editProjectName: (id: number, name: string) => void
   handleSelectDiagram: (dId: number, pId?: number) => void
   addDiagram: (projectId: number) => void
@@ -19,7 +19,8 @@ export default function ProjectBoard({
 }: Props) {
   return (
     <Container>
-      <DiagramsInProject
+      {!project? <></> : <>
+        <DiagramsInProject
         projectName={project.name}
         projectId={project.id}
         diagrams={project.diagrams}
@@ -35,6 +36,7 @@ export default function ProjectBoard({
         }
       </div>
       <DeleteButton onClick={() => deleteProject(project.id)}>このプロジェクトを削除</DeleteButton>
+      </>}
     </Container>
   )
 }

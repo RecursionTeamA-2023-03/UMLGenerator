@@ -18,7 +18,7 @@ services:
   app:
     build:
       context: ./backend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.dev # change file if production env
     container_name: nest-server
     expose:
       - 3000
@@ -43,17 +43,19 @@ services:
   nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev # change file if production env
     container_name: nginx
     depends_on:
       - app
     environment:
-      NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
+      NGINX_SERVER_NAME: localhost # change ${NGINX_SERVER_NAME} if production env
       NEST_HOST: nest-server
       NEST_PORT: 3000
       PLANTUML_HOST: plantuml-server
       PLANTUML_PORT: 8080
       NGINX_MAX_BODY: ${NGINX_MAX_BODY}
       NGINX_PORT: ${NGINX_PORT}
+      NGINX_SSL_PORT: ${NGINX_SSL_PORT}
     ports:
       - ${NGINX_PORT}:${NGINX_PORT}
+      - ${NGINX_SSL_PORT}:${NGINX_SSL_PORT}

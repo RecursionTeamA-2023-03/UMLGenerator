@@ -6,7 +6,7 @@ import SelectProjects from '../organisms/selectProjects'
 import SelectBoards from '../organisms/selectBoards'
 
 type Props = {
-  projects: (Project & { diagrams: Diagram[] })[]
+  projects?: (Project & { diagrams: Diagram[] })[]
   isMyBoard: boolean
   handleSelectBoard: (b: boolean) => void
   projectId: number | null

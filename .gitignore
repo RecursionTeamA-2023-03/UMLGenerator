@@ -42,3 +42,6 @@ db/data
 
 # vscode
 .vscode
+
+# cert-key for nginx
+nginx/cert-key/
