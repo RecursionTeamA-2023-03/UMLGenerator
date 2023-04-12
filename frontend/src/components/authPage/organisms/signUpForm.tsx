@@ -19,14 +19,14 @@ const SignUpForm = () => {
     event.preventDefault()
     try {
       await axios.post(
-        `http://${process.env.AWS_IP_ADDRESS || 'localhost'}/api/auth/signup`,
+        `https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/signup`,
         {
           name: username,
           email: email,
           password: password,
         },
       )
-      await axios.post(`http://${process.env.AWS_IP_ADDRESS || 'localhost'}/api/auth/login`, {
+      await axios.post(`https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/login`, {
         email: email,
         password: password,
       })

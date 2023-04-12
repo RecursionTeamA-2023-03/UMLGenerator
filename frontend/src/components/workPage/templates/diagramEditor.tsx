@@ -7,7 +7,7 @@ import Icon from '../atoms/icon'
 
 type Props = {
   projectId: number
-  diagram: Diagram
+  diagram?: Diagram
   editDiagramName: (projectId: number, diagramId: number, name: string) => void
   editDiagramContent: (projectId: number, diagramId: number, content: string) => void
   deleteDiagram: (projectId: number, diagramId: number) => void
@@ -20,9 +20,11 @@ export default function DiagramEditor({
   editDiagramContent,
   deleteDiagram,
 }: Props) {
-  const [content, setContent] = useState(diagram.content ?? '')
+  const [content, setContent] = useState(diagram?.content ?? '')
   const [nameEdit, setNameEdit] = useState(false)
-  const [name, setName] = useState(diagram.name)
+  const [name, setName] = useState(diagram?.name ?? '')
+
+  if(!diagram) return <></>
 
   return (
     <Container>

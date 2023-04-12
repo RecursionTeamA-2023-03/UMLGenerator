@@ -2,20 +2,26 @@ import { Project, Diagram } from '@/interfaces/dataTypes'
 import styled from 'styled-components'
 import Icon from '../atoms/icon'
 import RectButton from '../atoms/rectButton'
+import { useEffect, useState } from 'react'
 
 type Props = {
   projects?: (Project & { diagrams: Diagram[] })[]
   handleSelectDiagram: (dId: number, pId?: number | undefined) => void
 }
 
-export default function currentDiagrams({ projects, handleSelectDiagram }: Props) {
-  let diagramArray: (Diagram & { projectId: number; projectName: string })[] = []
-  projects?.forEach((p) =>
-    p.diagrams.forEach((d) => diagramArray.push({ ...d, projectId: p.id, projectName: p.name })),
-  )
-  diagramArray = diagramArray
-    .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
-    .slice(0, 3)
+export default function CurrentDiagrams({ projects, handleSelectDiagram }: Props) {
+  const [ diagramArray, setDiagramArray ] = useState<(Diagram & { projectId: number; projectName: string })[]>([])
+  useEffect(()=>{
+    let arr: (Diagram & { projectId: number; projectName: string })[] = []
+    projects?.forEach((p) => {
+      const dArr:(Diagram & { projectId: number; projectName: string })[] = p.diagrams.map(d => {
+        return { ...d, projectId: p.id, projectName: p.name }
+      })
+      arr = [...arr, ...dArr]
+      arr = arr.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()).slice(0, 3)
+    })
+    setDiagramArray(arr)
+  },[projects])
 
   return (
     <>
