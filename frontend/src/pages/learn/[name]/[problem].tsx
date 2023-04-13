@@ -3,34 +3,33 @@ import LearnTemplate from '../../../components/learnPage/templates/learnTemplate
 import { theme } from '../../../themes'
 import React, { useState } from 'react'
 import MonacoEditor from '@/components/common/atoms/editor'
-import { getAllDiagramsData, getProblemIds } from 'lib/diagram'
+import { getDiagramDataList, getProblemDataList } from 'lib/diagram'
 import UmlPic from '@/components/common/organisms/umlPic'
 import { display } from '@mui/system'
 import styled from 'styled-components'
 import withIconStyle from '@/components/common/atoms/icon'
 import { ArrowDropDown } from '@mui/icons-material'
+import { MDXRemote } from 'next-mdx-remote'
 
 export const getStaticPaths = async () => {
-  const paths = getAllDiagramsData()
-    .map((diagram) => {
-      const problemPath = getProblemIds(diagram.id).map((i: any) => {
-        return {
-          params: {
-            name: diagram.id,
-            problem: i.id,
-          },
-        }
-      })
-      return problemPath.flat()
-    })
-    .flat()
-  return { paths, fallback: false }
+  const diagrams = await getDiagramDataList()
+  const paths = await Promise.all(
+    diagrams.map(async (diagram) => {
+      const problems = await getProblemDataList(diagram.id)
+      return problems.map((problem) => ({
+        params: { name: diagram.id, problem: problem.id },
+      }))
+    }),
+  )
+  return { paths: paths.flat(), fallback: false }
 }
 
 export const getStaticProps = async ({ params }: any) => {
-  const currDiagramData = getAllDiagramsData().find((v) => v.id === params.name)
-  const currProblem = getProblemIds(params.name).find((v) => v.id === params.problem)
-  const allData = getAllDiagramsData()
+  const currDiagramData = (await getDiagramDataList()).find((v) => v.id === params.name)
+  const currProblem = (await getProblemDataList(params.name)).find(
+    (v: any) => v.id === params.problem,
+  )
+  const allData = await getDiagramDataList()
   return {
     props: {
       currDiagramData,
@@ -41,8 +40,8 @@ export const getStaticProps = async ({ params }: any) => {
 }
 
 export default function Problem({ currProblem, allData }: any) {
+  console.log(currProblem)
   const [umlText, setUmlText] = useState('')
-  const [showAnswer, setShowAnswer] = useState(false)
   const Wrapper = styled.div`
     width: 50%;
   `
@@ -64,22 +63,14 @@ export default function Problem({ currProblem, allData }: any) {
     <LearnTemplate sidebarData={allData} data={currProblem} problemNo={currProblem.title}>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <Wrapper>
-          <Text variant='small' fontColor={theme.colors.black}>
-            <div dangerouslySetInnerHTML={{ __html: currProblem.htmlContent }} />
-          </Text>
+          <MDXRemote {...currProblem.mdxSource} />
           <AnswerWrapper>
             <Text variant='medium' fontColor={theme.colors.black}>
-              正解結果
+              解答例
             </Text>
-            {showAnswer ? (
-              <AnswerPicWrapper>
-                <UmlPic umlText={currProblem.ans} />
-              </AnswerPicWrapper>
-            ) : (
-              <AnswerPicWrapper onClick={() => setShowAnswer(true)}>
-                <img alt='答えを見る' />
-              </AnswerPicWrapper>
-            )}
+            <AnswerPicWrapper>
+              <UmlPic umlText={currProblem.ans} />
+            </AnswerPicWrapper>
           </AnswerWrapper>
         </Wrapper>
         <div

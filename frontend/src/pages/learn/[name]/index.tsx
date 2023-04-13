@@ -3,10 +3,15 @@ import LearnTemplate from '../../../components/learnPage/templates/learnTemplate
 import { theme } from '../../../themes'
 import React from 'react'
 import Link from 'next/link'
-import { getAllDiagramIds, getDiagramData, getAllDiagramsData, getProblemIds } from 'lib/diagram'
+import {
+  getAllDiagramNames,
+  getDiagramData,
+  getDiagramDataList,
+  getProblemDataList,
+} from 'lib/diagram'
 
 export const getStaticPaths = async () => {
-  const paths = getAllDiagramIds()
+  const paths = await getAllDiagramNames()
   return {
     paths,
     fallback: false,
@@ -14,9 +19,9 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params }: any) => {
-  const allDiagramData = getAllDiagramsData()
+  const allDiagramData = await getDiagramDataList()
   const currDiagramData = await getDiagramData(params.name)
-  const problems = getProblemIds(params.name)
+  const problems = await getProblemDataList(params.name)
   return {
     props: {
       allDiagramData,
