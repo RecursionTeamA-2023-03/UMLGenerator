@@ -19,7 +19,7 @@ export const getIntroductionData = async () => {
 }
 
 export const getAllDiagramsData = () => {
-  const directories = ['sequence', 'usecase', 'activity']
+  const directories = ['sequence', 'usecase', 'activity', 'state', 'gantt']
   const allDiagramsData = directories.map((directory) => {
     const fullPath = path.join(diagramDirectory, directory, `${directory}.md`)
     const fileContents = fs.readFileSync(fullPath, 'utf8')

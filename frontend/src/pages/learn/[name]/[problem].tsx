@@ -60,9 +60,8 @@ export default function Problem({ currProblem, allData }: any) {
     width: 60%;
   `
   const DownIcon = withIconStyle(ArrowDropDown)
-
   return (
-    <LearnTemplate sidebarData={allData} data={currProblem} problemNo={currProblem.id}>
+    <LearnTemplate sidebarData={allData} data={currProblem} problemNo={currProblem.title}>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <Wrapper>
           <Text variant='small' fontColor={theme.colors.black}>

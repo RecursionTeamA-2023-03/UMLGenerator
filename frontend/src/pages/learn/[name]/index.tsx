@@ -33,11 +33,13 @@ export default function LearnContent({ allDiagramData, currDiagramData, problems
         <div dangerouslySetInnerHTML={{ __html: currDiagramData.diagramContentHTML }} />
       </Text>
       <br />
-      <Text fontColor={theme.colors.black}>ここは練習問題です↓</Text>
+      <Text variant='medium' fontColor={theme.colors.black}>
+        練習問題に取り組みましょう
+      </Text>
       {problems.map((id: any) => {
         return (
-          <Text as='p' key={id.id} fontColor={theme.colors.black}>
-            <Link href={`/learn/${currDiagramData.id}/${id.id}`}>{id.id}</Link>
+          <Text as='p' variant='medium' key={id.id} fontColor={theme.colors.black}>
+            <Link href={`/learn/${currDiagramData.id}/${id.id}`}>{id.title}</Link>
           </Text>
         )
       })}
