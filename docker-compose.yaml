@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15.2-alpine
+    container_name: db
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: "Asia/Tokyo"
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev # change file if production env
+    container_name: nest-server
+    expose:
+      - 3000
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/test:/app/test
+      - ./backend/prisma:/app/prisma
+  servlet:
+    image: plantuml/plantuml-server:jetty
+    container_name: plantuml-server
+    expose:
+      - 8080
+    environment:
+      - BASE_URL=plantuml
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev # change file if production env
+    container_name: nginx
+    depends_on:
+      - app
+    environment:
+      NGINX_SERVER_NAME: localhost # change ${NGINX_SERVER_NAME} if production env
+      NEST_HOST: nest-server
+      NEST_PORT: 3000
+      PLANTUML_HOST: plantuml-server
+      PLANTUML_PORT: 8080
+      NGINX_MAX_BODY: ${NGINX_MAX_BODY}
+      NGINX_PORT: ${NGINX_PORT}
+      NGINX_SSL_PORT: ${NGINX_SSL_PORT}
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+      - ${NGINX_SSL_PORT}:${NGINX_SSL_PORT}

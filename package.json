@@ -2,39 +2,27 @@
   "name": "udg",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint --dir src",
-    "format": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .gitignore . && prettier \"**/*.{js,jsx,ts,tsx}\" --write",
-    "prepare": "husky install",
-    "lint-staged": "lint-staged"
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json}": [
-      "npm run format"
-    ]
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "format": "npm run format --workspaces"
   },
   "dependencies": {
-    "@prisma/client": "^4.11.0",
-    "@types/node": "18.15.3",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
-    "eslint": "8.36.0",
-    "eslint-config-next": "13.2.4",
-    "next": "13.2.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "styled-components": "^5.3.9",
-    "swr": "^2.1.0",
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "eslint": "8.36.0",
+    "eslint-config-next": "13.2.4",
     "eslint-config-prettier": "^8.7.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.0",
     "prettier": "^2.8.4",
-    "prisma": "^4.11.0"
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint-plugin-prettier": "^4.0.0"
   }
 }

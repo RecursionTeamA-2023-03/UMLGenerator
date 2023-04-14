@@ -1,0 +1,11 @@
+{
+  "extends": ["../.eslintrc.json", "next"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "settings": {
+    "next": {
+      "rootDir": "./"
+    }
+  }
+}
