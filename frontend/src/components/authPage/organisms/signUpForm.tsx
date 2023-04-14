@@ -19,17 +19,14 @@ const SignUpForm = () => {
     event.preventDefault()
     try {
       await axios.post(
-        `http://localhost/api/auth/signup`,
+        `https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/signup`,
         {
           name: username,
           email: email,
           password: password,
         },
-        {
-          headers: { 'csrf-token': axios.defaults.headers.common['csrf-token'] },
-        },
       )
-      await axios.post(`http://localhost/api/auth/login`, {
+      await axios.post(`https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/login`, {
         email: email,
         password: password,
       })

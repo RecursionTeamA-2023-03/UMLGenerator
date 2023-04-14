@@ -21,7 +21,7 @@ const SignInForm = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     try {
-      await axios.post(`http://localhost/api/auth/login`, {
+      await axios.post(`https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/login`, {
         email: email,
         password: password,
       })

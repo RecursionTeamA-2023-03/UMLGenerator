@@ -9,24 +9,24 @@ import DiagramEditor from '@/components/workPage/templates/diagramEditor'
 import MyBoard from '@/components/workPage/templates/myBoard'
 import ProjectBoard from '@/components/workPage/templates/projectBoard'
 import TemplateBoard from '@/components/workPage/templates/templateBoard'
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 
 type Data = (Project & { diagrams: Diagram[]})[] | []
 
-const fetcher: Fetcher<Data, string> = async (url:string) => {
-  const res = await fetch(url)
- 
-  // もしステータスコードが 200-299 の範囲内では無い場合、
-  // レスポンスをパースして投げようとします。
-  if (!res.ok) {
-    const error = new Error(`An error occurred while fetching the data.\nStatus: ${res.status}\n${await res.json()}`)
-    throw error
-  }
-  return res.json()
+const axiosConfig: AxiosRequestConfig = {
+  transformResponse: (data) => JSON.parse(data, (key, val)=>{
+    if(key==="createdAt"||key==="updatedAt") return new Date(val)
+    else return val
+  })
 }
-const api_url = process.env.AWS_IP_ADDRESS || 'localhost'
+
+const fetcher: Fetcher<Data, string> = async (url:string) => {
+  return await axios.get(url, axiosConfig).then(res=>res.data)
+}
+const api_url = process.env.AWS_IP_ADDRESS || 'localhost:443'
 
 export default function Work() {
-  const { data, error, isLoading, mutate } = useSWR(`http://${api_url}/api/project`, fetcher)
+  const { data, error, isLoading, mutate } = useSWR(`https://${api_url}/api/project`, fetcher)
   
   const [isMyBoard, setIsMyBoard] = useState<boolean>(true)
   const [projectId, setProjectId] = useState<number | null>(null)
@@ -60,15 +60,17 @@ export default function Work() {
 
     if(!data || !nextProjectName) return
     
-    const response = await fetch(`http://${api_url}/api/project`, {
-      method: 'POST',
-      body: JSON.stringify({name: nextProjectName})
-    }).then((res) => res.json())
-
-    if(response.error || !isProject(response)) return
-    const newProject = {...response, diagrams: []}
-    
-    mutate([ ...data, newProject ])
+    await axios.post(`https://${api_url}/api/project`, 
+      {
+        name: nextProjectName,
+      },
+      axiosConfig
+    ).then((res: AxiosResponse<Project>) => {
+      const newProject = {...res.data, diagrams: []}
+      mutate([ ...data, newProject ])
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 
   const getUniqueProjectName = (name = 'Project_1') => {
@@ -96,17 +98,16 @@ export default function Work() {
 
     if(!data || !nextProjectName) return
 
-    const response = await fetch(`http://${api_url}/api/project/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({name: nextProjectName})
-    }).then((res) => res.json())
-
-    if(response.error || !isProject(response)) return
-    
-    mutate(data.map(p=>{
+    await axios.patch(`https://${api_url}/api/project/${id}`, 
+      {
+        name: nextProjectName
+      },
+      axiosConfig
+    ).then((res: AxiosResponse<Project>) => mutate(data.map(p=>{
       if(p.id !== id) return p
-      else return { ...response, diagrams: p.diagrams }
-    }))
+      else return { ...res.data, diagrams: p.diagrams }
+    }))).catch(e=>console.log(e))
+    
   }
 
   const handleDeleteProject = async (id: number) => {
@@ -115,15 +116,12 @@ export default function Work() {
 
     if(!data) return
 
-    const response = await fetch(`http://${api_url}/api/project/${id}`, {
-      method: 'DELETE',
-    }).then(res => res.json())
-
-    if(response.error) return
-    
-    mutate(data.filter(p=> p.id !== id))
-  
-    handleRefreshPage()
+    await axios.delete(`https://${api_url}/api/project/${id}`)
+    .then(() => {
+      handleRefreshPage()
+      mutate(data.filter(p=> p.id !== id))}
+    )
+    .catch(e=>console.log(e))
   }
 
   const handleAddDiagram = async (id: number) => {
@@ -134,17 +132,15 @@ export default function Work() {
 
     if(!data || !nextDiagramName) return
 
-    const response = await fetch(`http://${api_url}/api/project/${id}/diagram`, {
-      method: 'POST',
-      body: JSON.stringify({name: nextDiagramName})
-    }).then((res) => res.json())
-
-    if(response.error || !isDiagram(response)) return
-    
-    mutate(data.map(p=>{
+    await axios.post(`https://${api_url}/api/project/${id}/diagram`,
+      {
+        name: nextDiagramName
+      },
+      axiosConfig
+    ).then((res: AxiosResponse<Diagram>) => mutate(data.map(p=>{
       if(p.id !== id) return p
-      else return {...p, diagrams: [...p.diagrams, response]}
-    }))
+      else return {...p, diagrams: [...p.diagrams, res.data]}
+    }))).catch(e=>console.log(e))
   }
 
   const getUniqueDiagramName = (projectId: number, name = 'Diagram_1') => {
@@ -174,20 +170,18 @@ export default function Work() {
 
     if(!data || !nextDiagramName) return
 
-    const response = await fetch(`http://${api_url}/api/project/${pId}/diagram/${dId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({name: nextDiagramName})
-    }).then((res) => res.json())
-
-    if(response.error || !isDiagram(response)) return
-    
-    mutate(data.map(p=>{
+    await axios.patch(`https://${api_url}/api/project/${pId}/diagram/${dId}`,
+      {
+        name: nextDiagramName
+      },
+      axiosConfig
+    ).then((res: AxiosResponse<Diagram>) => mutate(data.map(p=>{
       if(p.id !== pId) return p
       else return {...p, diagrams: p.diagrams.map(d=>{
         if(d.id !== dId) return d
-        else return response
+        else return res.data
       })}
-    }))
+    }))).catch(e=>console.log(e))
   }
 
   const handleEditDiagramContent = async (pId: number, dId: number, content: string) => {
@@ -195,20 +189,18 @@ export default function Work() {
     // if response is error then return
     if(!data) return
 
-    const response = await fetch(`http://${api_url}/api/project/${pId}/diagram/${dId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({content: content})
-    }).then((res) => res.json())
-
-    if(response.error || !isDiagram(response)) return
-    
-    mutate(data.map(p=>{
+    await axios.patch(`https://${api_url}/api/project/${pId}/diagram/${dId}`,
+      {
+        content: content
+      },
+      axiosConfig
+    ).then((res: AxiosResponse<Diagram>) => mutate(data.map(p=>{
       if(p.id !== pId) return p
       else return {...p, diagrams: p.diagrams.map(d=>{
         if(d.id !== dId) return d
-        else return response
+        else return res.data
       })}
-    }))
+    }))).catch(e=>console.log(e))
   }
 
   const handleDeleteDiagram = async (pId: number, dId: number) => {
@@ -216,18 +208,14 @@ export default function Work() {
     // if response is error then return
     if(!data) return
 
-    const response = await fetch(`http://${api_url}/api/project/${pId}/diagram/${dId}`, {
-      method: 'DELETE',
-    }).then(res => res.json())
-
-    if(response.error) return
-    
-    mutate(data.map(p=>{
-      if(p.id!==pId) return p
-      else return {...p, diagrams: p.diagrams.filter(d=>d.id!==dId)}
-    }))
-
-    setDiagramId(null)
+    await axios.delete(`https://${api_url}/api/project/${pId}/diagram/${dId}`)
+    .then(() => {
+      setDiagramId(null)
+      mutate(data.map(p=>{
+        if(p.id!==pId) return p
+        else return {...p, diagrams: p.diagrams.filter(d=>d.id!==dId)}
+      }))
+    }).catch(e=>console.log(e))
   }
 
   if (error) return (
@@ -238,7 +226,7 @@ export default function Work() {
       </main>
     </div>
   )
-  if (!data || isLoading) return (
+  if (isLoading) return (
     <div>
       <Header />
       <main>
@@ -268,8 +256,8 @@ export default function Work() {
                 <DiagramEditor
                   projectId={projectId}
                   diagram={
-                    data.find((p) => p.id === projectId)
-                      ?.diagrams.find((d) => d.id === diagramId) as Diagram
+                    data?.find((p) => p.id === projectId)
+                      ?.diagrams?.find((d) => d.id === diagramId) as Diagram
                   }
                   editDiagramName={handleEditDiagramName}
                   editDiagramContent={handleEditDiagramContent}
@@ -278,7 +266,7 @@ export default function Work() {
               ) : (
                 <ProjectBoard
                   project={
-                    data.find((p) => p.id === projectId) as Project & {
+                    data?.find((p) => p.id === projectId) as Project & {
                       diagrams: Diagram[]
                     }
                   }

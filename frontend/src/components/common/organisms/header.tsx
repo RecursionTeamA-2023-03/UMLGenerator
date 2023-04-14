@@ -42,7 +42,7 @@ const Header = () => {
   const handleLogout = async () => {
     setIsLoggedIn(false)
     queryClient.removeQueries(['user'])
-    await axios.post(`http://localhost/api/auth/logout`)
+    await axios.post(`https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/logout`)
     router.push('/signIn')
   }
   return (

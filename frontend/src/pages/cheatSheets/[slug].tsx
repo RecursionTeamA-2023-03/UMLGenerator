@@ -1,5 +1,4 @@
 import { NextPage, InferGetStaticPropsType } from "next";
-import { useRouter } from "next/router";
 import { getAllPosts, getPostBySlug } from "../api/cheatSheets/getMdFiles";
 import markdownToHtml from "../api/cheatSheets/markdownToHtml";
 import styled from 'styled-components'
@@ -38,7 +37,11 @@ export const getStaticProps = async ({ params }: any) => {
   const post = getPostBySlug(params.slug, ["slug", "title", "date", "content"]);
   const posts = getAllPosts(["slug"]);
   // Markdown を HTML に変換する
-  const content = await markdownToHtml(post.content);
+  const tmpContent = await markdownToHtml(post.content);
+  
+  // 枠線と改行を追記する
+  const addCustomReplaces = tmpContent.replace(/<table>/g, '<table border="1">').replace(/-br-/g, '<br>');
+  const content = addCustomReplaces;
 
   // content を詰め直して返す
   return {
