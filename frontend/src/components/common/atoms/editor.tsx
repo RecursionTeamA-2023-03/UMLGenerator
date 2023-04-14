@@ -3,8 +3,9 @@ import Editor, { BeforeMount } from '@monaco-editor/react'
 import { plantumlConstants, plantumlKeywords, plantumlRoot, plantumlThemes } from '@/editor'
 
 interface EditorProps {
-  heigth?: string
+  height?: string
   width?: string
+  placeholder?: string
   onChange: (value: string) => void
 }
 
@@ -71,11 +72,12 @@ const MonacoEditor = (props: EditorProps) => {
   return (
     <Editor
       width={props.width}
-      height={props.heigth}
+      height={props.height}
       language='plantuml'
       theme='plantuml'
       beforeMount={handleBeforeMount}
       onChange={handleChange}
+      value={props.placeholder}
     />
   )
 }

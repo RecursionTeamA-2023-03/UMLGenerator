@@ -40,7 +40,6 @@ export const getStaticProps = async ({ params }: any) => {
 }
 
 export default function Problem({ currProblem, allData }: any) {
-  console.log(currProblem)
   const [umlText, setUmlText] = useState('')
   const Wrapper = styled.div`
     width: 50%;
