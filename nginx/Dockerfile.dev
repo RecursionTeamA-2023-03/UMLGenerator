@@ -7,7 +7,7 @@ RUN set -ex && \
 	chmod +x /entrypoint-nginx.sh
 
 COPY ./vhost.template /etc/nginx/conf.d/vhost.template
-ADD ./cert-key/localhost.pem /etc/certs/localhost.pem
-ADD ./cert-key/localhost-key.pem /etc/certs/localhost-key.pem
+COPY ./cert-key/localhost.pem /etc/certs/localhost.pem
+COPY ./cert-key/localhost-key.pem /etc/certs/localhost-key.pem
 
 CMD ["/entrypoint-nginx.sh"]

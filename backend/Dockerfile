@@ -34,4 +34,4 @@ COPY --chown=node:node . .
 RUN set -x
 
 # run app
-CMD [ "npx", "prisma", "migrate", "deploy", "&&", "npx", "prisma", "generate", "&&", "npm", "run", "build", "&&", "node", "dist/main.js" ]
+CMD [ "sh", "-c", "npx prisma migrate deploy && npx prisma generate && npm run build && node dist/main.js" ]
