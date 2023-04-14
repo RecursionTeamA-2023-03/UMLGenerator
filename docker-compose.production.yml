@@ -66,5 +66,4 @@ services:
     image: certbot/certbot:v1.7.0
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
-      - /var/www/html:/var/www/html
     command: ["--version"]

@@ -8,5 +8,6 @@ RUN set -ex && \
 
 COPY ./vhost.production.template /etc/nginx/conf.d/vhost.template
 COPY /etc/letsencrypt /etc/letsencrypt
+COPY /var/www/html /var/www/html
 
 CMD ["/entrypoint-nginx.sh"]
