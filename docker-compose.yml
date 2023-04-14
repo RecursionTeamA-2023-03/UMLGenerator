@@ -53,9 +53,9 @@ services:
       NEST_PORT: 3000
       PLANTUML_HOST: plantuml-server
       PLANTUML_PORT: 8080
-      NGINX_MAX_BODY: ${NGINX_MAX_BODY}
-      NGINX_PORT: ${NGINX_PORT}
-      NGINX_SSL_PORT: ${NGINX_SSL_PORT}
+      NGINX_MAX_BODY: 100M
+      NGINX_PORT: 80
+      NGINX_SSL_PORT: 443
     ports:
-      - ${NGINX_PORT}:${NGINX_PORT}
-      - ${NGINX_SSL_PORT}:${NGINX_SSL_PORT}
+      - 80:80
+      - 443:443
