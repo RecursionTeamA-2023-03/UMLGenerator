@@ -23,10 +23,11 @@ const axiosConfig: AxiosRequestConfig = {
 const fetcher: Fetcher<Data, string> = async (url:string) => {
   return await axios.get(url, axiosConfig).then(res=>res.data)
 }
-const api_url = process.env.AWS_IP_ADDRESS || 'localhost:443'
+
+const api_url = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
 
 export default function Work() {
-  const { data, error, isLoading, mutate } = useSWR(`https://${api_url}/api/project`, fetcher)
+  const { data, error, isLoading, mutate } = useSWR(`${api_url}/project`, fetcher)
   
   const [isMyBoard, setIsMyBoard] = useState<boolean>(true)
   const [projectId, setProjectId] = useState<number | null>(null)
@@ -60,7 +61,7 @@ export default function Work() {
 
     if(!data || !nextProjectName) return
     
-    await axios.post(`https://${api_url}/api/project`, 
+    await axios.post(`${api_url}/project`, 
       {
         name: nextProjectName,
       },
@@ -98,7 +99,7 @@ export default function Work() {
 
     if(!data || !nextProjectName) return
 
-    await axios.patch(`https://${api_url}/api/project/${id}`, 
+    await axios.patch(`${api_url}/project/${id}`, 
       {
         name: nextProjectName
       },
@@ -116,7 +117,7 @@ export default function Work() {
 
     if(!data) return
 
-    await axios.delete(`https://${api_url}/api/project/${id}`)
+    await axios.delete(`${api_url}/project/${id}`)
     .then(() => {
       handleRefreshPage()
       mutate(data.filter(p=> p.id !== id))}
@@ -132,7 +133,7 @@ export default function Work() {
 
     if(!data || !nextDiagramName) return
 
-    await axios.post(`https://${api_url}/api/project/${id}/diagram`,
+    await axios.post(`${api_url}/project/${id}/diagram`,
       {
         name: nextDiagramName
       },
@@ -170,7 +171,7 @@ export default function Work() {
 
     if(!data || !nextDiagramName) return
 
-    await axios.patch(`https://${api_url}/api/project/${pId}/diagram/${dId}`,
+    await axios.patch(`${api_url}/project/${pId}/diagram/${dId}`,
       {
         name: nextDiagramName
       },
@@ -189,7 +190,7 @@ export default function Work() {
     // if response is error then return
     if(!data) return
 
-    await axios.patch(`https://${api_url}/api/project/${pId}/diagram/${dId}`,
+    await axios.patch(`${api_url}/project/${pId}/diagram/${dId}`,
       {
         content: content
       },
@@ -208,7 +209,7 @@ export default function Work() {
     // if response is error then return
     if(!data) return
 
-    await axios.delete(`https://${api_url}/api/project/${pId}/diagram/${dId}`)
+    await axios.delete(`${api_url}/project/${pId}/diagram/${dId}`)
     .then(() => {
       setDiagramId(null)
       mutate(data.map(p=>{
