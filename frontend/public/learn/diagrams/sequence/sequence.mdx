@@ -50,12 +50,9 @@ PlantUML でシーケン図を書く際、オブジェクト間のやり取り�
 
 <EditorPreview
   placeholder="
-  /'
-  ユーザー認証には
-  User(Actor)
-  Participant(Frontend, Backend, Database)
-  があります。
-  '/
+  'ユーザー認証には
+  'User(Actor)
+  'Participant(Frontend, Backend, Database)があります。
   '下に実際に書いてみましょう。
   "
 />
@@ -73,22 +70,20 @@ PlantUML でシーケン図を書く際、オブジェクト間のやり取り�
 
 <EditorPreview
   placeholder="
-  /'
-  @startuml
-  actor User
-  participant Frontend
-  participant Backend
-  participant Database
+  '@startuml
+  'actor User
+  'participant Frontend
+  'participant Backend
+  'participant Database
 
-User -> Frontend : ユーザー登録画面を表示
-Frontend -> Backend : CSRF トークンのリクエストを送信
-Backend -> Frontend : CSRF トークンを発行
-Frontend -> Backend : ユーザー登録リクエストを送信
-Backend -> Database : ユーザー情報をデータベースに保存
-Database -> Backend : 保存が完了したことを通知
-Frontend -> User : ユーザー登録成功
-@enduml
-'/
+'User -> Frontend : ユーザー登録画面を表示
+'Frontend -> Backend : CSRF トークンのリクエストを送信
+'Backend -> Frontend : CSRF トークンを発行
+'Frontend -> Backend : ユーザー登録リクエストを送信
+'Backend -> Database : ユーザー情報をデータベースに保存
+'Database -> Backend : 保存が完了したことを通知
+'Frontend -> User : ユーザー登録成功
+'@enduml
 '下に実際に書いてみましょう。
 "
 />

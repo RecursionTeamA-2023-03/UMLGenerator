@@ -63,10 +63,10 @@ const MonacoEditor = (props: EditorProps) => {
     })
 
     monaco.editor.defineTheme('plantuml', {
-      base: 'vs',
+      base: 'vs-dark',
       inherit: true,
       rules: rules,
-      colors: {},
+      colors: { 'editor.foreground': '#F8F8F8' },
     })
   }
   return (
