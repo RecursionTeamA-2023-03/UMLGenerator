@@ -43,8 +43,8 @@ export const getStaticProps = async ({ params }: any) => {
   // Markdown を HTML に変換する
   const tmpContent = await markdownToHtml(post.content);
   
-  // 枠線と改行を追記する
-  const addCustomReplaces = tmpContent.replace(/<table>/g, '<table border="1">').replace(/-br-/g, '<br>');
+  // htmlの部分的置き換え(枠線,改行,目次リンク)
+  const addCustomReplaces = tmpContent.replace(/<table>/g, '<table border="1">').replace(/-br-/g, '<br>').replace(/user-content-/g, '');
   const content = addCustomReplaces;
 
   // content を詰め直して返す
