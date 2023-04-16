@@ -3,7 +3,6 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { Project, Diagram } from '@/interfaces/dataTypes'
 import styled from 'styled-components'
 import { useState, Dispatch, SetStateAction, useEffect } from 'react'
-import UmlEditor from '@/components/common/organisms/umlEditor'
 import UmlPic from '@/components/common/organisms/umlPic'
 import {
   Box,

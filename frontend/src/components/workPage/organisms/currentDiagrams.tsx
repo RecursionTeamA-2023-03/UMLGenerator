@@ -1,7 +1,4 @@
 import { Project, Diagram } from '@/interfaces/dataTypes'
-import styled from 'styled-components'
-import Icon from '../atoms/icon'
-import RectButton from '../atoms/rectButton'
 import { useEffect, useState } from 'react'
 import { Box, Typography, Card, CardContent } from '@mui/material'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
@@ -58,11 +55,3 @@ export default function CurrentDiagrams({ projects, handleSelectDiagram }: Props
     </>
   )
 }
-
-const Container = styled.div`
-  width: 100%;
-  padding: 30px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-`

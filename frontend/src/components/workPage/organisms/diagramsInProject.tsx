@@ -1,8 +1,5 @@
-import styled from 'styled-components'
 import { Diagram } from '@/interfaces/dataTypes'
 import { useState } from 'react'
-import RectButton from '../atoms/rectButton'
-import Icon from '../atoms/icon'
 import { Box, Button, Typography, TextField, Card, CardContent } from '@mui/material'
 import { EditIcon } from '@/components/common/atoms/icon'
 
