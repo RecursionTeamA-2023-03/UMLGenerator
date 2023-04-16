@@ -1,0 +1,67 @@
+server {
+	listen ${NGINX_PORT};
+	server_name ${NGINX_SERVER_NAME};
+	root /app/public;
+	client_max_body_size ${NGINX_MAX_BODY};
+
+	location /api/ {
+		return 301 https://$host$request_uri;
+	}
+
+	location /plantuml/ {
+
+		proxy_pass  http://${PLANTUML_HOST}:${PLANTUML_PORT}/plantuml/;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Host $server_name;
+		proxy_set_header X-Forwarded-Proto https;
+	}
+}
+
+server {
+	listen ${NGINX_SSL_PORT} ssl;
+	server_name ${NGINX_SERVER_NAME};
+	client_max_body_size ${NGINX_MAX_BODY};
+
+    ssl_certificate      /etc/letsencrypt/live/${NGINX_SERVER_NAME}/fullchain.pem;
+    ssl_certificate_key  /etc/letsencrypt/live/${NGINX_SERVER_NAME}/privkey.pem;
+
+  	ssl_session_timeout 5m;
+
+	location /api/ {
+		set $cors "0";
+
+		if ($http_origin ~* (https?://(uml-generator-dev.*\.vercel\.app$|uml-diagram-generator\.vercel\.app$|localhost:3000))) {
+            set $cors "1";
+        }
+
+		if ($cors = "0") {
+			return 403;
+		}
+
+		if ($request_method = "OPTIONS") {
+			set $cors "2";
+		}
+
+		if ($cors = "2") {
+			add_header Access-Control-Allow-Origin $http_origin always;
+			add_header Access-Control-Allow-Headers 'Origin, Authorization, Accept, Content-Type, csrf-token' always;
+            add_header Access-Control-Allow-Methods 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS' always;
+            add_header Access-Control-Allow-Credentials true always;
+			return 200;
+		}
+
+		add_header Access-Control-Allow-Origin $http_origin always;
+		add_header Access-Control-Allow-Headers 'Origin, Authorization, Accept, Content-Type, csrf-token' always;
+        add_header Access-Control-Allow-Methods 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS' always;
+        add_header Access-Control-Allow-Credentials true always;
+
+		proxy_pass  http://${NEST_HOST}:${NEST_PORT}/api/;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Host $server_name;
+		proxy_set_header X-Forwarded-Proto https;
+	}
+}
