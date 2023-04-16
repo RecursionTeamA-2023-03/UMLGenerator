@@ -3,14 +3,18 @@ import { getAllPosts, getPostBySlug } from "../api/cheatSheets/getMdFiles";
 import markdownToHtml from "../api/cheatSheets/markdownToHtml";
 import styled from 'styled-components'
 import Header from "@/components/common/organisms/header";
-import { useState } from "react";
-import SideBar from "@/components/cheetSheetsPage/organisms/sidebar";
+import TemporaryDrawer from "@/components/cheetSheetsPage/organisms/sidebar";
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const ContentArea = styled.div`
   display: flex;
   height: 100vh;
+`
+const PostsArea = styled.div`
+  display: flex;
+  height: 100vh;
+  margin-left: 150px
 `
 
 /**
@@ -56,20 +60,16 @@ export const getStaticProps = async ({ params }: any) => {
 };
 
 const Post: NextPage<Props> = ({posts, post }) => {
-  const [isShow, setIsShow] = useState(true)
-  const switchSideBar = () => setIsShow(!isShow)
 
   return (
     <div style={{ backgroundColor: 'white' }}>
       <Header />
       <main>
       <ContentArea>
-      {isShow ? (
-            <SideBar data={posts} handle={switchSideBar} flag={true} />
-          ) : (
-            <SideBar handle={switchSideBar} flag={false} />
-          )}
+        <TemporaryDrawer data={posts}/>
+        <PostsArea>
         <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        </PostsArea>
       </ContentArea>
       </main>
     </div>

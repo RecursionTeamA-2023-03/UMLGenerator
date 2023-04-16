@@ -1,62 +1,85 @@
-import withIconStyle from '../../common/atoms/icon'
-import { theme } from '@/themes'
-import { Close, Dehaze } from '@mui/icons-material'
-import Link from 'next/link'
-import styled from 'styled-components'
-import Text from '../../common/atoms/text'
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Link from 'next/link';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ArticleIcon from '@mui/icons-material/Article';
 
-const SideBarArea = styled.div`
-  padding-left: 1em;
-  padding-top: 0.5em;
-  border-right: 1px solid gray;
-  background-color: ${theme.colors.white};
-`
+type Anchor = 'left';
 
-const Anchor = styled(Text)`
-  color: black;
-  &:hover {
-    text-decoration: underline;
-  }
-`
-
-const CloseIcon = withIconStyle(Close)
-
-const DehazeIcon = withIconStyle(Dehaze)
-
-const IconArea = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-interface SideBarProps {
+interface Props {
   data?: any
-  handle?: any
-  flag?: boolean
 }
 
-const SideBar = (v: SideBarProps) => {
+export default function TemporaryDrawer(props:Props) {
+  const [state, setState] = React.useState({
+    left: false,
+  });
+
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+
+      setState({ ...state, [anchor]: open });
+    };
+
+  const list = (anchor: Anchor) => (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        {props.data.map((i:any) => (
+          <ListItem key={i} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+              <ArticleIcon />
+              </ListItemIcon>
+              <Link href={`/cheatSheets/${i.slug}`}>{i.slug}</Link>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+    </Box>
+  );
+
   return (
-    <SideBarArea>
-      {v.flag ? (
-        <>
-          <IconArea>
-            <DehazeIcon color='gray' onClick={v.handle} />
-            <CloseIcon color='gray' onClick={v.handle} />
-          </IconArea>
-          <ul>
-            {v.data?.map((i: any) => (
-              <li key={i.slug}>
-                <Anchor variant='small'>
-                  <Link href={`/cheatSheets/${i.slug}`}>{i.slug}</Link>
-                </Anchor>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <DehazeIcon color='gray' onClick={v.handle} />
-      )}
-    </SideBarArea>
-  )
+    <div>
+      {(['left'] as const).map((anchor) => (
+        <React.Fragment key={anchor}>
+          {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer(anchor, true)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Drawer
+            anchor={anchor}
+            open={state[anchor]}
+            onClose={toggleDrawer(anchor, false)}
+          >
+            {list(anchor)}
+          </Drawer>
+        </React.Fragment>
+      ))}
+    </div>
+  );
 }
-
-export default SideBar
