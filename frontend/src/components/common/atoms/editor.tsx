@@ -5,6 +5,8 @@ import { plantumlKeywords, plantumlRoot, plantumlThemes } from '@/editor'
 interface EditorProps {
   heigth?: string
   width?: string
+  content?: string
+  handleChange?: (newString: string | undefined) => void
 }
 
 const MonacoEditor = (props: EditorProps) => {
@@ -32,6 +34,8 @@ const MonacoEditor = (props: EditorProps) => {
     <Editor
       width={props.width}
       height={props.heigth}
+      value={props.content ?? ''}
+      onChange={props.handleChange}
       language='plantuml'
       theme='plantuml'
       beforeMount={handleBeforeMount}

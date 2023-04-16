@@ -18,36 +18,34 @@ export default function ProjectBoard({
   deleteProject,
 }: Props) {
   return (
-    <Container>
-      {!project? <></> : <>
-        <DiagramsInProject
-        projectName={project.name}
-        projectId={project.id}
-        diagrams={project.diagrams}
-        handleSelectDiagram={handleSelectDiagram}
-        addDiagram={addDiagram}
-        editProjectName={editProjectName}
-      />
-      <div>
-        <p>メンバー</p>
-        {
-          // <Owners />
-          '*現在はまだグループ対応DBが無いので一時的に中身なし'
-        }
-      </div>
-      <DeleteButton onClick={() => deleteProject(project.id)}>このプロジェクトを削除</DeleteButton>
-      </>}
-    </Container>
+    <>
+      {!project ? (
+        <></>
+      ) : (
+        <>
+          <DiagramsInProject
+            projectName={project.name}
+            projectId={project.id}
+            diagrams={project.diagrams}
+            handleSelectDiagram={handleSelectDiagram}
+            addDiagram={addDiagram}
+            editProjectName={editProjectName}
+          />
+          <div>
+            <p>メンバー</p>
+            {
+              // <Owners />
+              '*現在はまだグループ対応DBが無いので一時的に中身なし'
+            }
+          </div>
+          <DeleteButton onClick={() => deleteProject(project.id)}>
+            このプロジェクトを削除
+          </DeleteButton>
+        </>
+      )}
+    </>
   )
 }
-
-const Container = styled.div`
-  width: 100%;
-  padding-left: 5px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-`
 
 const DeleteButton = styled.button`
   width: 100%;

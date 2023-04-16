@@ -3,6 +3,8 @@ import { Diagram } from '@/interfaces/dataTypes'
 import { useState } from 'react'
 import RectButton from '../atoms/rectButton'
 import Icon from '../atoms/icon'
+import { Box, Button, Typography, TextField, Card, CardContent } from '@mui/material'
+import { EditIcon } from '@/components/common/atoms/icon'
 
 type Props = {
   projectId: number
@@ -26,79 +28,68 @@ export default function DiagramsInProject({
 
   return (
     <>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         {!nameEdit ? (
           <>
-            <p>{name}</p>
-            <button
-              onClick={() => setNameEdit(true)}
-              style={{
-                backgroundColor: 'white',
-                border: 'none',
-                marginLeft: '5px',
-                cursor: 'pointer',
-              }}
-            >
-              <Icon srcPath='/edit-icon.png' />
-            </button>
+            <Typography variant='h5'>{name}</Typography>
+            <Button sx={{ ml: '0.5rem', color: 'black' }} onClick={() => setNameEdit(true)}>
+              <EditIcon />
+            </Button>
           </>
         ) : (
           <>
-            <input onChange={(e) => setName(e.target.value)} value={name} />
-            <CustomButton
+            <TextField variant='filled' onChange={(e) => setName(e.target.value)} value={name} />
+            <Button
+              disabled={name === ''}
+              variant='contained'
+              sx={{ ml: '0.5rem' }}
               onClick={() => {
                 editProjectName(projectId, name)
                 setNameEdit(false)
               }}
             >
               保存
-            </CustomButton>
-            <CustomButton
+            </Button>
+            <Button
+              variant='outlined'
+              sx={{ ml: '0.5rem' }}
               onClick={() => {
                 setName(projectName)
                 setNameEdit(false)
               }}
             >
               キャンセル
-            </CustomButton>
+            </Button>
           </>
         )}
-      </div>
-      <Container>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          p: '30px',
+        }}
+      >
         {diagrams.map((d) => {
           return (
-            <RectButton
+            <Card
               key={d.id}
-              name={d.name}
-              color='blue'
               onClick={() => handleSelectDiagram(d.id, projectId)}
-            />
+              sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'DodgerBlue' }}
+            >
+              <CardContent>{d.name}</CardContent>
+            </Card>
           )
         })}
-        <RectButton name='新規作成' color='darkgray' onClick={() => addDiagram(projectId)} />
-      </Container>
+        <Card
+          onClick={() => addDiagram(projectId)}
+          sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'lightgray' }}
+        >
+          <CardContent>新規作成</CardContent>
+        </Card>
+      </Box>
     </>
   )
 }
-
-const Container = styled.div`
-  width: 100%;
-  padding: 30px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-`
-
-const CustomButton = styled.button`
-  margin-left: 3px;
-  margin-bottom: 3px;
-  color: lightgray;
-  background-color: white;
-  border: solid 3px lightgray;
-  border-radius: 3px;
-
-  &:hover {
-    color: white;
-    background-color: darkgray;
-  }
-`

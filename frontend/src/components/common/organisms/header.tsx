@@ -27,7 +27,7 @@ const Anchor = styled(Text)`
   }
 `
 
-const api_url = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -41,7 +41,7 @@ const Header = () => {
   const handleLogout = async () => {
     setIsLoggedIn(false)
     queryClient.removeQueries(['user'])
-    await axios.post(`${api_url}/auth/logout`)
+    await axios.post(`${apiUrl}/auth/logout`)
     router.push('/signIn')
   }
   return (

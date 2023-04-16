@@ -14,7 +14,7 @@ const Form = styled.form`
   flex-direction: column;
 `
 
-const api_url = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
 
 const SignInForm = () => {
   const router = useRouter()
@@ -23,7 +23,7 @@ const SignInForm = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     try {
-      await axios.post(`${api_url}/auth/login`, {
+      await axios.post(`${apiUrl}/auth/login`, {
         email: email,
         password: password,
       })
