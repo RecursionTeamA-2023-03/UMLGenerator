@@ -10,6 +10,8 @@ const Form = styled.form`
   flex-direction: column;
 `
 
+const api_url = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+
 const SignUpForm = () => {
   const router = useRouter()
   const [username, setUsername] = useState('')
@@ -19,14 +21,14 @@ const SignUpForm = () => {
     event.preventDefault()
     try {
       await axios.post(
-        `https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/signup`,
+        `${api_url}/auth/signup`,
         {
           name: username,
           email: email,
           password: password,
         },
       )
-      await axios.post(`https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/login`, {
+      await axios.post(`${api_url}/auth/login`, {
         email: email,
         password: password,
       })
