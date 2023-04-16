@@ -9,6 +9,7 @@ import {
   getDiagramDataList,
   getProblemDataList,
 } from 'lib/diagram'
+import { MDXRemote } from 'next-mdx-remote'
 
 export const getStaticPaths = async () => {
   const paths = await getAllDiagramNames()
@@ -34,9 +35,7 @@ export const getStaticProps = async ({ params }: any) => {
 export default function LearnContent({ allDiagramData, currDiagramData, problems }: any) {
   return (
     <LearnTemplate sidebarData={allDiagramData} data={currDiagramData}>
-      <Text variant='small' fontColor={theme.colors.black}>
-        <div dangerouslySetInnerHTML={{ __html: currDiagramData.diagramContentHTML }} />
-      </Text>
+      <MDXRemote {...currDiagramData.mdxSource}></MDXRemote>
       <br />
       <Text variant='medium' fontColor={theme.colors.black}>
         練習問題に取り組みましょう
