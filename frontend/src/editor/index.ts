@@ -29,6 +29,7 @@ export const plantumlRoot = [
   { regex: /[{}()[\]]/, action: 'brackets' },
   { regex: /[;:]/, action: 'punctuation' },
   { regex: /^[0-9]+(\.[0-9]+)?$/, action: 'number' },
+  { regex: /\/\/.*$/, action: 'comment' },
   ...sequenceRoot,
   ...activityRoot,
   ...stateRoot,
@@ -36,7 +37,7 @@ export const plantumlRoot = [
 
 export const plantumlThemes = [
   { token: 'variable', foreground: '#333333' },
-  { token: 'comment', foreground: '008800' },
+  { token: 'comment', foreground: '#00FF00' },
   { token: 'keyword', foreground: '#4169E1', fontStyle: 'bold' },
   { token: 'string', foreground: 'ff0000' },
   { token: 'brackets', foreground: '#FFA500' },
