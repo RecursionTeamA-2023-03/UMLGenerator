@@ -55,7 +55,7 @@ services:
       - servlet
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
-      - ./nginx/index.html:/var/www/html
+      - ./nginx/index.html:/var/www/html/index.html
     environment:
       NGINX_SERVER_NAME: uml-generator-server.com
       NEST_HOST: nest-server
@@ -74,5 +74,5 @@ services:
     image: certbot/certbot:v1.7.0
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
-      - ./nginx/index.html:/var/www/html
+      - ./nginx/index.html:/var/www/html/index.html
     command: ["--version"]
