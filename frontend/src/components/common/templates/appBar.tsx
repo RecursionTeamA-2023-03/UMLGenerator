@@ -12,11 +12,12 @@ import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import AccountTreeIcon from '@mui/icons-material/AccountTree'
 import SettingsIcon from '@mui/icons-material/Settings'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import useSWR, { Fetcher } from 'swr'
 import { User } from '@/interfaces/dataTypes'
 import { useRouter } from 'next/router'
 import DrawerLeft from './drawer'
+import { error } from 'console'
 
 const pages = [
   { name: 'work', link: 'work' },
@@ -48,7 +49,7 @@ type Props = {
 }
 
 function AppBarWithDrawer({ children, withDrawer = false }: Props) {
-  const { data, error, isLoading, mutate } = useSWR(`${apiUrl}/user`, fetcher)
+  const { data, error, isLoading, mutate } = useSWR<User, AxiosError>(`${apiUrl}/user`, fetcher)
   const [openDrawer, setDrawer] = React.useState<boolean>(withDrawer)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const router = useRouter()
@@ -74,7 +75,7 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
     }
   }
 
-  if (error && router.pathname !== '/') router.push('/')
+  if (!isLoading && error?.response?.status===401 && router.pathname !== '/') router.push('/')
 
   return (
     <>

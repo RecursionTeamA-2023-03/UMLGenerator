@@ -1,7 +1,6 @@
 import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
@@ -9,9 +8,10 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import axios from 'axios'
+import useSWR, { Fetcher } from 'swr'
+import axios, {AxiosRequestConfig, AxiosError} from 'axios'
 import { useRouter } from 'next/router'
+import { User } from '@/interfaces/dataTypes'
 
 function Copyright(props: any) {
   return (
@@ -26,11 +26,21 @@ function Copyright(props: any) {
   )
 }
 
-const theme = createTheme()
 const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const axiosConfig: AxiosRequestConfig = {
+  transformResponse: (data) =>
+    JSON.parse(data, (key, val) => {
+      if (key === 'createdAt' || key === 'updatedAt') return new Date(val)
+      else return val
+    }),
+}
+const fetcher: Fetcher<User, string> = async (url: string) => {
+  return await axios.get(url, axiosConfig).then((res) => res.data)
+}
 
 export default function SignUp() {
   const router = useRouter()
+  const { mutate } = useSWR<User, AxiosError>(`${apiUrl}/user`, fetcher)
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -47,13 +57,13 @@ export default function SignUp() {
             password: data.get('password'),
           }),
       )
+      .then(()=>mutate())
       .then(() => router.push('/work'))
+      .catch((error)=>alert(error.response.data.message))
   }
 
   return (
-    <ThemeProvider theme={theme}>
       <Container component='main' maxWidth='xs'>
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -117,6 +127,5 @@ export default function SignUp() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
   )
 }
