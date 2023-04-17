@@ -75,7 +75,7 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
     }
   }
 
-  if (!isLoading && error?.response?.status===401 && router.pathname !== '/') router.push('/')
+  if (!isLoading && error?.response?.status === 401 && router.pathname !== '/') router.push('/')
 
   return (
     <>
