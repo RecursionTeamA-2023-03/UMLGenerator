@@ -1,60 +1,40 @@
-// supabase廃止に伴いリセット
-
-/* import '@/styles/globals.css'
-import { theme } from '../themes'
+import Head from 'next/head'
 import type { AppProps } from 'next/app'
-import { ThemeProvider } from 'styled-components'
-import { useState } from 'react'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
-
-export default function App({ Component, pageProps }: AppProps<{ initialSession: Session }>) {
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
-
-  return (
-    <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
-    >
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </SessionContextProvider>
-  )
-}
- */
-
-import { theme } from '@/themes'
-import type { AppProps } from 'next/app'
-import { ThemeProvider } from 'styled-components'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-//import '../styles/global.css'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { useEffect } from 'react'
+import { Box, CssBaseline } from '@mui/material'
+import { MDXProvider } from '@mdx-js/react'
+import { mdxComponents } from '@/mdxComponets'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      refetchOnWindowFocus: false,
-    },
-  },
-})
+const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const theme = createTheme()
 
 export default function App({ Component, pageProps }: AppProps) {
   axios.defaults.withCredentials = true
   useEffect(() => {
     const getCsrfToken = async () => {
-      const { data } = await axios.get(`https://${process.env.AWS_IP_ADDRESS || 'localhost:443'}/api/auth/csrf`)
+      const { data } = await axios.get(`${apiUrl}/auth/csrf`)
       axios.defaults.headers.common['csrf-token'] = data.csrfToken
     }
     getCsrfToken()
   }, [])
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </QueryClientProvider>
+    <>
+      <Head>
+        <title>UDG</title>
+        <meta name='description' content='UML Diagram generator' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <MDXProvider components={mdxComponents}>
+            <Component {...pageProps} />
+          </MDXProvider>
+        </ThemeProvider>
+      </Box>
+    </>
   )
 }

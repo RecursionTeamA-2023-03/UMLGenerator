@@ -3,10 +3,16 @@ import LearnTemplate from '../../../components/learnPage/templates/learnTemplate
 import { theme } from '../../../themes'
 import React from 'react'
 import Link from 'next/link'
-import { getAllDiagramIds, getDiagramData, getAllDiagramsData, getProblemIds } from 'lib/diagram'
+import {
+  getAllDiagramNames,
+  getDiagramData,
+  getDiagramDataList,
+  getProblemDataList,
+} from 'lib/diagram'
+import { MDXRemote } from 'next-mdx-remote'
 
 export const getStaticPaths = async () => {
-  const paths = getAllDiagramIds()
+  const paths = await getAllDiagramNames()
   return {
     paths,
     fallback: false,
@@ -14,9 +20,9 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params }: any) => {
-  const allDiagramData = getAllDiagramsData()
+  const allDiagramData = await getDiagramDataList()
   const currDiagramData = await getDiagramData(params.name)
-  const problems = getProblemIds(params.name)
+  const problems = await getProblemDataList(params.name)
   return {
     props: {
       allDiagramData,
@@ -29,15 +35,15 @@ export const getStaticProps = async ({ params }: any) => {
 export default function LearnContent({ allDiagramData, currDiagramData, problems }: any) {
   return (
     <LearnTemplate sidebarData={allDiagramData} data={currDiagramData}>
-      <Text variant='small' fontColor={theme.colors.black}>
-        <div dangerouslySetInnerHTML={{ __html: currDiagramData.diagramContentHTML }} />
-      </Text>
+      <MDXRemote {...currDiagramData.mdxSource}></MDXRemote>
       <br />
-      <Text fontColor={theme.colors.black}>ここは練習問題です↓</Text>
+      <Text variant='medium' fontColor={theme.colors.black}>
+        練習問題に取り組みましょう
+      </Text>
       {problems.map((id: any) => {
         return (
-          <Text as='p' key={id.id} fontColor={theme.colors.black}>
-            <Link href={`/learn/${currDiagramData.id}/${id.id}`}>{id.id}</Link>
+          <Text as='p' variant='medium' key={id.id} fontColor={theme.colors.black}>
+            <Link href={`/learn/${currDiagramData.id}/${id.id}`}>{id.title}</Link>
           </Text>
         )
       })}
