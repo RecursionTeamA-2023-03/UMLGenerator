@@ -1,6 +1,6 @@
 import { Project, Diagram } from '@/interfaces/dataTypes'
 import { useEffect, useState } from 'react'
-import { Box, Typography, Card, CardContent } from '@mui/material'
+import { Box, Typography, Card, CardContent, CardActionArea } from '@mui/material'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 
 type Props = {
@@ -46,8 +46,10 @@ export default function CurrentDiagrams({ projects, handleSelectDiagram }: Props
               onClick={() => handleSelectDiagram(d.id, d.projectId)}
               sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'DodgerBlue' }}
             >
-              <CardContent>{d.name}</CardContent>
-              <CardContent>{d.projectName}</CardContent>
+              <CardActionArea>
+                <CardContent component='h3' sx={{m:'0'}}>{d.name}</CardContent>
+                <CardContent component='p' sx={{m:'0', textAlign:'end'}}>{"in "+d.projectName}</CardContent>
+              </CardActionArea>
             </Card>
           )
         })}

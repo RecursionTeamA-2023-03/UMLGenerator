@@ -1,6 +1,6 @@
 import { Diagram } from '@/interfaces/dataTypes'
 import { useState } from 'react'
-import { Box, Button, Typography, TextField, Card, CardContent } from '@mui/material'
+import { Box, Button, Typography, TextField, Card, CardContent, CardActionArea } from '@mui/material'
 import { EditIcon } from '@/components/common/atoms/icon'
 
 type Props = {
@@ -76,15 +76,21 @@ export default function DiagramsInProject({
               onClick={() => handleSelectDiagram(d.id, projectId)}
               sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'DodgerBlue' }}
             >
-              <CardContent>{d.name}</CardContent>
+              <CardActionArea>
+                <CardContent component='h3' sx={{m:'0'}}>{d.name}</CardContent>
+                <CardContent component='p' sx={{m:'0', textAlign:'end'}}>{'at '+(d.updatedAt.getMonth()+1)+'/'+d.updatedAt.getDate()}</CardContent>
+              </CardActionArea>
             </Card>
           )
         })}
         <Card
           onClick={() => addDiagram(projectId)}
-          sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'lightgray' }}
+          sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'lightgray', alignItems:'flex-start' }}
         >
-          <CardContent>新規作成</CardContent>
+          <CardActionArea sx={{height:'100%'}}>
+            <CardContent component='h3' sx={{m:'0'}}>新規作成</CardContent>
+            <CardContent component='h3' sx={{m:'0'}}>{" "}</CardContent>
+          </CardActionArea>
         </Card>
       </Box>
     </>
