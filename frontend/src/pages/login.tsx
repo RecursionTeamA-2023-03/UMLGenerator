@@ -26,7 +26,7 @@ function Copyright(props: any) {
   )
 }
 
-const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 
 const axiosConfig: AxiosRequestConfig = {
   transformResponse: (data) =>

@@ -30,7 +30,7 @@ const settings = [
   { name: 'Logout', link: 'logout', mode: 'login' },
 ]
 
-const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 const axiosConfig: AxiosRequestConfig = {
   transformResponse: (data) =>
     JSON.parse(data, (key, val) => {

@@ -27,7 +27,7 @@ const Anchor = styled(Text)`
   }
 `
 
-const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
