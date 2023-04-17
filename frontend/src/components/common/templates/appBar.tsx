@@ -74,6 +74,8 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
     }
   }
 
+  if (error && router.pathname !== '/') router.push('/')
+
   return (
     <>
       <AppBar position='fixed' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -111,6 +113,7 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
             </Typography>
             <Box sx={{ flexGrow: 1, display: 'flex' }}>
               {data &&
+                !isLoading &&
                 pages.map((page) => (
                   <Button
                     key={page.name}
