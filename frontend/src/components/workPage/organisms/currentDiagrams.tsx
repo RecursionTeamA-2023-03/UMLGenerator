@@ -47,10 +47,10 @@ export default function CurrentDiagrams({ projects, handleSelectDiagram }: Props
               sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'DodgerBlue' }}
             >
               <CardActionArea>
-                <CardContent component='h3' sx={{ m: '0', color:'white' }}>
+                <CardContent component='h3' sx={{ m: '0', color: 'white' }}>
                   {d.name}
                 </CardContent>
-                <CardContent component='p' sx={{ m: '0', color:'white', textAlign: 'end' }}>
+                <CardContent component='p' sx={{ m: '0', color: 'white', textAlign: 'end' }}>
                   {'in ' + d.projectName}
                 </CardContent>
               </CardActionArea>
