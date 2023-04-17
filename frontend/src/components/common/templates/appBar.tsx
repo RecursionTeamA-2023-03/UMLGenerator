@@ -17,7 +17,6 @@ import useSWR, { Fetcher } from 'swr'
 import { User } from '@/interfaces/dataTypes'
 import { useRouter } from 'next/router'
 import DrawerLeft from './drawer'
-import { error } from 'console'
 
 const pages = [
   { name: 'work', link: 'work' },
@@ -114,6 +113,7 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
             </Typography>
             <Box sx={{ flexGrow: 1, display: 'flex' }}>
               {data &&
+                !error &&
                 !isLoading &&
                 pages.map((page) => (
                   <Button
@@ -150,7 +150,9 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
               >
                 {settings
                   .filter((setting) =>
-                    data ? setting.mode === 'login' : setting.mode === 'logout',
+                    data && !error && !isLoading
+                      ? setting.mode === 'login'
+                      : setting.mode === 'logout',
                   )
                   .map((setting) => (
                     <MenuItem key={setting.name} onClick={() => handleClickLink(setting.link)}>
