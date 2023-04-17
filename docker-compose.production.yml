@@ -49,6 +49,8 @@ services:
     container_name: nginx
     depends_on:
       - app
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
     environment:
       NGINX_SERVER_NAME: uml-generator-server.com # change domain if production env
       NEST_HOST: nest-server
