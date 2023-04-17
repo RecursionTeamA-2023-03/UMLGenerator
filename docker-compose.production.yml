@@ -17,6 +17,7 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+    restart: always
   app:
     build:
       context: ./backend
@@ -35,6 +36,7 @@ services:
       - ./backend/src:/app/src
       - ./backend/test:/app/test
       - ./backend/prisma:/app/prisma
+    restart: always
   servlet:
     image: plantuml/plantuml-server:jetty
     container_name: plantuml-server
@@ -42,6 +44,7 @@ services:
       - 8080
     environment:
       - BASE_URL=plantuml
+    restart: always
   nginx:
     build:
       context: ./nginx
@@ -63,9 +66,13 @@ services:
     ports:
       - 80:80
       - 443:443
+    restart: always
 ### certbot ################################################
   certbot:
+    container_name: certbot
     image: certbot/certbot:v1.7.0
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
     command: ["--version"]
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    restart: always
