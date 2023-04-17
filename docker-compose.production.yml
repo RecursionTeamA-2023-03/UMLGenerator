@@ -21,7 +21,7 @@ services:
   app:
     build:
       context: ./backend
-      dockerfile: Dockerfile # change file if production env
+      dockerfile: Dockerfile
     container_name: nest-server
     expose:
       - 3000
@@ -48,14 +48,16 @@ services:
   nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile # change file if production env
+      dockerfile: Dockerfile
     container_name: nginx
     depends_on:
       - app
+      - servlet
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
+      - ./nginx/index.html:/var/www/html
     environment:
-      NGINX_SERVER_NAME: uml-generator-server.com # change domain if production env
+      NGINX_SERVER_NAME: uml-generator-server.com
       NEST_HOST: nest-server
       NEST_PORT: 3000
       PLANTUML_HOST: plantuml-server
@@ -67,12 +69,10 @@ services:
       - 80:80
       - 443:443
     restart: always
-### certbot ################################################
   certbot:
     container_name: certbot
     image: certbot/certbot:v1.7.0
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
+      - ./nginx/index.html:/var/www/html
     command: ["--version"]
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    restart: always

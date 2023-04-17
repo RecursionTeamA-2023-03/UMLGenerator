@@ -4,6 +4,10 @@ server {
 	root /app/public;
 	client_max_body_size ${NGINX_MAX_BODY};
 
+	location / {
+		root /var/www/html
+	}
+
 	location /api/ {
 		return 301 https://$host$request_uri;
 	}
