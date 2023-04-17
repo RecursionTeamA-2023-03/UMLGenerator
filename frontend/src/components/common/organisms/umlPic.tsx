@@ -1,4 +1,5 @@
 import useSWR, { Fetcher } from 'swr'
+import { CircularProgress } from '@mui/material'
 
 type Props = {
   umlText: string
@@ -15,7 +16,7 @@ export default function UmlPic({ umlText }: Props) {
   const plantUmlEncoder = require('plantuml-encoder') // eslint-disable-line
   const encodedText = plantUmlEncoder.encode(umlText)
   const url = process.env.AWS_DOMAIN || 'localhost'
-  const { data, error } = useSWR(`http://${url}:80/plantuml/png/${encodedText}`, fetcher)
+  const { data, isLoading, error } = useSWR(`http://${url}:80/plantuml/png/${encodedText}`, fetcher)
 
   if (error) {
     // log for debug
@@ -23,12 +24,12 @@ export default function UmlPic({ umlText }: Props) {
     return <div>Failed to load</div>
   }
 
-  return !data ? (
-    <div>Loading...</div>
+  return isLoading || !data ? (
+    <CircularProgress />
   ) : (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      style={{ width: '60%', height: 'auto' }}
+      style={{ width: '100%', height: 'auto' }}
       src={`data:image/png;base64, ${data}`}
       alt='your uml diagram'
     />
