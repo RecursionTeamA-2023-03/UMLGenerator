@@ -72,7 +72,7 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
     setType(event.target.value as string)
   }
 
-  const handleChangeContent = (newString: string | undefined) => setContent(newString ?? '')
+  const handleChangeContent = (newString: string) => setContent(newString)
 
   const handleEditDiagramName = async (pId: number, dId: number, name: string) => {
     const nextDiagramName = getUniqueDiagramName(pId, name)
@@ -218,10 +218,10 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
           )}
         </Box>
         <MonacoEditor
-          heigth='70vh'
+          height='70vh'
           width='100%'
-          content={content}
-          handleChange={handleChangeContent}
+          placeholder={content}
+          onChange={handleChangeContent}
         />
         <Box
           sx={{

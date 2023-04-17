@@ -1,14 +1,14 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import axios from 'axios'
-import { theme } from '@/themes'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useEffect } from 'react'
 import { Box, CssBaseline } from '@mui/material'
 import { MDXProvider } from '@mdx-js/react'
 import { mdxComponents } from '@/mdxComponets'
 
 const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const theme = createTheme()
 
 export default function App({ Component, pageProps }: AppProps) {
   axios.defaults.withCredentials = true
