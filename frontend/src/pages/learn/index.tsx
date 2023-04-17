@@ -1,10 +1,15 @@
 import Text from '../../components/common/atoms/text'
 import LearnTemplate from '@/components/learnPage/templates/learnTemplate'
-import { getAllDiagramsData, getIntroductionData } from '../../../lib/diagram'
+import {
+  getAllDiagramNames,
+  getDiagramDataList,
+  getIntroductionMdxData,
+} from '../../../lib/diagram'
+import { MDXRemote } from 'next-mdx-remote'
 
 export const getStaticProps = async () => {
-  const diagramData = getAllDiagramsData()
-  const contentData = await getIntroductionData()
+  const diagramData = await getDiagramDataList()
+  const contentData = await getIntroductionMdxData()
   return {
     props: {
       diagramData,
@@ -17,9 +22,7 @@ export default function Learn({ diagramData, contentData }: any) {
   return (
     <LearnTemplate sidebarData={diagramData} data={contentData}>
       <div>
-        <Text variant='small' marginLeft='1em'>
-          <div dangerouslySetInnerHTML={{ __html: contentData.contentHTML }} />
-        </Text>
+        <MDXRemote {...contentData.mdxSource}></MDXRemote>
       </div>
     </LearnTemplate>
   )

@@ -1,8 +1,12 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import axios from 'axios'
+import { theme } from '@/themes'
+import { ThemeProvider } from 'styled-components'
 import { useEffect } from 'react'
 import { Box, CssBaseline } from '@mui/material'
+import { MDXProvider } from '@mdx-js/react'
+import { mdxComponents } from '@/mdxComponets'
 
 const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
 
@@ -25,7 +29,11 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <Component {...pageProps} />
+        <ThemeProvider theme={theme}>
+          <MDXProvider components={mdxComponents}>
+            <Component {...pageProps} />
+          </MDXProvider>
+        </ThemeProvider>
       </Box>
     </>
   )

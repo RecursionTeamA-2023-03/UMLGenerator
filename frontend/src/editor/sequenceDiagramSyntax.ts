@@ -6,6 +6,8 @@ export const sequenceKeywords = [
   'database',
   'collections',
   'queue',
+  'participant',
+  'as',
 ]
 
 export const sequenceRoot = [{ regex: /-*>/, action: 'arrow' }]

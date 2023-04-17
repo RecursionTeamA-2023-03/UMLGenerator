@@ -1,44 +1,83 @@
 import * as React from 'react'
 import Editor, { BeforeMount } from '@monaco-editor/react'
-import { plantumlKeywords, plantumlRoot, plantumlThemes } from '@/editor'
+import { plantumlConstants, plantumlKeywords, plantumlRoot, plantumlThemes } from '@/editor'
 
 interface EditorProps {
-  heigth?: string
+  height?: string
   width?: string
-  content?: string
-  handleChange?: (newString: string | undefined) => void
+  placeholder?: string
+  onChange: (value: string) => void
 }
 
 const MonacoEditor = (props: EditorProps) => {
+  const handleChange = React.useCallback(
+    (value: string | undefined) => {
+      if (value !== undefined) {
+        props.onChange(value)
+      }
+    },
+    [props.onChange],
+  )
   const handleBeforeMount: BeforeMount = (monaco) => {
     monaco.languages.register({ id: 'plantuml' })
+    const constants = plantumlConstants
     const keywords = plantumlKeywords
     const root = plantumlRoot
     const rules = plantumlThemes
     monaco.languages.setMonarchTokensProvider('plantuml', {
+      constants,
       keywords,
       tokenizer: {
         root: root,
       },
     })
+    monaco.languages.setLanguageConfiguration('plantuml', {
+      autoClosingPairs: [
+        { open: '(', close: ')', notIn: ['string', 'comment'] },
+        { open: '[', close: ']', notIn: ['string', 'comment'] },
+        { open: '{', close: '}', notIn: ['string', 'comment'] },
+      ],
+      brackets: [
+        ['(', ')'],
+        ['[', ']'],
+        ['{', '}'],
+      ],
+    })
+    monaco.languages.registerCompletionItemProvider('plantuml', {
+      triggerCharacters: ['@'],
+      provideCompletionItems: (model, position) => {
+        const suggestions = [
+          {
+            label: '@startuml',
+            kind: monaco.languages.CompletionItemKind.Keyword,
+            insertText: '@startuml\n\n@enduml',
+            range: new monaco.Range(position.lineNumber, 1, position.lineNumber, position.column),
+          },
+        ]
+
+        return {
+          suggestions,
+          incomplete: false,
+        }
+      },
+    })
 
     monaco.editor.defineTheme('plantuml', {
-      base: 'vs',
-      inherit: false,
+      base: 'vs-dark',
+      inherit: true,
       rules: rules,
-      colors: {},
+      colors: { 'editor.foreground': '#F8F8F8' },
     })
   }
-
   return (
     <Editor
       width={props.width}
-      height={props.heigth}
-      value={props.content ?? ''}
-      onChange={props.handleChange}
+      height={props.height}
       language='plantuml'
       theme='plantuml'
       beforeMount={handleBeforeMount}
+      onChange={handleChange}
+      value={props.placeholder}
     />
   )
 }
