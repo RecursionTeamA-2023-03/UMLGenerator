@@ -53,19 +53,19 @@ export const getStaticProps = async ({ params }: any) => {
 
 const Post: NextPage<Props> = ({ posts, post }) => {
   const router = useRouter()
-  
+
   return (
     <>
       <AppBarWithDrawer withDrawer={true}>
         <List>
-          <ListItem key="introduction">
-            <ListItemButton onClick={()=>router.push(`/cheatSheets/`)}>
-              <ListItemText primary="Introduction" />
+          <ListItem key='introduction'>
+            <ListItemButton onClick={() => router.push(`/cheatSheets/`)}>
+              <ListItemText primary='Introduction' />
             </ListItemButton>
           </ListItem>
-          {posts.map((items)=>(
+          {posts.map((items) => (
             <ListItem key={items.slug}>
-              <ListItemButton onClick={()=>router.push(`/cheatSheets/${items.slug}`)}>
+              <ListItemButton onClick={() => router.push(`/cheatSheets/${items.slug}`)}>
                 <ListItemText primary={items.slug} />
               </ListItemButton>
             </ListItem>

@@ -20,14 +20,14 @@ const CheatSheets: NextPage<Props> = ({ allPosts }) => {
     <>
       <AppBarWithDrawer withDrawer={true}>
         <List>
-          <ListItem key="introduction">
-            <ListItemButton onClick={()=>router.push(`/cheatSheets/`)}>
-              <ListItemText primary="Introduction" />
+          <ListItem key='introduction'>
+            <ListItemButton onClick={() => router.push(`/cheatSheets/`)}>
+              <ListItemText primary='Introduction' />
             </ListItemButton>
           </ListItem>
-          {allPosts.map((items)=>(
+          {allPosts.map((items) => (
             <ListItem key={items.title}>
-              <ListItemButton onClick={()=>router.push(`/cheatSheets/${items.title}`)}>
+              <ListItemButton onClick={() => router.push(`/cheatSheets/${items.title}`)}>
                 <ListItemText primary={items.title} />
               </ListItemButton>
             </ListItem>

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import axios from 'axios'
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { useEffect } from 'react'
 import { Box, CssBaseline } from '@mui/material'
 import { MDXProvider } from '@mdx-js/react'

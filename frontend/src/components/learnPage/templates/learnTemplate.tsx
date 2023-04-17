@@ -27,14 +27,14 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
     <>
       <AppBarWithDrawer withDrawer={true}>
         <List>
-          <ListItem key="introduction">
-            <ListItemButton onClick={()=>router.push(`/learn/`)}>
-              <ListItemText primary="Introduction" />
+          <ListItem key='introduction'>
+            <ListItemButton onClick={() => router.push(`/learn/`)}>
+              <ListItemText primary='Introduction' />
             </ListItemButton>
           </ListItem>
-          {sidebarData.map((data:any)=>(
+          {sidebarData.map((data: any) => (
             <ListItem key={data.id}>
-              <ListItemButton onClick={()=>router.push(`/learn/${data.id}`)}>
+              <ListItemButton onClick={() => router.push(`/learn/${data.id}`)}>
                 <ListItemText primary={data.id} />
               </ListItemButton>
             </ListItem>
@@ -42,40 +42,40 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
         </List>
       </AppBarWithDrawer>
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-          <Toolbar />
+        <Toolbar />
+        <div>
+          <Text variant='large' marginLeft='1em' fontColor={theme.colors.black}>
+            {data.title}
+          </Text>
           <div>
-            <Text variant='large' marginLeft='1em' fontColor={theme.colors.black}>
-              {data.title}
-            </Text>
-            <div>
-              <BreadcrumbItem>
-                <Text variant='small'>
-                  <Link href='/learn'>イントロダクション</Link>
-                </Text>
-              </BreadcrumbItem>
-              {problemNo ? (
-                <>
-                  <BreadcrumbItem>
-                    <Text variant='small'>
-                      <Link href={`/learn/${data.diagram}`}>{data.diagram}</Link>
-                    </Text>
-                  </BreadcrumbItem>
-                  <BreadcrumbItem>
-                    <Text variant='small' fontColor={theme.colors.black}>
-                      {problemNo}
-                    </Text>
-                  </BreadcrumbItem>
-                </>
-              ) : (
+            <BreadcrumbItem>
+              <Text variant='small'>
+                <Link href='/learn'>イントロダクション</Link>
+              </Text>
+            </BreadcrumbItem>
+            {problemNo ? (
+              <>
                 <BreadcrumbItem>
-                  <Text variant='small' fontColor={theme.colors.black}>
-                    {data.id}
+                  <Text variant='small'>
+                    <Link href={`/learn/${data.diagram}`}>{data.diagram}</Link>
                   </Text>
                 </BreadcrumbItem>
-              )}
-            </div>
-            {children}
+                <BreadcrumbItem>
+                  <Text variant='small' fontColor={theme.colors.black}>
+                    {problemNo}
+                  </Text>
+                </BreadcrumbItem>
+              </>
+            ) : (
+              <BreadcrumbItem>
+                <Text variant='small' fontColor={theme.colors.black}>
+                  {data.id}
+                </Text>
+              </BreadcrumbItem>
+            )}
           </div>
+          {children}
+        </div>
       </Box>
     </>
   )

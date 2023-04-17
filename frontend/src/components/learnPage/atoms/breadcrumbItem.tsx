@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {theme} from '@/themes'
+import { theme } from '@/themes'
 
 const BreadcrumbItem = styled.li`
   list-style: none;
