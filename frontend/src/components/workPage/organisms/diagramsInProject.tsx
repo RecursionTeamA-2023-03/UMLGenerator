@@ -85,10 +85,10 @@ export default function DiagramsInProject({
               sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'DodgerBlue' }}
             >
               <CardActionArea>
-                <CardContent component='h3' sx={{ m: '0' }}>
+                <CardContent component='h3' sx={{ m: '0', color:'white' }}>
                   {d.name}
                 </CardContent>
-                <CardContent component='p' sx={{ m: '0', textAlign: 'end' }}>
+                <CardContent component='p' sx={{ m: '0', color:'white', textAlign: 'end' }}>
                   {'at ' + (d.updatedAt.getMonth() + 1) + '/' + d.updatedAt.getDate()}
                 </CardContent>
               </CardActionArea>
@@ -101,12 +101,12 @@ export default function DiagramsInProject({
             height: '100px',
             width: '150px',
             m: '15px',
-            bgcolor: 'lightgray',
+            bgcolor: 'gray',
             alignItems: 'flex-start',
           }}
         >
           <CardActionArea sx={{ height: '100%' }}>
-            <CardContent component='h3' sx={{ m: '0' }}>
+            <CardContent component='h3' sx={{ m: '0',color:'white' }}>
               新規作成
             </CardContent>
             <CardContent component='h3' sx={{ m: '0' }}>
