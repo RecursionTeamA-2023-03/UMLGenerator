@@ -25,7 +25,7 @@ const pages = [
 ]
 const settings = [
   { name: 'Account', link: 'acount', mode: 'login' },
-  { name: 'Signup', link: 'signIn', mode: 'logout' },
+  { name: 'Signup', link: 'signUp', mode: 'logout' },
   { name: 'Login', link: 'login', mode: 'logout' },
   { name: 'Logout', link: 'logout', mode: 'login' },
 ]

@@ -15,13 +15,11 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   axios.defaults.withCredentials = true
   useEffect(() => {
-    if (!axios.defaults.headers.common['csrf-token']) {
-      const getCsrfToken = async () => {
-        const { data } = await axios.get(`${apiUrl}/auth/csrf`)
-        axios.defaults.headers.common['csrf-token'] = data.csrfToken
-      }
-      getCsrfToken()
+    const getCsrfToken = async () => {
+      const { data } = await axios.get(`${apiUrl}/auth/csrf`)
+      axios.defaults.headers.common['csrf-token'] = data.csrfToken
     }
+    getCsrfToken()
   }, [router.pathname])
   return (
     <>
