@@ -9,7 +9,12 @@ import remarkToc from 'remark-toc'
  * @returns HTML
  */
 const markdownToHtml = async (markdown: string) => {
-  const result = await remark().use(html).use(remarkGfm).use(remarkToc, { heading: '目次', maxDepth: 2 }).use(remarkSlug).process(markdown)
+  const result = await remark()
+    .use(html)
+    .use(remarkGfm)
+    .use(remarkToc, { heading: '目次', maxDepth: 2 })
+    .use(remarkSlug)
+    .process(markdown)
   return result.toString()
 }
 
