@@ -10,7 +10,7 @@ const Form = styled.form`
   flex-direction: column;
 `
 
-const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 
 const SignUpForm = () => {
   const router = useRouter()

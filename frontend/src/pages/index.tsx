@@ -1,7 +1,3 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Layout from '../components/common/templates/layout'
-import AuthTemplate from '@/components/authPage/templates/authTemplate'
 import AppBarWithDrawer from '@/components/common/templates/appBar'
 import { Button, Box, Toolbar, Typography } from '@mui/material'
 import { useRouter } from 'next/router'

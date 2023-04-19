@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
-const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 
 export const useQueryUser = () => {
   const router = useRouter()
