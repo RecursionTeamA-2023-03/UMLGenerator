@@ -1,12 +1,13 @@
 ---
-title: イントロダクション
+title: 'イントロダクション'
+icon: '@mui/icons-material/Topic'
 ---
 
 # 学習ページ概要
 
 このページでは、PlantUML の基本的な構文や使用方法を学ぶことができます。また、PlantUML を使用して実際にダイアグラムを作成するための具体的な例を紹介しています。さらに、PlantUML を活用するためのヒントやトリックについても紹介しているので、PlantUML を使いこなすための手助けになるでしょう。
 
-まずはじめに、PlantUML で UML 図を書くためには、"@startUML"で図の始まり、"endUML"で図の終わりを示します。簡単なシーケンス図を書いてみましょう。シーケンス図は、オブジェクト間のやり取りを表します。例えば、オブジェクト A がオブジェクト B に"Hello"と送信するシーケンス図を書いてみましょう。以下はサンプルコードを見て、実際に書いてみましょう。
+まずはじめに、PlantUML で UML 図を書くためには、"@startuml"で図の始まり、"@enduml"で図の終わりを示します。簡単なシーケンス図を書いてみましょう。シーケンス図は、オブジェクト間のやり取りを表します。例えば、オブジェクト A がオブジェクト B に"Hello"と送信するシーケンス図を書いてみましょう。以下はサンプルコードを見て、実際に書いてみましょう。
 
 <EditorPreview
   placeholder="
@@ -24,4 +25,10 @@ title: イントロダクション
 
 このように、PlantUML を使用することで、簡単に UML 図を作成することができます。次のページからより詳しく学びましょう。
 
-<Link href='/learn/sequence'>Next シーケンス図</Link>
+<CustomBox position='flex-end'>
+  <IconButton
+    text='Next シーケンス図'
+    link='/learn/シーケンス図'
+    endIcon={<ArrowForwardIosIcon />}
+  />
+</CustomBox>

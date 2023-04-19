@@ -10,7 +10,8 @@ title: 'シーケンス図'
 
 それでは、ユーザー認証システムのシーケンス図を作成しながら PlantUML のシーケンス図の書き方を学びましょう。
 
-<UmlPic umlText="
+<CustomBox position="center">
+<UmlPic width="50%" umlText="
 @startuml
 actor User
 participant Frontend
@@ -38,6 +39,8 @@ Frontend -> Backend : ログアウトリクエストを送信
 Backend -> Frontend : ログアウト成功を返信
 @enduml" />
 
+</CustomBox>
+
 ## 基本的な例
 
 PlantUML でシーケン図を書く際、オブジェクト間のやり取りには -> を使用します。
@@ -51,8 +54,8 @@ PlantUML でシーケン図を書く際、オブジェクト間のやり取り�
 <EditorPreview
   placeholder="
   'ユーザー認証には
-  'User(Actor)
-  'Participant(Frontend, Backend, Database)があります。
+  'User(actor)
+  'Frontend, Backend, Database(participant)があります。
   '下に実際に書いてみましょう。
   "
 />
@@ -75,7 +78,7 @@ PlantUML でシーケン図を書く際、オブジェクト間のやり取り�
   'participant Frontend
   'participant Backend
   'participant Database
-
+'
 'User -> Frontend : ユーザー登録画面を表示
 'Frontend -> Backend : CSRF トークンのリクエストを送信
 'Backend -> Frontend : CSRF トークンを発行
@@ -153,6 +156,15 @@ Frontend -> User : ログイン成功
 
 このような流れでシーケンス図を作成することができます。
 
-<Link href='/learn/'>Prev イントロダクション</Link>
+<CustomBox position='center' direction='column'>
+  <ProblemList />
+</CustomBox>
 
-<Link href='/learn/activity'>Next アクティビティ図</Link>
+<CustomBox>
+  <IconButton text='Prev イントロダクション' link='/learn' startIcon={<ArrowBackIosIcon />} />
+  <IconButton
+    text='Next ユースケース図'
+    link='/learn/ユースケース図'
+    endIcon={<ArrowForwardIosIcon />}
+  />
+</CustomBox>

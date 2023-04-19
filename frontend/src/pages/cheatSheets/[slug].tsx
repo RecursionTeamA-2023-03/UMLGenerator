@@ -32,7 +32,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }: any) => {
   const post = getPostBySlug(params.slug, ['slug', 'title', 'date', 'content'])
   const posts = getAllPosts(['slug'])
-  const mdxSource = await serialize(post.content);
+  const mdxSource = await serialize(post.content)
 
   // content を詰め直して返す
   return {
@@ -69,10 +69,10 @@ const Post: NextPage<Props> = ({ posts, post }) => {
       </AppBarWithDrawer>
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-      <div className="cheatSheets">
-          <TopicsCard/>
+        <div className='cheatSheets'>
+          <TopicsCard />
           <MDXRemote {...post.mdxSource}></MDXRemote>
-      </div>
+        </div>
       </Box>
     </>
   )

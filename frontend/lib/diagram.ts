@@ -25,7 +25,13 @@ export const getIntroductionMdxData = async () => {
 }
 
 export const getDiagramDataList = async () => {
-  const directories = ['sequence', 'activity', 'state', 'gantt']
+  const directories = [
+    'シーケンス図',
+    'ユースケース図',
+    'アクティビティ図',
+    '状態図',
+    'ガントチャート',
+  ]
   const diagramDataList = await Promise.all(
     directories.map(async (directory) => {
       const fullPath = path.join(diagramsDirectory, directory, `${directory}.mdx`)
