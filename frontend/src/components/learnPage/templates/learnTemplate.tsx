@@ -9,10 +9,22 @@ import Link from 'next/link'
 import AppBarWithDrawer from '@/components/common/templates/appBar'
 import { Box, List, ListItem, ListItemButton, ListItemText, Toolbar } from '@mui/material'
 import { useRouter } from 'next/router'
+import withIconStyle from '@/components/common/atoms/icon'
+import { Topic } from '@mui/icons-material'
 
 const ContentArea = styled.div`
   display: flex;
   height: 100vh;
+`
+const StyledListItem = styled(ListItem)`
+  &.active {
+    background-color: #f5f5f5;
+    opacity: 1;
+  }
+
+  &:not(.active) {
+    opacity: 0.7;
+  }
 `
 interface LearnTemplateProps {
   sidebarData?: any
@@ -23,21 +35,22 @@ interface LearnTemplateProps {
 
 const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplateProps) => {
   const router = useRouter()
+  const currentPath = router.asPath.split('/')[2]
   return (
     <>
       <AppBarWithDrawer withDrawer={true}>
         <List>
-          <ListItem key='introduction'>
+          <StyledListItem key='introduction' className={currentPath === undefined ? 'active' : ''}>
             <ListItemButton onClick={() => router.push(`/learn/`)}>
               <ListItemText primary='Introduction' />
             </ListItemButton>
-          </ListItem>
+          </StyledListItem>
           {sidebarData.map((data: any) => (
-            <ListItem key={data.id}>
+            <StyledListItem key={data.id} className={currentPath === data.id ? 'active' : ''}>
               <ListItemButton onClick={() => router.push(`/learn/${data.id}`)}>
-                <ListItemText primary={data.id} />
+                <ListItemText primary={data.title} />
               </ListItemButton>
-            </ListItem>
+            </StyledListItem>
           ))}
         </List>
       </AppBarWithDrawer>
@@ -48,11 +61,13 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
             {data.title}
           </Text>
           <div>
-            <BreadcrumbItem>
-              <Text variant='small'>
-                <Link href='/learn'>イントロダクション</Link>
-              </Text>
-            </BreadcrumbItem>
+            {currentPath && (
+              <BreadcrumbItem>
+                <Text variant='small'>
+                  <Link href='/learn'>Introduction</Link>
+                </Text>
+              </BreadcrumbItem>
+            )}
             {problemNo ? (
               <>
                 <BreadcrumbItem>
@@ -69,7 +84,7 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
             ) : (
               <BreadcrumbItem>
                 <Text variant='small' fontColor={theme.colors.black}>
-                  {data.id}
+                  {data.title}
                 </Text>
               </BreadcrumbItem>
             )}
