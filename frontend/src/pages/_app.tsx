@@ -7,20 +7,24 @@ import { Box, CssBaseline } from '@mui/material'
 import { MDXProvider } from '@mdx-js/react'
 import { mdxComponents } from '@/mdxComponets'
 import { useRouter } from 'next/router'
+import useSWR, { Fetcher } from 'swr'
 
 const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 const theme = createTheme()
 
+type Csrf = { csrfToken: string }
+
+const fetcher: Fetcher<Csrf, string> = async (url: string) => {
+  return await axios.get(url).then((res) => res.data)
+}
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   axios.defaults.withCredentials = true
+  const { data } = useSWR(`${apiUrl}/auth/csrf`, fetcher)
   useEffect(() => {
-    const getCsrfToken = async () => {
-      const { data } = await axios.get(`${apiUrl}/auth/csrf`)
-      axios.defaults.headers.common['csrf-token'] = data.csrfToken
-    }
-    getCsrfToken()
-  }, [router.pathname])
+    axios.defaults.headers.common['csrf-token'] = data?.csrfToken
+  }, [router.pathname, data])
   return (
     <>
       <Head>
