@@ -1,77 +1,87 @@
 import path from 'path'
 import fs from 'fs'
 import matter from 'gray-matter'
-import { remark } from 'remark'
-import html from 'remark-html'
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemote } from 'next-mdx-remote'
+import { readFileSync } from 'fs'
 
-const diagramDirectory = path.join(process.cwd(), 'public', 'learn', 'diagrams')
+const diagramsDirectory = path.join(process.cwd(), 'public', 'learn', 'diagrams')
 
-export const getIntroductionData = async () => {
-  const fullPath = path.join(process.cwd(), 'public', 'learn', 'introduction', 'introduction.md')
-  const fileContent = fs.readFileSync(fullPath, 'utf8')
-  const matterResult = matter(fileContent)
-  const content = await remark().use(html).process(matterResult.content)
-  const contentHTML = content.toString()
+export const getIntroductionMdxData = async () => {
+  const introductionFilePath = path.join(
+    process.cwd(),
+    'public',
+    'learn',
+    'introduction',
+    'introduction.mdx',
+  )
+  const introductionFileContent = readFileSync(introductionFilePath, 'utf8')
+  const { data, content } = matter(introductionFileContent)
+  const mdxSource = await serialize(content)
   return {
-    contentHTML,
-    ...matterResult.data,
+    ...data,
+    mdxSource,
   }
 }
 
-export const getAllDiagramsData = () => {
-  const directories = ['sequence', 'usecase']
-  const allDiagramsData = directories.map((directory) => {
-    const fullPath = path.join(diagramDirectory, directory, `${directory}.md`)
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-
-    const matterResult = matter(fileContents)
-    return {
-      id: directory,
-      ...matterResult.data,
-    }
-  })
-  return allDiagramsData
+export const getDiagramDataList = async () => {
+  const directories = ['sequence', 'activity', 'state', 'gantt']
+  const diagramDataList = await Promise.all(
+    directories.map(async (directory) => {
+      const fullPath = path.join(diagramsDirectory, directory, `${directory}.mdx`)
+      const fileContents = readFileSync(fullPath, 'utf8')
+      const { data } = matter(fileContents)
+      return {
+        id: directory,
+        ...data,
+      }
+    }),
+  )
+  return diagramDataList
 }
 
-export const getAllDiagramIds = () => {
-  const fileNames = fs.readdirSync(diagramDirectory)
-  return fileNames.map((diagram) => {
+export const getAllDiagramNames = async () => {
+  const directoryNames = await fs.promises.readdir(diagramsDirectory)
+  const namePromises = directoryNames.map(async (directoryName) => {
+    const nameFilePath = path.join(diagramsDirectory, directoryName, `${directoryName}.mdx`)
+    const name = path.parse(nameFilePath).name
     return {
       params: {
-        name: diagram.replace(/\.md$/, ''),
+        name,
       },
     }
   })
+  return Promise.all(namePromises)
 }
 
 export const getDiagramData = async (id: string) => {
-  const fullPath = path.join(diagramDirectory, `${id}/${id}.md`)
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
-  const matterResult = matter(fileContents)
-  const diagramContent = await remark().use(html).process(matterResult.content)
-  const diagramContentHTML = diagramContent.toString()
+  const fullPath = path.join(diagramsDirectory, id, `${id}.mdx`)
+  const fileContents = readFileSync(fullPath, 'utf8')
+  const { data, content } = matter(fileContents)
+  const mdxSource = await serialize(content)
   return {
     id,
-    diagramContentHTML,
-    ...matterResult.data,
+    mdxSource,
+    ...data,
   }
 }
 
-export const getProblemIds = (id: string) => {
-  const currPath = path.join(diagramDirectory, `${id}/problems`)
-  const fileNames = fs.readdirSync(currPath, 'utf8')
-  const problemsData = fileNames.map((fileName) => {
-    const id = fileName.replace(/\.md$/, '')
-    const fullPath = path.join(currPath, fileName)
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const matterResult = matter(fileContents)
-
-    return {
-      id,
-      content: matterResult.content,
-      ...matterResult.data,
-    }
-  })
-
-  return problemsData
+export const getProblemDataList = async (name: string) => {
+  const problemDirectory = path.join(diagramsDirectory, name, 'problems')
+  const fileNames = await fs.promises.readdir(problemDirectory)
+  const problemDataList = await Promise.all(
+    fileNames.map(async (fileName) => {
+      const id = fileName.replace(/\.mdx$/, '')
+      const fullPath = path.join(problemDirectory, fileName)
+      const fileContents = readFileSync(fullPath, 'utf8')
+      const { data, content } = matter(fileContents)
+      const mdxSource = await serialize(content)
+      return {
+        id,
+        ...data,
+        mdxSource,
+      }
+    }),
+  )
+  return problemDataList
 }

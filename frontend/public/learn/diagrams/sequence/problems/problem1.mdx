@@ -1,6 +1,7 @@
 ---
 title: 'デバッグ作業'
 diagram: 'sequence'
+ans: 'A -> B: Message'
 ---
 
 # デバック作業
