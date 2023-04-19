@@ -1,6 +1,7 @@
 import { Project, Diagram } from '@/interfaces/dataTypes'
 import styled from 'styled-components'
 import DiagramsInProject from '../organisms/diagramsInProject'
+import ProjectMembers from '../organisms/projectMembers'
 
 type Props = {
   project?: Project & { diagrams: Diagram[] }
@@ -17,6 +18,9 @@ export default function ProjectBoard({
   addDiagram,
   deleteProject,
 }: Props) {
+  const handleDeleteProject = () => {
+    if (confirm('Do you really want to delete this project?') && project) deleteProject(project.id)
+  }
   return (
     <>
       {!project ? (
@@ -33,14 +37,9 @@ export default function ProjectBoard({
           />
           <div>
             <p>メンバー</p>
-            {
-              // <Owners />
-              '*現在はまだグループ対応DBが無いので一時的に中身なし'
-            }
+            {<ProjectMembers projectId={project.id} />}
           </div>
-          <DeleteButton onClick={() => deleteProject(project.id)}>
-            このプロジェクトを削除
-          </DeleteButton>
+          <DeleteButton onClick={handleDeleteProject}>このプロジェクトを削除</DeleteButton>
         </>
       )}
     </>
@@ -53,6 +52,7 @@ const DeleteButton = styled.button`
   background-color: white;
   border: 3px solid red;
   border-radius: 5px;
+  padding: 6px 16px;
   margin-top: 50px;
 
   &:hover {

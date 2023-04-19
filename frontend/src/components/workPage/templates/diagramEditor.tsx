@@ -1,5 +1,7 @@
 import useSWR, { Fetcher } from 'swr'
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import plantUmlEncoder from 'plantuml-encoder'
+import fileDownload from 'js-file-download'
 import { Project, Diagram } from '@/interfaces/dataTypes'
 import styled from 'styled-components'
 import { useState, Dispatch, SetStateAction, useEffect } from 'react'
@@ -41,7 +43,8 @@ const fetcher: Fetcher<Data, string> = async (url: string) => {
   return await axios.get(url, axiosConfig).then((res) => res.data)
 }
 
-const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
+const picUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/plantuml`
 
 export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Props) {
   const { data, isLoading, error, mutate } = useSWR(`${apiUrl}/project`, fetcher)
@@ -73,6 +76,15 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
   }
 
   const handleChangeContent = (newString: string) => setContent(newString)
+
+  const handleSaveFile = async () => {
+    const encodedUml = plantUmlEncoder.encode(content)
+    const url = `${picUrl}/${saveType}/${encodedUml}`
+    const fileName = `${name}.${saveType}`
+    const res = await fetch(url)
+    const blob = await res.blob()
+    fileDownload(blob, fileName)
+  }
 
   const handleEditDiagramName = async (pId: number, dId: number, name: string) => {
     const nextDiagramName = getUniqueDiagramName(pId, name)
@@ -251,7 +263,7 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
             <MenuItem value={'svg'}>svg</MenuItem>
             <MenuItem value={'txt'}>ascii</MenuItem>
           </Select>
-          <Button variant='outlined' sx={{ ml: '0.5rem' }}>
+          <Button variant='outlined' sx={{ ml: '0.5rem' }} onClick={handleSaveFile}>
             ダウンロード
           </Button>
         </Box>

@@ -6,6 +6,7 @@ import IconButton from './components/learnPage/molecules/IconButton'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import CustomBox from './components/common/atoms/box'
+import Editor from './components/common/molecules/editor'
 
 export const mdxComponents = {
   MonacoEditor,
@@ -16,4 +17,5 @@ export const mdxComponents = {
   IconButton,
   ArrowForwardIosIcon,
   ArrowBackIosIcon,
+  Editor,
 }

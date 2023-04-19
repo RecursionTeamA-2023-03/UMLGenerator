@@ -1,0 +1,108 @@
+---
+title: "アクティビティ図(新記法)"
+---
+
+# アクティビティ図(新記法)
+## 基本
+<Editor
+placeholder="
+start"
+imgPath="/cheatSheetsImg/activity/start.png"
+/>
+<Editor
+placeholder="
+:アクティビティA;"
+imgPath="/cheatSheetsImg/activity/アクティビティA.png"
+/>
+<Editor
+placeholder="
+:アクティビティB
+(改行);"
+imgPath="/cheatSheetsImg/activity/アクティビティB(改行).png"
+/>
+<Editor
+placeholder="
+stop"
+imgPath="/cheatSheetsImg/activity/stop.png"
+/>
+<Editor
+placeholder="
+note right 
+ 注釈 
+ end note"
+imgPath="/cheatSheetsImg/activity/注釈.png"
+/>
+
+## ループ処理
+<Editor
+placeholder="
+while (i < 10) 
+ :アクティビティ; 
+ endwhile"
+imgPath="/cheatSheetsImg/activity/while.png"
+/>
+<Editor placeholder="
+repeat 
+ :アクティビティ; 
+ repeat while (i < 10)"
+imgPath="/cheatSheetsImg/activity/repeat.png"
+/>
+
+## 分岐処理
+<Editor placeholder="
+if (x > 0) then (true) 
+ :アクティビティA; 
+ else if (x == 0) then (true) 
+ :アクティビティB; 
+ else (false) 
+ :アクティビティC; 
+ endif"
+imgPath="/cheatSheetsImg/activity/if.png"
+/>
+<Editor placeholder="
+!pragma useVerticalIf on 
+ if (x > 0) then (true) 
+ :アクティビティA; 
+ else if (x == 0) then (true) 
+ :アクティビティB; 
+ else (false) 
+ :アクティビティC; 
+ endif"
+imgPath="/cheatSheetsImg/activity/useVerticalIf.png"
+/>
+<Editor placeholder="
+if (x > 0) then (true) 
+ :アクティビティA; 
+ kill 
+ else if (x == 0) then (true) 
+ :アクティビティB; 
+ kill 
+ else (false) 
+ :アクティビティC; 
+ endif"
+imgPath="/cheatSheetsImg/activity/kill.png"
+/>
+
+## 並列処理
+<Editor placeholder="
+fork 
+ :アクティビティA; 
+ fork 
+ :アクティビティB; 
+ fork again 
+ :アクティビティC; 
+ end fork 
+ fork again 
+ :アクティビティD; 
+ end fork"
+imgPath="/cheatSheetsImg/activity/fork.png"
+/>
+
+## グループ化
+<Editor placeholder="
+group グループA 
+ :アクティビティA; 
+ :アクティビティB; 
+ end group"
+imgPath="/cheatSheetsImg/activity/group.png"
+/>

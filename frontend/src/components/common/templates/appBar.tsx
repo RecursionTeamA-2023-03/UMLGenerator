@@ -25,12 +25,12 @@ const pages = [
 ]
 const settings = [
   { name: 'Account', link: 'acount', mode: 'login' },
-  { name: 'Signup', link: 'signIn', mode: 'logout' },
+  { name: 'Signup', link: 'signUp', mode: 'logout' },
   { name: 'Login', link: 'login', mode: 'logout' },
   { name: 'Logout', link: 'logout', mode: 'login' },
 ]
 
-const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 const axiosConfig: AxiosRequestConfig = {
   transformResponse: (data) =>
     JSON.parse(data, (key, val) => {
