@@ -6,7 +6,6 @@ import { useEffect } from 'react'
 import { Box, CssBaseline } from '@mui/material'
 import { MDXProvider } from '@mdx-js/react'
 import { mdxComponents } from '@/mdxComponets'
-import { useRouter } from 'next/router'
 import useSWR, { Fetcher } from 'swr'
 
 const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
@@ -19,12 +18,11 @@ const fetcher: Fetcher<Csrf, string> = async (url: string) => {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter()
   axios.defaults.withCredentials = true
   const { data } = useSWR(`${apiUrl}/auth/csrf`, fetcher)
   useEffect(() => {
     axios.defaults.headers.common['csrf-token'] = data?.csrfToken
-  }, [router.pathname, data])
+  }, [data])
   return (
     <>
       <Head>
