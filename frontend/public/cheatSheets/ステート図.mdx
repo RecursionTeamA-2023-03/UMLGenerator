@@ -1,0 +1,70 @@
+# ステート図
+
+## ステート
+<Editor
+placeholder="
+state A
+"
+imgPath="/cheatSheetsImg/state/ステートA.png"
+/>
+
+<Editor
+placeholder="
+state A : description
+"
+imgPath="/cheatSheetsImg/state/ステートA説明.png"
+/>
+
+## 遷移
+<Editor
+placeholder="
+state A 
+ [*] -->  A
+"
+imgPath="/cheatSheetsImg/state/開始.png"
+/>
+
+<Editor
+placeholder="
+state A 
+ state X 
+ A --> X : true
+"
+imgPath="/cheatSheetsImg/state/遷移.png"
+/>
+
+## サブ状態
+<Editor
+placeholder="
+state X { 
+   state B 
+ state C 
+ state D 
+ state E 
+ }
+"
+imgPath="/cheatSheetsImg/state/サブ状態.png"
+/>
+
+## 領域
+<Editor
+placeholder="
+state X { 
+   B --> C : true 
+ C --> B : false 
+ -- 
+ E --> D : true 
+ D --> E : false 
+ }
+"
+imgPath="/cheatSheetsImg/state/領域.png"
+/>
+
+## 注釈
+<Editor
+placeholder="
+state A 
+ note left of A : note
+"
+imgPath="/cheatSheetsImg/state/注釈.png"
+/>

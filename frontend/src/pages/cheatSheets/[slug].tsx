@@ -1,9 +1,11 @@
 import { NextPage, InferGetStaticPropsType } from 'next'
 import { getAllPosts, getPostBySlug } from '../api/cheatSheets/getMdFiles'
-import markdownToHtml from '../api/cheatSheets/markdownToHtml'
 import AppBarWithDrawer from '@/components/common/templates/appBar'
 import { Box, List, ListItem, ListItemButton, ListItemText, Toolbar } from '@mui/material'
 import { useRouter } from 'next/router'
+import { MDXRemote } from 'next-mdx-remote'
+import { serialize } from 'next-mdx-remote/serialize'
+import TopicsCard from '../api/cheatSheets/toc'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -30,12 +32,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }: any) => {
   const post = getPostBySlug(params.slug, ['slug', 'title', 'date', 'content'])
   const posts = getAllPosts(['slug'])
-  // Markdown を HTML に変換する
-  const tmpContent = await markdownToHtml(post.content);
-  
-  // htmlの部分的置き換え(枠線,改行,目次リンク)
-  const addCustomReplaces = tmpContent.replace(/<table>/g, '<table border="1">').replace(/-br-/g, '<br>').replace(/user-content-/g, '');
-  const content = addCustomReplaces;
+  const mdxSource = await serialize(post.content);
 
   // content を詰め直して返す
   return {
@@ -43,7 +40,7 @@ export const getStaticProps = async ({ params }: any) => {
       posts,
       post: {
         ...post,
-        content,
+        mdxSource,
       },
     },
   }
@@ -72,7 +69,10 @@ const Post: NextPage<Props> = ({ posts, post }) => {
       </AppBarWithDrawer>
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      <div className="cheatSheets">
+          <TopicsCard/>
+          <MDXRemote {...post.mdxSource}></MDXRemote>
+      </div>
       </Box>
     </>
   )
