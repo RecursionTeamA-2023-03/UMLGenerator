@@ -7,6 +7,5 @@ RUN set -ex && \
 	chmod +x /entrypoint-nginx.sh
 
 COPY ./vhost.production.template /etc/nginx/conf.d/vhost.template
-COPY /etc/letsencrypt /etc/letsencrypt
 
 CMD ["/entrypoint-nginx.sh"]

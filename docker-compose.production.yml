@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       TZ: "Asia/Tokyo"
     volumes:
-      - db/data:/var/lib/postgresql/data
+      - ./db/data:/var/lib/postgresql/data
     expose:
       - 5432
     healthcheck:
@@ -17,10 +17,11 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+    restart: always
   app:
     build:
       context: ./backend
-      dockerfile: Dockerfile # change file if production env
+      dockerfile: Dockerfile
     container_name: nest-server
     expose:
       - 3000
@@ -35,6 +36,7 @@ services:
       - ./backend/src:/app/src
       - ./backend/test:/app/test
       - ./backend/prisma:/app/prisma
+    restart: always
   servlet:
     image: plantuml/plantuml-server:jetty
     container_name: plantuml-server
@@ -42,15 +44,20 @@ services:
       - 8080
     environment:
       - BASE_URL=plantuml
+    restart: always
   nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile # change file if production env
+      dockerfile: Dockerfile
     container_name: nginx
     depends_on:
       - app
+      - servlet
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./nginx/html:/var/www/html
     environment:
-      NGINX_SERVER_NAME: uml-generator-server.com # change domain if production env
+      NGINX_SERVER_NAME: uml-generator-server.com
       NEST_HOST: nest-server
       NEST_PORT: 3000
       PLANTUML_HOST: plantuml-server
@@ -61,9 +68,11 @@ services:
     ports:
       - 80:80
       - 443:443
-### certbot ################################################
+    restart: always
   certbot:
+    container_name: certbot
     image: certbot/certbot:v1.7.0
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
+      - ./nginx/html:/var/www/html
     command: ["--version"]

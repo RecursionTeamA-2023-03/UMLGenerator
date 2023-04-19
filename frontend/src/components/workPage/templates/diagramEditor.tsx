@@ -41,7 +41,7 @@ const fetcher: Fetcher<Data, string> = async (url: string) => {
   return await axios.get(url, axiosConfig).then((res) => res.data)
 }
 
-const apiUrl = `https://${process.env.AWS_DOMAIN || 'localhost'}:443/api`
+const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 
 export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Props) {
   const { data, isLoading, error, mutate } = useSWR(`${apiUrl}/project`, fetcher)
