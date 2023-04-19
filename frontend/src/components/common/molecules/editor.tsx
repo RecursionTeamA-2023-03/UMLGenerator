@@ -28,7 +28,7 @@ const Editor = (props: EditorProps) => {
         width='40%'
         height='25vh'
       />
-      <img src={`${props.imgPath}`}  height="100%" alt=""/>
+      <img src={`${props.imgPath}`} height='100%' alt='' />
     </Wrapper>
   )
 }
