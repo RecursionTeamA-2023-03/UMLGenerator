@@ -42,7 +42,7 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
         <List>
           <StyledListItem key='introduction' className={currentPath === undefined ? 'active' : ''}>
             <ListItemButton onClick={() => router.push(`/learn/`)}>
-              <ListItemText primary='Introduction' />
+              <ListItemText primary='イントロダクション' />
             </ListItemButton>
           </StyledListItem>
           {sidebarData.map((data: any) => (
@@ -64,7 +64,7 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
             {currentPath && (
               <BreadcrumbItem>
                 <Text variant='small'>
-                  <Link href='/learn'>Introduction</Link>
+                  <Link href='/learn'>イントロダクション</Link>
                 </Text>
               </BreadcrumbItem>
             )}
