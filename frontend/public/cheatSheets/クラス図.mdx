@@ -1,0 +1,174 @@
+---
+title: "クラス図"
+---
+
+# クラス図
+
+## プロパティ&メソッド
+
+<Editor placeholder="
+class ClassName { 
+  {static} String field1
+  Number field2 
+  Number field3 
+  -- 
+  {static} void method1()
+   Number method2()
+   Boolean method3()
+  }
+  " imgPath="/cheatSheetsImg/class/プロパティ.png"
+/>
+
+## 可視性の定義
+
+<Editor placeholder="
+class ClassName { 
+ - private_field 
+ ~ package_private_field 
+ # protected_field 
+ + public_field 
+ -- 
+ - private_method() 
+  ~package_private_method() 
+ # protected_method() 
+ + public_method() 
+ }
+  " imgPath="/cheatSheetsImg/class/可視性の定義.png"
+/>
+
+## 抽象クラス
+
+<Editor placeholder="
+abstract class AbstractClassName { 
+ # field 
+ -- 
+ - {abstract} method1() 
+ # method2() 
+ # method3() 
+ }
+  " imgPath="/cheatSheetsImg/class/抽象クラス.png"
+/>
+
+## インタフェース
+
+<Editor placeholder="
+interface InterfaceName { 
+  
+ - field 
+
+ -- 
+
+ + method() 
+
+ }
+  " imgPath="/cheatSheetsImg/class/インタフェース.png"
+/>
+
+## クラス間の関係
+
+<Editor placeholder="
+ Class01 <|-- Class02 
+ Class03 *-- Class04 
+ Class05 o-- Class06 
+ Class07 .. Class08 
+ Class09 -- Class10
+   " imgPath="/cheatSheetsImg/class/クラス間の関係1.png"
+/>
+ 
+<Editor placeholder="
+ Class11 <|.. Class12 
+ Class13 --> Class14 
+ Class15 ..> Class16 
+ Class17 ..|> Class18 
+ Class19 <--* Class20
+   " imgPath="/cheatSheetsImg/class/クラス間の関係2.png"
+/>
+
+<Editor placeholder="
+ Class21 #-- Class22 
+ Class23 x-- Class24 
+ Class25 }-- Class26 
+ Class27 +-- Class28 
+ Class29 ^-- Class30
+  " imgPath="/cheatSheetsImg/class/クラス間の関係3.png"
+/>
+
+## ラベル
+
+<Editor placeholder="
+ClassA *--  ClassB : contains
+" imgPath="/cheatSheetsImg/class/ラベル.png"
+/>
+
+## パッケージ
+
+<Editor placeholder="
+ package PackageA { 
+  
+ class ClassA { 
+  
+
+ } 
+
+ class ClassB { 
+  
+
+ } 
+
+ } 
+
+
+
+ package PackageB { 
+  
+   class ClassC { 
+  
+
+ } 
+
+ package PackageC { 
+  
+   class ClassD { 
+  
+
+ } 
+
+
+
+ class ClassE { 
+  
+
+ } 
+
+ } 
+
+ " imgPath="/cheatSheetsImg/class/パッケージ.png"
+/>
+
+## 名前空間
+
+<Editor placeholder="
+namespace PackageA { 
+ class Abc { 
+  
+ } 
+ class Xyz { 
+  
+ } 
+ }  
+ namespace PackageB { 
+   class Abc { 
+  
+ } 
+ 
+ namespace PackageC { 
+   class Xyz { 
+  
+ } 
+ } 
+ } 
+ 
+ PackageA.Abc ..> PackageA.Xyz 
+ PackageB.Abc ..> PackageB.PackageC.Xyz
+" imgPath="/cheatSheetsImg/class/名前空間.png"
+/>

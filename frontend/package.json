@@ -40,8 +40,11 @@
     "remark": "^14.0.2",
     "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.2",
+    "remark-slug": "^7.0.1",
+    "remark-toc": "^8.0.1",
     "styled-components": "^5.3.9",
-    "swr": "^2.1.0"
+    "swr": "^2.1.0",
+    "tocbot": "^4.21.0"
   },
   "devDependencies": {
     "@types/plantuml-encoder": "^1.4.0",
