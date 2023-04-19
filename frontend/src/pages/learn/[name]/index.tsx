@@ -10,6 +10,7 @@ import {
   getProblemDataList,
 } from 'lib/diagram'
 import { MDXRemote } from 'next-mdx-remote'
+import ProblemBox from '@/components/common/molecules/problemBox'
 
 export const getStaticPaths = async () => {
   const paths = await getAllDiagramNames()
@@ -36,14 +37,9 @@ export default function LearnContent({ allDiagramData, currDiagramData, problems
   const components = {
     ProblemList: () => (
       <>
-        <Text variant='medium' fontColor={theme.colors.black}>
-          練習問題に取り組みましょう
-        </Text>
         {problems.map((id: any) => {
           return (
-            <Text as='p' variant='medium' key={id.id} fontColor={theme.colors.black}>
-              <Link href={`/learn/${currDiagramData.id}/${id.id}`}>{id.title}</Link>
-            </Text>
+            <ProblemBox key={id} link={`/learn/${currDiagramData.id}/${id.id}`} title={id.title} />
           )
         })}
       </>

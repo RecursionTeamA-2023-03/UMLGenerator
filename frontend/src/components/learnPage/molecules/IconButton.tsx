@@ -8,6 +8,9 @@ interface IconButtonProps {
   startIcon?: React.ReactNode
   endIcon?: React.ReactNode
 }
+const Container = styled.div`
+  margin-top: 2rem;
+`
 
 const StyledButton = styled(Button)({
   backgroundColor: '#fff',
@@ -20,11 +23,13 @@ const StyledButton = styled(Button)({
 
 const IconButton = ({ text, startIcon, endIcon, link }: IconButtonProps) => {
   return (
-    <Link href={link} passHref>
-      <StyledButton variant='outlined' startIcon={startIcon} endIcon={endIcon}>
-        {text}
-      </StyledButton>
-    </Link>
+    <Container>
+      <Link href={link} passHref>
+        <StyledButton variant='outlined' startIcon={startIcon} endIcon={endIcon}>
+          {text}
+        </StyledButton>
+      </Link>
+    </Container>
   )
 }
 

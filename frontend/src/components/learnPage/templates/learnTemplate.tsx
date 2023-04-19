@@ -56,7 +56,7 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
       </AppBarWithDrawer>
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <div>
+        <div style={{ padding: '2rem' }}>
           <Text variant='large' marginLeft='1em' fontColor={theme.colors.black}>
             {data.title}
           </Text>

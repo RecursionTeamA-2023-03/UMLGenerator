@@ -10,7 +10,8 @@ title: 'Sequence Diagram'
 
 それでは、ユーザー認証システムのシーケンス図を作成しながら PlantUML のシーケンス図の書き方を学びましょう。
 
-<UmlPic umlText="
+<CustomBox position="center">
+<UmlPic width="50%" umlText="
 @startuml
 actor User
 participant Frontend
@@ -37,6 +38,8 @@ User -> Frontend : ログアウトをクリック
 Frontend -> Backend : ログアウトリクエストを送信
 Backend -> Frontend : ログアウト成功を返信
 @enduml" />
+
+</CustomBox>
 
 ## 基本的な例
 
@@ -153,7 +156,9 @@ Frontend -> User : ログイン成功
 
 このような流れでシーケンス図を作成することができます。
 
-<ProblemList />
+<CustomBox position='center' direction='column'>
+  <ProblemList />
+</CustomBox>
 
 <CustomBox>
   <IconButton text='Prev Introduction' link='/learn' startIcon={<ArrowBackIosIcon />} />

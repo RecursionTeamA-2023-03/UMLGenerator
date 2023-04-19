@@ -10,11 +10,12 @@ interface CustomBoxProps {
     | 'space-between'
     | 'space-around'
     | 'space-evenly'
+  direction?: 'row' | 'column'
 }
 
-const CustomBox = ({ children, position = 'space-between' }: CustomBoxProps) => {
+const CustomBox = ({ children, position = 'space-between', direction }: CustomBoxProps) => {
   return (
-    <Box display='flex' justifyContent={position}>
+    <Box display='flex' justifyContent={position} flexDirection={direction}>
       {children}
     </Box>
   )
