@@ -1,6 +1,6 @@
 import useSWR, { Fetcher } from 'swr'
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
-import plantUmlEncoder from "plantuml-encoder"
+import plantUmlEncoder from 'plantuml-encoder'
 import fileDownload from 'js-file-download'
 import { Project, Diagram } from '@/interfaces/dataTypes'
 import styled from 'styled-components'
