@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   axios.defaults.withCredentials = true
   useEffect(() => {
-    axios.get(`${apiUrl}/auth/csrf`).then(res=>{
+    axios.get(`${apiUrl}/auth/csrf`).then((res) => {
       axios.defaults.headers.common['csrf-token'] = res.data.csrfToken
     })
   }, [router.pathname])
