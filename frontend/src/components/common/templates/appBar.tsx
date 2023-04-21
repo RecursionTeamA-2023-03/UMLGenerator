@@ -21,7 +21,7 @@ import DrawerLeft from './drawer'
 const pages = [
   { name: 'work', link: 'work' },
   { name: 'learn', link: 'learn' },
-  { name: 'cheat sheet', link: 'cheatSheets' },
+  { name: 'cheat sheet', link: 'cheatSheets/アクティビティ図' },
 ]
 const settings = [
   { name: 'Account', link: 'acount', mode: 'login' },

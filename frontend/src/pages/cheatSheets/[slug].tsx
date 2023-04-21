@@ -53,11 +53,6 @@ const Post: NextPage<Props> = ({ posts, post }) => {
     <>
       <AppBarWithDrawer withDrawer={true}>
         <List>
-          <ListItem key='introduction'>
-            <ListItemButton onClick={() => router.push(`/cheatSheets/`)}>
-              <ListItemText primary='Introduction' />
-            </ListItemButton>
-          </ListItem>
           {posts.map((items) => (
             <ListItem key={items.slug}>
               <ListItemButton onClick={() => router.push(`/cheatSheets/${items.slug}`)}>
