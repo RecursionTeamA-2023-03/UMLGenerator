@@ -1,65 +1,59 @@
 ---
-title: "アクティビティ図(新記法)"
+title: 'アクティビティ図'
 ---
 
 # アクティビティ図(新記法)
 ## 基本
-<Editor
-placeholder="
-start"
-imgPath="/cheatSheetsImg/activity/start.png"
+<CheatSheetsEditorPreview placeholder='
+start
+'
 />
-<Editor
-placeholder="
-:アクティビティA;"
-imgPath="/cheatSheetsImg/activity/アクティビティA.png"
+<CheatSheetsEditorPreview placeholder='
+:アクティビティA;
+'
 />
-<Editor
-placeholder="
+<CheatSheetsEditorPreview placeholder='
 :アクティビティB
-(改行);"
-imgPath="/cheatSheetsImg/activity/アクティビティB(改行).png"
+(改行);
+'
 />
-<Editor
-placeholder="
-stop"
-imgPath="/cheatSheetsImg/activity/stop.png"
+<CheatSheetsEditorPreview placeholder='
+stop
+'
 />
-<Editor
-placeholder="
+<CheatSheetsEditorPreview placeholder='
 note right 
  注釈 
- end note"
-imgPath="/cheatSheetsImg/activity/注釈.png"
+ end note
+'
 />
 
 ## ループ処理
-<Editor
-placeholder="
+<CheatSheetsEditorPreview placeholder='
 while (i < 10) 
  :アクティビティ; 
- endwhile"
-imgPath="/cheatSheetsImg/activity/while.png"
+ endwhile
+'
 />
-<Editor placeholder="
+<CheatSheetsEditorPreview placeholder='
 repeat 
  :アクティビティ; 
- repeat while (i < 10)"
-imgPath="/cheatSheetsImg/activity/repeat.png"
+ repeat while (i < 10)
+'
 />
 
 ## 分岐処理
-<Editor placeholder="
+<CheatSheetsEditorPreview placeholder='
 if (x > 0) then (true) 
  :アクティビティA; 
  else if (x == 0) then (true) 
  :アクティビティB; 
  else (false) 
  :アクティビティC; 
- endif"
-imgPath="/cheatSheetsImg/activity/if.png"
+ endif
+'
 />
-<Editor placeholder="
+<CheatSheetsEditorPreview placeholder='
 !pragma useVerticalIf on 
  if (x > 0) then (true) 
  :アクティビティA; 
@@ -67,10 +61,10 @@ imgPath="/cheatSheetsImg/activity/if.png"
  :アクティビティB; 
  else (false) 
  :アクティビティC; 
- endif"
-imgPath="/cheatSheetsImg/activity/useVerticalIf.png"
+ endif
+'
 />
-<Editor placeholder="
+<CheatSheetsEditorPreview placeholder='
 if (x > 0) then (true) 
  :アクティビティA; 
  kill 
@@ -79,12 +73,12 @@ if (x > 0) then (true)
  kill 
  else (false) 
  :アクティビティC; 
- endif"
-imgPath="/cheatSheetsImg/activity/kill.png"
+ endif
+'
 />
 
 ## 並列処理
-<Editor placeholder="
+<CheatSheetsEditorPreview placeholder='
 fork 
  :アクティビティA; 
  fork 
@@ -94,15 +88,15 @@ fork
  end fork 
  fork again 
  :アクティビティD; 
- end fork"
-imgPath="/cheatSheetsImg/activity/fork.png"
+ end fork
+'
 />
 
 ## グループ化
-<Editor placeholder="
+<CheatSheetsEditorPreview placeholder='
 group グループA 
  :アクティビティA; 
  :アクティビティB; 
- end group"
-imgPath="/cheatSheetsImg/activity/group.png"
+ end group
+'
 />
