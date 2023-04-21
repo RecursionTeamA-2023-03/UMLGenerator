@@ -3,8 +3,6 @@ import UmlPic from '@/components/common/organisms/umlPic'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-
-
 interface EditorPreviewProps {
   height?: string
   width?: string
