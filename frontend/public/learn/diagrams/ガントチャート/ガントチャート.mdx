@@ -2,8 +2,6 @@
 title: 'ガントチャート'
 ---
 
-# ガントチャート
-
 ## ガントチャートとは？
 
 ガントチャート（Gantt chart）は、作業やタスクの進捗状況を時系列で視覚的に表現するために用いられるグラフの一種です。横軸に時間、縦軸にタスクや作業の一覧を表示し、それぞれのタスクがどの期間に実行されるかを棒グラフで表現します。各タスクの開始日と終了日を表す棒グラフが並べられることで、プロジェクト全体の進捗状況を一目で確認することができます。
@@ -12,43 +10,100 @@ title: 'ガントチャート'
 
 ## 基本的な例
 
-テキスト形式でガントチャートを定義することができます。タスクの名前、開始日、終了日、進捗状況を記述します。
-コードの最初に@startgantt、最後に@endgantt と書くことでガントチャートを記述できます。
-タスクの定義は[Task]のようにに角カッコを使用します。
-期間の定期は last を使用します。
-開始は start, 終了は end を使用します。また、両方を日付で指定することもできます。
-
-```
-@startgantt
-language ja
-
-[プロトタイプを設計] lasts 15 days
-[プロトタイプをテスト] lasts 10 days
-
-Project starts 2023-07-01
-[プロトタイプを設計] ends 2023-07-15
-[プロトタイプをテスト] ends 2023-07-25
-
-@endgantt
-```
-
-and で繋ぐことで、宣言を簡潔に記述できます。
-
-```
+<EditorPreview
+  placeholder='
 @startgantt
 language ja
 
 Project starts 2023-07-01
-[プロトタイプを設計] starts 2023-07-01 and ends 2023-07-15
-[プロトタイプをテスト] starts 2023-07-16 and lasts 10 days
+[タスク名 1] starts 2023-07-01 and ends 2023-07-15
+[タスク名 2] starts 2023-07-16 and lasts 10 days
 @endgantt
+'
+/>
 
-```
+このように書くことで、タスク名という名前のタスクが、開始日から期間の間だけ実行され、その後終了日で終了することを表します。
+
+それでは, ソフトウェア開発のガントチャートを作成しながら PlantUML のガントチャートの書き方を学びましょう。
+
+<CustomBox position='center'>
+  <UmlPic
+    umlText='
+@startgantt
+language ja
+
+Project starts 2023-05-01
+[要件定義] as [RD] starts 2023-05-01 and ends 2023-05-14
+[設計] as [SD] starts 2023-05-15 and ends 2023-05-31
+[実装] as [IMP] starts 2023-06-01 and ends 2023-06-21
+[テスト] as [TEST] starts 2023-06-22 and ends 2023-06-28
+[リリース準備] as [PRP] starts 2023-06-29 and ends 2023-06-30
+@endgantt
+'
+/>
+
+</CustomBox>
+
+## STEP1
+
+タスクと期間を設定します。今回のソフトウェア開発は、
+
+- 要件定義：5/1〜5/14 -ユーザー- 要件の洗い出しと文書作成
+- 設計：5/15〜5/31 - 詳細設計と画面設計
+- 実装：6/1〜6/21 - コーディング
+- テスト：6/22〜6/28 - 結合テストと総合テスト
+- リリース準備：6/29〜6/30 - リリースノート作成とドキュメント整備
+
+このようなスケジュールで行うとします。
+
+## STEP2
+
+タスクと期限を元に記述していきます。
+
+<EditorPreview
+  placeholder="
+@startgantt
+language ja
+
+Project starts 2023-05-01
+[要件定義] as [RD] starts 2023-05-01 and ends 2023-05-14
+'as を使うことで短い名前をつけることができます。
+'下に追加しましょう。
+@endgantt
+'
+"
+/>
+
+## STEP3
+
+基本的な作成方法は以上ですが、進捗や色を追加することができます。
+
+<EditorPreview
+  placeholder="
+@startgantt
+language ja
+
+Project starts 2023-05-01
+[要件定義] as [RD] starts 2023-05-01 and ends 2023-05-14
+[設計] as [SD] starts 2023-05-15 and ends 2023-05-31
+[実装] as [IMP] starts 2023-06-01 and ends 2023-06-21
+'[タスク名] is 数値 completed 　で進捗を記述できます
+[実装] is 40% completed
+'[タスク名] is colored in '色'　で色を追加できます
+[実装] is colored in GreenYellow
+[テスト] as [TEST] starts 2023-06-22 and ends 2023-06-28
+[リリース準備] as [PRP] starts 2023-06-29 and ends 2023-06-30
+@endgantt
+'
+"
+/>
+
+このような流れでガントチャートを作成することができます。
 
 <CustomBox position='center' direction='column'>
   <ProblemList />
 </CustomBox>
 
 <CustomBox position='flex-start'>
-  <IconButton text='Prev 状態図' link='/learn/状態図' startIcon={<ArrowBackIosIcon />} />
+  <IconButton text='Prev 状態遷移図' link='/learn/状態遷移図' startIcon={<ArrowBackIosIcon />} />
 </CustomBox>
