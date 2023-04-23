@@ -29,7 +29,7 @@ export const getDiagramDataList = async () => {
     'シーケンス図',
     'ユースケース図',
     'アクティビティ図',
-    '状態図',
+    '状態遷移図',
     'ガントチャート',
   ]
   const diagramDataList = await Promise.all(

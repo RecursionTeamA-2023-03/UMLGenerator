@@ -2,11 +2,13 @@ import { activityKeywords, activityRoot, activityTheme } from './activityDiagram
 import { ganttKeywords } from './ganttDiagramSyntax'
 import { sequenceKeywords, sequenceRoot, sequenceTheme } from './sequenceDiagramSyntax'
 import { stateKeywords, stateRoot, stateTheme } from './stateDiagram.Syntax'
+import { usecaseKeywords, usecaseRoot, usecaseTheme } from './usecaseDiagram'
 
 export const plantumlConstants = ['@startuml', '@enduml', '@startgantt', '@endgantt']
 
 export const plantumlKeywords = [
   ...sequenceKeywords,
+  ...usecaseKeywords,
   ...activityKeywords,
   ...stateKeywords,
   ...ganttKeywords,
@@ -30,6 +32,7 @@ export const plantumlRoot = [
   { regex: /^[0-9]+(\.[0-9]+)?$/, action: 'number' },
   ...sequenceRoot,
   ...activityRoot,
+  ...usecaseRoot,
   ...stateRoot,
   { regex: /'.*$/, action: 'comment' },
 ]
@@ -46,6 +49,7 @@ export const plantumlThemes = [
   { token: 'number', foreground: '#333333' },
   { token: 'class', foreground: '#B5CEA8' },
   ...sequenceTheme,
+  ...usecaseTheme,
   ...activityTheme,
   ...stateTheme,
 ]
