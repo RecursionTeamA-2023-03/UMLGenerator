@@ -236,7 +236,7 @@ export default function TemplateEditor({ template, handleSelectTemplate }: Props
             </CardContent>
             <Divider sx={{ mb: 1 }} />
             <CardMedia sx={{ textAlign: 'center' }}>
-              <UmlPic umlText={content} maxHeight='60vh' />
+              <UmlPic umlText={content} maxWidth='100%' maxHeight='60vh' />
             </CardMedia>
           </Card>
         </Grid>
@@ -253,7 +253,7 @@ export default function TemplateEditor({ template, handleSelectTemplate }: Props
       >
         <Card sx={{ maxWidth: '95%', maxHeight: '95vh' }}>
           <CardMedia>
-            <UmlPic umlText={content} maxHeight='95vh' />
+            <UmlPic umlText={content} maxWidth='100%' maxHeight='95vh' />
           </CardMedia>
         </Card>
       </Modal>

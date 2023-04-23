@@ -20,8 +20,8 @@ export default function UmlPic({
   umlText,
   width,
   height = 'auto',
-  maxWidth = '100%',
-  maxHeight = '100%',
+  maxWidth = '400px',
+  maxHeight = '400px',
 }: Props) {
   const plantUmlEncoder = require('plantuml-encoder') // eslint-disable-line
   const encodedText = plantUmlEncoder.encode(umlText)
