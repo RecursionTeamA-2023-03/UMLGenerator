@@ -10,8 +10,16 @@ import AppBarWithDrawer from '@/components/common/templates/appBar'
 import WorkDrawerList from '@/components/workPage/organisms/workDrawerList'
 import { Box, Toolbar, CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router'
+import getTemplate from 'lib/template'
 
 type Data = (Project & { diagrams: Diagram[] })[]
+type Template = {
+  name: string
+  content: string[]
+}
+type Props = {
+  templates: Template[]
+}
 
 const axiosConfig: AxiosRequestConfig = {
   transformResponse: (data) =>
@@ -27,7 +35,7 @@ const fetcher: Fetcher<Data, string> = async (url: string) => {
 
 const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 
-export default function Work() {
+export default function Work({ templates }: Props) {
   const { data, error, isLoading, mutate } = useSWR(`${apiUrl}/project`, fetcher)
 
   const [isMyBoard, setIsMyBoard] = useState<boolean>(true)
@@ -84,17 +92,17 @@ export default function Work() {
   const getUniqueProjectName = (name = 'Project_1') => {
     if (!data) return
     let nextProjectName = name
-    data?.forEach((p) => {
-      if (p.name === nextProjectName) {
-        const nameArray = nextProjectName.split('_')
-        if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
-          nameArray.push('1')
-        } else {
-          nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
-        }
-        nextProjectName = nameArray.join('_')
+    const nameSet = new Set()
+    data.forEach((p) => nameSet.add(p.name))
+    while (nameSet.has(nextProjectName)) {
+      const nameArray = nextProjectName.split('_')
+      if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
+        nameArray.push('1')
+      } else {
+        nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
       }
-    })
+      nextProjectName = nameArray.join('_')
+    }
     return nextProjectName
   }
 
@@ -325,9 +333,16 @@ export default function Work() {
             />
           )
         ) : (
-          <TemplateBoard />
+          <TemplateBoard templates={templates} />
         )}
       </Box>
     </>
   )
+}
+
+export async function getStaticProps() {
+  const templates = await getTemplate()
+  return {
+    props: templates,
+  }
 }

@@ -43,7 +43,12 @@ export default function DiagramsInProject({
           </>
         ) : (
           <>
-            <TextField variant='filled' onChange={(e) => setName(e.target.value)} value={name} />
+            <TextField
+              variant='filled'
+              label='New Name'
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+            />
             <Button
               disabled={name === ''}
               variant='contained'
@@ -84,11 +89,19 @@ export default function DiagramsInProject({
               onClick={() => handleSelectDiagram(d.id, projectId)}
               sx={{ height: '100px', width: '150px', m: '15px', bgcolor: 'DodgerBlue' }}
             >
-              <CardActionArea>
-                <CardContent component='h3' sx={{ m: '0', color: 'white' }}>
+              <CardActionArea
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  alignItems: 'stretch',
+                }}
+              >
+                <CardContent component='h3' sx={{ m: 0, pb: 0, color: 'white' }}>
                   {d.name}
                 </CardContent>
-                <CardContent component='p' sx={{ m: '0', color: 'white', textAlign: 'end' }}>
+                <CardContent component='p' sx={{ m: '0', pt: 0, color: 'white', textAlign: 'end' }}>
                   {'at ' + (d.updatedAt.getMonth() + 1) + '/' + d.updatedAt.getDate()}
                 </CardContent>
               </CardActionArea>
