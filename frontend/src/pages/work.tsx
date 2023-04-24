@@ -128,7 +128,6 @@ export default function Work({ templates }: Props) {
   }
 
   const handleDeleteProject = async (id: number) => {
-
     if (!data) return
 
     await axios
@@ -171,16 +170,16 @@ export default function Work({ templates }: Props) {
     const targetProject = data.find((p) => p.id === projectId)
     const nameSet = new Set()
     targetProject?.diagrams.forEach((d) => nameSet.add(d.name))
-    while(nameSet.has(nextDiagramName)) {
+    while (nameSet.has(nextDiagramName)) {
       const nameArray = nextDiagramName.split('_')
-        if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
-          nameArray.push('1')
-        } else {
-          nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
-        }
-        nextDiagramName = nameArray.join('_')
+      if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
+        nameArray.push('1')
+      } else {
+        nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
+      }
+      nextDiagramName = nameArray.join('_')
     }
-    
+
     return targetProject ? nextDiagramName : null
   }
 

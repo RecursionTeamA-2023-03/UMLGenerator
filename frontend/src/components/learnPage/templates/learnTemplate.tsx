@@ -7,7 +7,6 @@ import AppBarWithDrawer from '@/components/common/templates/appBar'
 import { Box, List, ListItem, ListItemButton, ListItemText, Toolbar } from '@mui/material'
 import { useRouter } from 'next/router'
 
-
 const StyledListItem = styled(ListItem)`
   &.active {
     background-color: #f5f5f5;
