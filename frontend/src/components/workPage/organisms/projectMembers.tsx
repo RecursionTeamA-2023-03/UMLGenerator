@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import useSWR, { Fetcher } from 'swr'
 import axios from 'axios'
 import {
@@ -95,8 +96,8 @@ export default function ProjectMembers({ projectId }: Props) {
         )}
         {members &&
           members.map((member) => (
-            <>
-              <ListItem key={projectId + member.email} alignItems='center'>
+            <Fragment key={member.email}>
+              <ListItem alignItems='center'>
                 <ListItemAvatar>
                   <Avatar alt={member.name} sx={{ bgcolor: theme.palette.primary.main }}>
                     {member.name.charAt(0).toUpperCase()}
@@ -112,7 +113,7 @@ export default function ProjectMembers({ projectId }: Props) {
                 </Button>
               </ListItem>
               <Divider variant='inset' component='li' />
-            </>
+            </Fragment>
           ))}
         <ListItem key='invite new member' alignItems='center'>
           <Typography sx={{ mr: 1 }}>Add Member</Typography>

@@ -67,9 +67,6 @@ export default function Work({ templates }: Props) {
   const handleAddProject = async () => {
     const nextProjectName = getUniqueProjectName()
 
-    // db update api call here
-    // if response is error then return
-
     if (!data || !nextProjectName) return
 
     await axios
@@ -109,9 +106,6 @@ export default function Work({ templates }: Props) {
   const handleEditProjectName = async (id: number, name: string) => {
     const nextProjectName = getUniqueProjectName(name)
 
-    // db update api call here
-    // if response is error then return
-
     if (!data || !nextProjectName) return
 
     await axios
@@ -134,8 +128,6 @@ export default function Work({ templates }: Props) {
   }
 
   const handleDeleteProject = async (id: number) => {
-    // db update api call here
-    // if response is error then return
 
     if (!data) return
 
@@ -150,9 +142,6 @@ export default function Work({ templates }: Props) {
 
   const handleAddDiagram = async (id: number) => {
     const nextDiagramName = getUniqueDiagramName(id)
-
-    // db update api call here
-    // if response is error then return
 
     if (!data || !nextDiagramName) return
 
@@ -180,25 +169,23 @@ export default function Work({ templates }: Props) {
 
     let nextDiagramName = name
     const targetProject = data.find((p) => p.id === projectId)
-    targetProject?.diagrams?.forEach((d) => {
-      if (d.name === nextDiagramName) {
-        const nameArray = nextDiagramName.split('_')
+    const nameSet = new Set()
+    targetProject?.diagrams.forEach((d) => nameSet.add(d.name))
+    while(nameSet.has(nextDiagramName)) {
+      const nameArray = nextDiagramName.split('_')
         if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
           nameArray.push('1')
         } else {
           nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
         }
         nextDiagramName = nameArray.join('_')
-      }
-    })
+    }
+    
     return targetProject ? nextDiagramName : null
   }
 
   const handleEditDiagramName = async (pId: number, dId: number, name: string) => {
     const nextDiagramName = getUniqueDiagramName(pId, name)
-
-    // db update api call here
-    // if response is error then return
 
     if (!data || !nextDiagramName) return
 
@@ -229,8 +216,6 @@ export default function Work({ templates }: Props) {
   }
 
   const handleEditDiagramContent = async (pId: number, dId: number, content: string) => {
-    // db update api call here
-    // if response is error then return
     if (!data) return
 
     await axios
@@ -260,8 +245,6 @@ export default function Work({ templates }: Props) {
   }
 
   const handleDeleteDiagram = async (pId: number, dId: number) => {
-    // db update api call here
-    // if response is error then return
     if (!data) return
 
     await axios

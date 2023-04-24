@@ -174,7 +174,7 @@ export default function TemplateEditor({ template, handleSelectTemplate }: Props
             <FormControl variant='standard' sx={{ ml: '0.5rem', minWidth: 120 }}>
               <InputLabel>保存先</InputLabel>
               <Select
-                value={saveProjectId}
+                value={saveProjectId ?? ''}
                 label='SaveProject'
                 onChange={(e) => setSaveProjectId(Number(e.target.value))}
               >
@@ -228,11 +228,9 @@ export default function TemplateEditor({ template, handleSelectTemplate }: Props
               <Typography gutterBottom variant='h6'>
                 出力結果
               </Typography>
-              <Button onClick={handleOpenModal}>
-                <IconButton>
-                  <ZoomInIcon />
-                </IconButton>
-              </Button>
+              <IconButton onClick={handleOpenModal}>
+                <ZoomInIcon />
+              </IconButton>
             </CardContent>
             <Divider sx={{ mb: 1 }} />
             <CardMedia sx={{ textAlign: 'center' }}>
