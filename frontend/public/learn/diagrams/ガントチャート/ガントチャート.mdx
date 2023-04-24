@@ -11,15 +11,15 @@ title: 'ガントチャート'
 ## 基本的な例
 
 <EditorPreview
-  placeholder='
+  placeholder="
+  'ガントチャートでは @startuml -> @startgantt, @enduml -> @endgantt と記述します。
 @startgantt
 language ja
-
 Project starts 2023-07-01
 [タスク名 1] starts 2023-07-01 and ends 2023-07-15
 [タスク名 2] starts 2023-07-16 and lasts 10 days
 @endgantt
-'
+"
 />
 
 このように書くことで、タスク名という名前のタスクが、開始日から期間の間だけ実行され、その後終了日で終了することを表します。
@@ -101,6 +101,8 @@ Project starts 2023-05-01
 <CustomBox position='center' direction='column'>
   <ProblemList />
 </CustomBox>
+
+<Link href='https://plantuml.com/ja/gantt-diagram'>公式ドキュメントを見る</Link>
 
 <CustomBox position='flex-start'>
   <IconButton text='Prev 状態遷移図' link='/learn/状態遷移図' startIcon={<ArrowBackIosIcon />} />

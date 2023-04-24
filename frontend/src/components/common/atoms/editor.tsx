@@ -43,38 +43,6 @@ const MonacoEditor = (props: EditorProps) => {
         ['{', '}'],
       ],
     })
-    monaco.languages.registerCompletionItemProvider('plantuml', {
-      triggerCharacters: ['@'],
-      provideCompletionItems: (model, position) => {
-        const inputText = model.getValueInRange({
-          startLineNumber: position.lineNumber,
-          startColumn: 1,
-          endLineNumber: position.lineNumber,
-          endColumn: position.column,
-        })
-        const hasStartUml = inputText.includes('@startuml')
-        if (hasStartUml && inputText.indexOf('@startuml') !== inputText.lastIndexOf('@startuml')) {
-          return {
-            suggestions: [],
-            incomplete: false,
-          }
-        }
-
-        const suggestions = [
-          {
-            label: '@startuml',
-            kind: monaco.languages.CompletionItemKind.Keyword,
-            insertText: '@startuml\n\n@enduml',
-            range: new monaco.Range(position.lineNumber, 1, position.lineNumber, position.column),
-          },
-        ]
-
-        return {
-          suggestions,
-          incomplete: false,
-        }
-      },
-    })
 
     monaco.editor.defineTheme('plantuml', {
       base: 'vs-dark',
