@@ -1,4 +1,6 @@
 export const ganttKeywords = [
+  'starts',
+  'ends',
   'lasts',
   'week',
   'closed',

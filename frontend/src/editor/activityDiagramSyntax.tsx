@@ -4,7 +4,6 @@ export const activityKeywords = [
   'end',
   'if',
   'then',
-  'is',
   'else',
   'elseif',
   'endif',
