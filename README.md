@@ -7,7 +7,8 @@
 
 また、plantUML構文を学ぶための学習ページや構文を記述する際に便利なチートシートページも提供しています。学習ページではUML図の説明に合わせて練習問題が用意されており、基本的な構文学習のインプット・アウトプットが可能です。
 
-![udg-demo](https://user-images.githubusercontent.com/69419077/234157205-07681214-9274-4138-ab1e-f0138da0cd70.gif)
+![udg-demo-large-fast](https://user-images.githubusercontent.com/69419077/234228940-2b03e084-3317-4043-abe9-7bd3c82a7411.gif)
+
 
 ※1　本サイトはプログラミング学習サイト[Recursion](https://recursionist.io/)のチーム開発課題として2023年3月11日〜4月24日の期間における作成物です。尚、サービス改善のため上記期間後もメンバーによるソースコード修正の可能性があります。
 
