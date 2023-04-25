@@ -67,7 +67,7 @@ const Post: NextPage<Props> = ({ posts, post }) => {
     tocbot.refresh()
   }, [])
 
-  const handleClick = (id: number) => {
+  const handleClick = async (id: number) => {
     for (let i = 0; i < Object.keys(openKeys).length; i++) {
       if (id != i) openKeys[i] = false
     }
@@ -84,16 +84,16 @@ const Post: NextPage<Props> = ({ posts, post }) => {
             <>
               <ListItem>
                 <ListItemButton
-                  onClick={() => {
-                    router.push(`/cheatSheets/${items.slug}`)
-                    handleClick(key)
+                  onClick={async () => {
+                    await router.push(`/cheatSheets/${items.slug}`)
+                    await handleClick(key)
                   }}
                 >
                   <ListItemText primary={items.slug} />
                   {openKeys[key] ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
               </ListItem>
-              <Collapse in={openKeys[key]} unmountOnExit timeout={{ enter: 1000, exit: 1000 }}>
+              <Collapse in={openKeys[key]} unmountOnExit timeout={'auto'}>
                 <List component='div' disablePadding>
                   <ListItemButton sx={{ pl: 4 }}>
                     <TopicsCard />
