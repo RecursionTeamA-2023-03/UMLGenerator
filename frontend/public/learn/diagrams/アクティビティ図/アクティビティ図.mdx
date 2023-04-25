@@ -1,0 +1,151 @@
+---
+title: 'アクティビティ図'
+---
+
+## アクティビティ図とは？
+
+アクティビティ図は、プロセスやアルゴリズムの流れを表現する UML の図の 1 つで、アクションと制御フローを表示します。アクティビティ図には、開始点、終了点、アクション、分岐、マージ、ループ、例外処理など、さまざまな種類の要素を含めることができます。
+
+## 基本的な例
+
+アクティビティのラベルは":"ではじまり、";"で終了します。
+図の開始と終了を示すために、start と stop もしくは end を使用することができます。
+
+<EditorPreview
+  placeholder='
+@startuml
+start
+:Hello world;
+:This is defined on;
+end
+@enduml
+'
+/>
+
+それでは、コンピュータの起動プロセスのアクティビティ図を作成しながら PlantUML のアクティビティ図の書き方を学びましょう。
+
+<CustomBox position="center">
+<UmlPic width="50%" umlText="
+@startuml
+
+start
+
+:電源ボタンを押す;
+
+if (BIOS の POST を実行する) then (成功?)
+:OS のロード処理に進む;
+else (失敗)
+:エラーメッセージを表示して終了;
+stop
+endif
+
+if (OS が正常に起動する) then (成功?)
+:ログイン画面を表示;
+else (失敗)
+:エラーメッセージを表示して終了;
+stop
+endif
+
+:ログインしてデスクトップにアクセス;
+
+stop
+
+@enduml" />
+
+</CustomBox>
+
+## STEP1
+
+コンピュータの起動プロセスをざっくりと整理しましょう。起動プロセスは、以下のような手順で進みます。
+
+1. 電源ボタンを押す
+2. BIOS の POST を実行する
+3. OS のロード処理に進む
+4. OS が正常に起動する
+5. ログインしてデスクトップにアクセスする
+
+<EditorPreview
+  placeholder='
+@startuml
+start
+:電源ボタンを押す;
+end
+@enduml
+'
+/>
+
+## STEP2
+
+BIOS の POST を実行して、成功した時は OS のロードを始めます。
+これは条件文を使用して記述できます。
+
+<EditorPreview
+  placeholder="
+@startuml
+start
+
+:電源ボタンを押す;
+
+'if 文は下のように書きます。
+if (BIOS の POST を実行) then (成功)
+:OS のロード処理に進む;
+else(失敗)
+:エラーメッセージを表示して終了;
+stop
+endif
+
+'OS が正常に起動した場合の処理を下に追加しましょう。
+'OS が正常に起動した場合はログイン画面を表示して、
+'失敗した場合はエラーメッセージを表示してください。
+end
+@enduml
+"
+/>
+
+## STEP3
+
+最後にログインしてデスクトップにアクセスのアクションを追加して図の完成です。
+
+<EditorPreview placeholder="
+@startuml
+
+start
+
+:電源ボタンを押す;
+
+if (BIOS の POST を実行する) then (成功?)
+:OS のロード処理に進む;
+else (失敗)
+:エラーメッセージを表示して終了;
+stop
+endif
+
+if (OS が正常に起動する) then (成功?)
+:ログイン画面を表示;
+else (失敗)
+:エラーメッセージを表示して終了;
+stop
+endif
+
+'下に追加しましょう。
+
+@enduml
+"
+/>
+
+このような流れでアクティビティ図を作成することができます。
+
+<CustomBox position='center' direction='column'>
+  <ProblemList />
+</CustomBox>
+
+<Link href='https://plantuml.com/ja/activity-diagram-beta'>公式ドキュメントを見る</Link>
+
+<CustomBox>
+  <IconButton
+    text='Prev ユースケース図'
+    link='/learn/ユースケース図'
+    startIcon={<ArrowBackIosIcon />}
+  />
+  <IconButton text='Next 状態遷移図' link='/learn/状態遷移図' endIcon={<ArrowForwardIosIcon />} />
+</CustomBox>

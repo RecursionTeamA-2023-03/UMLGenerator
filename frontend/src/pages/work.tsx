@@ -10,8 +10,16 @@ import AppBarWithDrawer from '@/components/common/templates/appBar'
 import WorkDrawerList from '@/components/workPage/organisms/workDrawerList'
 import { Box, Toolbar, CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router'
+import getTemplate from 'lib/template'
 
 type Data = (Project & { diagrams: Diagram[] })[]
+type Template = {
+  name: string
+  content: string[]
+}
+type Props = {
+  templates: Template[]
+}
 
 const axiosConfig: AxiosRequestConfig = {
   transformResponse: (data) =>
@@ -27,7 +35,7 @@ const fetcher: Fetcher<Data, string> = async (url: string) => {
 
 const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 
-export default function Work() {
+export default function Work({ templates }: Props) {
   const { data, error, isLoading, mutate } = useSWR(`${apiUrl}/project`, fetcher)
 
   const [isMyBoard, setIsMyBoard] = useState<boolean>(true)
@@ -59,9 +67,6 @@ export default function Work() {
   const handleAddProject = async () => {
     const nextProjectName = getUniqueProjectName()
 
-    // db update api call here
-    // if response is error then return
-
     if (!data || !nextProjectName) return
 
     await axios
@@ -84,25 +89,22 @@ export default function Work() {
   const getUniqueProjectName = (name = 'Project_1') => {
     if (!data) return
     let nextProjectName = name
-    data?.forEach((p) => {
-      if (p.name === nextProjectName) {
-        const nameArray = nextProjectName.split('_')
-        if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
-          nameArray.push('1')
-        } else {
-          nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
-        }
-        nextProjectName = nameArray.join('_')
+    const nameSet = new Set()
+    data.forEach((p) => nameSet.add(p.name))
+    while (nameSet.has(nextProjectName)) {
+      const nameArray = nextProjectName.split('_')
+      if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
+        nameArray.push('1')
+      } else {
+        nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
       }
-    })
+      nextProjectName = nameArray.join('_')
+    }
     return nextProjectName
   }
 
   const handleEditProjectName = async (id: number, name: string) => {
     const nextProjectName = getUniqueProjectName(name)
-
-    // db update api call here
-    // if response is error then return
 
     if (!data || !nextProjectName) return
 
@@ -126,9 +128,6 @@ export default function Work() {
   }
 
   const handleDeleteProject = async (id: number) => {
-    // db update api call here
-    // if response is error then return
-
     if (!data) return
 
     await axios
@@ -142,9 +141,6 @@ export default function Work() {
 
   const handleAddDiagram = async (id: number) => {
     const nextDiagramName = getUniqueDiagramName(id)
-
-    // db update api call here
-    // if response is error then return
 
     if (!data || !nextDiagramName) return
 
@@ -172,25 +168,23 @@ export default function Work() {
 
     let nextDiagramName = name
     const targetProject = data.find((p) => p.id === projectId)
-    targetProject?.diagrams?.forEach((d) => {
-      if (d.name === nextDiagramName) {
-        const nameArray = nextDiagramName.split('_')
-        if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
-          nameArray.push('1')
-        } else {
-          nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
-        }
-        nextDiagramName = nameArray.join('_')
+    const nameSet = new Set()
+    targetProject?.diagrams.forEach((d) => nameSet.add(d.name))
+    while (nameSet.has(nextDiagramName)) {
+      const nameArray = nextDiagramName.split('_')
+      if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
+        nameArray.push('1')
+      } else {
+        nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
       }
-    })
+      nextDiagramName = nameArray.join('_')
+    }
+
     return targetProject ? nextDiagramName : null
   }
 
   const handleEditDiagramName = async (pId: number, dId: number, name: string) => {
     const nextDiagramName = getUniqueDiagramName(pId, name)
-
-    // db update api call here
-    // if response is error then return
 
     if (!data || !nextDiagramName) return
 
@@ -221,8 +215,6 @@ export default function Work() {
   }
 
   const handleEditDiagramContent = async (pId: number, dId: number, content: string) => {
-    // db update api call here
-    // if response is error then return
     if (!data) return
 
     await axios
@@ -252,8 +244,6 @@ export default function Work() {
   }
 
   const handleDeleteDiagram = async (pId: number, dId: number) => {
-    // db update api call here
-    // if response is error then return
     if (!data) return
 
     await axios
@@ -325,9 +315,16 @@ export default function Work() {
             />
           )
         ) : (
-          <TemplateBoard />
+          <TemplateBoard templates={templates} />
         )}
       </Box>
     </>
   )
+}
+
+export async function getStaticProps() {
+  const templates = await getTemplate()
+  return {
+    props: templates,
+  }
 }

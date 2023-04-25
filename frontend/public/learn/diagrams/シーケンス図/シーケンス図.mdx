@@ -1,0 +1,177 @@
+---
+title: 'シーケンス図'
+---
+
+# シーケンス図とは？
+
+シーケンス図は、オブジェクト間のメッセージ送受信を時系列順に示した図で、ソフトウェアやシステムの動作を表現するための図の 1 つです。  
+具体的な使用例としては、Web アプリケーションの動作を表現する場合が挙げられます。たとえば、ユーザーがログインし、商品をカートに入れて注文するまでの一連の流れをシーケンス図で表現することができます。また、データベースとアプリケーションのやり取りや、API の呼び出しといった、システムの機能や動作のフローを表現することもできます。  
+シーケンス図を使用することで、複雑なシステムの振る舞いを可視化することができ、開発者や関係者がシステムの理解を深め、問題を把握することができます。また、シーケンス図は、設計段階での議論やコードの品質管理に役立ちます。
+
+それでは、ユーザー認証システムのシーケンス図を作成しながら PlantUML のシーケンス図の書き方を学びましょう。
+
+<CustomBox position="center">
+<UmlPic width="50%" umlText="
+@startuml
+actor User
+participant Frontend
+participant Backend
+participant Database
+
+User -> Frontend : ユーザー登録画面を表示
+Frontend -> Backend : CSRF トークンのリクエストを送信
+Backend -> Frontend : CSRF トークンを発行
+Frontend -> Backend : ユーザー登録リクエストを送信
+Backend -> Database : ユーザー情報をデータベースに保存
+Database -> Backend : 保存が完了したことを通知
+Frontend -> User : ユーザー登録成功
+
+User -> Frontend : ログイン画面を表示
+Frontend -> Backend : CSRF トークンのリクエストを送信
+Backend -> Frontend : CSRF トークンを発行
+Frontend -> Backend : ログインリクエストを送信
+Backend -> Database : ユーザー情報を照会
+Database -> Backend : ユーザー情報を返信
+Frontend -> User : ログイン成功
+
+User -> Frontend : ログアウトをクリック
+Frontend -> Backend : ログアウトリクエストを送信
+Backend -> Frontend : ログアウト成功を返信
+@enduml" />
+
+</CustomBox>
+
+## 基本的な例
+
+PlantUML でシーケン図を書く際、オブジェクト間のやり取りには -> を使用します。
+また、participant はシステム内の役割やコンポーネントを表し、メッセージのやりとりを示します。それぞれの役割やコンポーネントをより明確にするために、各 participant に対してキーワードを使用して形状を変更できます
+
+- actor
+- boldundary
+- entity
+- database
+
+<EditorPreview
+  placeholder="
+  'ユーザー認証には
+  'User(actor)
+  'Frontend, Backend, Database(participant)があります。
+  '下に実際に書いてみましょう。
+  "
+/>
+
+## STEP1
+
+やり取りを加えていきます。まずは、ユーザー登録から作りましょう。
+ユーザー登録の流れは以下のようになります。
+
+1. ユーザー登録画面を表示(User, Frontend)
+2. CSRF トークンのリクエストを送信(Frontend, Backend)
+3. CSRF トークンを発行(Backend, Frontend)
+4. ユーザー登録リクエストを送信(Frontend, Backend)
+5. ユーザー情報をデータベースに保存(Backend, Database)
+6. 保存完了の通知(Database, Backend)
+7. ユーザーの登録成功(Frontend, User)
+
+<EditorPreview
+  placeholder="
+  '@startuml
+  'actor User
+  'participant Frontend
+  'participant Backend
+  'participant Database
+'User -> Frontend : ユーザー登録画面を表示
+'Frontend -> Backend : CSRF トークンのリクエストを送信
+'Backend -> Frontend : CSRF トークンを発行
+'Frontend -> Backend : ユーザー登録リクエストを送信
+'Backend -> Database : ユーザー情報をデータベースに保存
+'Database -> Backend : 保存が完了したことを通知
+'Frontend -> User : ユーザー登録成功
+'@enduml
+'下に実際に書いてみましょう。
+"
+/>
+
+## STEP2
+
+続けてログインの流れを書いてみましょう。以下のように行います。
+
+1. ログイン画面を表示
+2. CSRF トークンのリクエストを送信
+3. CSRF トークンを発行
+4. ログインリクエストを送信
+5. ユーザー情報を紹介
+6. ユーザー情報を送信
+7. ログイン成功
+
+<EditorPreview 
+placeholder="
+@startuml
+actor User
+participant Frontend
+participant Backend
+participant Database
+
+'ユーザー登録
+User -> Frontend : ユーザー登録画面を表示
+Frontend -> Backend : CSRF トークンのリクエストを送信
+Backend -> Frontend : CSRF トークンを発行
+Frontend -> Backend : ユーザー登録リクエストを送信
+Backend -> Database : ユーザー情報をデータベースに保存
+Database -> Backend : 保存が完了したことを通知
+Frontend -> User : ユーザー登録成功
+
+'ログイン
+@enduml"
+/>
+
+## STEP3
+
+最後にログアウトの流れを追加しましょう。
+
+<EditorPreview 
+placeholder="
+@startuml
+actor User
+participant Frontend
+participant Backend
+participant Database
+
+'ユーザー登録
+User -> Frontend : ユーザー登録画面を表示
+Frontend -> Backend : CSRF トークンのリクエストを送信
+Backend -> Frontend : CSRF トークンを発行
+Frontend -> Backend : ユーザー登録リクエストを送信
+Backend -> Database : ユーザー情報をデータベースに保存
+Database -> Backend : 保存が完了したことを通知
+Frontend -> User : ユーザー登録成功
+
+'ログイン
+User -> Frontend : ログイン画面を表示
+Frontend -> Backend : CSRF トークンのリクエストを送信
+Backend -> Frontend : CSRF トークンを発行
+Frontend -> Backend : ログインリクエストを送信
+Backend -> Database : ユーザー情報を照会
+Database -> Backend : ユーザー情報を返信
+Frontend -> User : ログイン成功
+
+'ログアウト
+@enduml"
+/>
+
+このような流れでシーケンス図を作成することができます。
+
+<CustomBox position='center' direction='column'>
+  <ProblemList />
+</CustomBox>
+
+<Link href='https://plantuml.com/ja/sequence-diagram'>公式ドキュメントを見る</Link>
+
+<CustomBox>
+  <IconButton text='Prev イントロダクション' link='/learn' startIcon={<ArrowBackIosIcon />} />
+  <IconButton
+    text='Next ユースケース図'
+    link='/learn/ユースケース図'
+    endIcon={<ArrowForwardIosIcon />}
+  />
+</CustomBox>

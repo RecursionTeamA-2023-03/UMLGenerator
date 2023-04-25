@@ -21,10 +21,10 @@ import DrawerLeft from './drawer'
 const pages = [
   { name: 'work', link: 'work' },
   { name: 'learn', link: 'learn' },
-  { name: 'cheat sheet', link: 'cheatSheets' },
+  { name: 'cheat sheet', link: 'cheatSheets/アクティビティ図' },
 ]
 const settings = [
-  { name: 'Account', link: 'acount', mode: 'login' },
+  //  { name: 'Account', link: 'acount', mode: 'login' },
   { name: 'Signup', link: 'signUp', mode: 'logout' },
   { name: 'Login', link: 'login', mode: 'logout' },
   { name: 'Logout', link: 'logout', mode: 'login' },
@@ -49,7 +49,7 @@ type Props = {
 
 function AppBarWithDrawer({ children, withDrawer = false }: Props) {
   const { data, error, isLoading, mutate } = useSWR<User, AxiosError>(`${apiUrl}/user`, fetcher)
-  const [openDrawer, setDrawer] = React.useState<boolean>(withDrawer)
+  const [openDrawer, setDrawer] = React.useState<boolean>(true)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const router = useRouter()
 
@@ -67,8 +67,7 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
   const handleClickLink = (link: string) => {
     handleCloseUserMenu()
     if (link === 'logout') {
-      router.push('/')
-      axios.post(`${apiUrl}/auth/logout`).then(() => mutate())
+      axios.post(`${apiUrl}/auth/logout`).then(() => router.push('/'))
     } else {
       router.push(`/${link}`)
     }
@@ -84,7 +83,7 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
             {withDrawer && data && (
               <IconButton
                 size='large'
-                aria-label='account of current user'
+                aria-label='drawer-menu'
                 aria-controls='menu-appbar'
                 aria-haspopup='true'
                 onClick={handleDrawer}

@@ -1,0 +1,67 @@
+---
+title: "ステート図"
+---
+
+# ステート図
+
+## ステート
+<CheatSheetsEditorPreview
+placeholder="
+state A
+"
+/>
+
+<CheatSheetsEditorPreview
+placeholder="
+state A : description
+"
+/>
+
+## 遷移
+<CheatSheetsEditorPreview
+placeholder="
+state A 
+ [*] -->  A
+"
+/>
+
+<CheatSheetsEditorPreview
+placeholder="
+state A 
+ state X 
+ A --> X : true
+"
+/>
+
+## サブ状態
+<CheatSheetsEditorPreview
+placeholder="
+state X { 
+   state B 
+ state C 
+ state D 
+ state E 
+ }
+"
+/>
+
+## 領域
+<CheatSheetsEditorPreview
+placeholder="
+state X { 
+   B --> C : true 
+ C --> B : false 
+ -- 
+ E --> D : true 
+ D --> E : false 
+ }
+"
+/>
+
+## 注釈
+<CheatSheetsEditorPreview
+placeholder="
+state A 
+ note left of A : note
+"
+/>

@@ -1,0 +1,88 @@
+---
+title: "ガントチャート"
+---
+
+# ガントチャート
+
+## 日付
+### 開始日
+<CheatSheetsEditorPreview
+placeholder="
+@startgantt
+Project starts the 2023/4/1
+@endgantt
+"
+/>
+### 休日を定義
+<CheatSheetsEditorPreview
+placeholder="
+@startgantt
+saturday are closed 
+ sunday are closed 
+ 2023/4/10 is closed
+ @endgantt
+ "
+/>
+
+## チャート
+### タスク
+<CheatSheetsEditorPreview
+placeholder="
+@startgantt
+[タスクA] lasts 3 days
+@endgantt
+"
+/>
+<CheatSheetsEditorPreview
+placeholder="
+@startgantt
+[タスクA] lasts 3 days and is colored in Fuchsia/FireBrick
+@endgantt
+"
+/>
+
+
+## 連続したタスク
+<CheatSheetsEditorPreview
+placeholder="
+@startgantt
+[タスクA] lasts 3 days 
+ [タスクB] lasts 2 days and is colored in Fuchsia/FireBrick 
+ [タスクB] starts at [タスクA]'s end
+ @endgantt
+ "
+/>
+<CheatSheetsEditorPreview
+placeholder="
+@startgantt
+[タスクA] lasts 3 days 
+ [タスクB] lasts 2 days and is colored in Fuchsia/FireBrick 
+ [タスクB] starts 3 day after [タスクA]'s end
+ @endgantt
+ "
+/>
+
+
+## マイルストーン
+<CheatSheetsEditorPreview
+placeholder="
+@startgantt
+[タスクA] lasts 3 days 
+ [タスクB] lasts 2 days and is colored in Fuchsia/FireBrick 
+ [終了] happens at [タスクA]'s end 
+ [タスクB] starts at [タスクA]'s end
+ @endgantt
+ "
+/>
+
+## グループ
+<CheatSheetsEditorPreview
+placeholder="
+@startgantt
+[タスクA] lasts 3 days 
+  -- Step 2 -- 
+ [タスクB] lasts 2 days and is colored in Fuchsia/FireBrick 
+ [タスクB] starts at [タスクA]'s end
+ @endgantt
+ "
+/>

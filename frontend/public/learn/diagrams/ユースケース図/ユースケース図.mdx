@@ -1,0 +1,137 @@
+---
+title: 'ユースケース図'
+---
+
+# ユースケース図とは？
+
+ユースケース図は、ソフトウェアやシステムの機能や動作を表現するための図です。具体的には、システムの利用者がどのような機能を利用できるのかを、図として表現します。たとえば、ユーザーが Web サイトにアクセスして、ログイン、商品をカートに入れて注文するまでの一連の流れをユースケース図で表現することができます。
+ユースケース図には、以下の要素が含まれます。
+
+- ユースケース: システムの利用者が行う機能やタスクを表現します。ユースケースは、楕円形で表現されます。例えば、「ログイン」「商品検索」「注文」などがユースケースとして考えられます。
+- アクター: システムを利用する人、またはシステムと相互作用する外部の要素を表現します。アクターは、人間や外部システムなどの図形で表現されます。
+- 関係: アクターとユースケースの関係性を表現します。ユースケースとアクターを線で結び、どのアクターがどのユースケースを利用するかを示します。
+
+ユースケース図は、設計段階でシステムの全体像を俯瞰し、システム利用者の視点からシステムの要件を整理するために使用されます。また、ユースケース図は、システムの開発者や利用者がシステム全体を理解し、議論するためのコミュニケーションツールとしても役立ちます。
+
+それでは、オンラインショッピングのユースケース図を作成しながら PlantUML のユースケース図の書き方を学びましょう。
+一般的なオンラインショッピングシステムでは、以下のようなユースケースがあります。
+
+<CustomBox position="center">
+<UmlPic umlText='
+left to right direction
+
+actor Customer
+
+rectangle "Online Store" {
+Customer -> (Browse Products): View products
+Customer -> (Search Products): Search products
+Customer -> (View Product Details): View product details
+Customer -> (Add to Cart): Add product to cart
+Customer -> (View Cart): View cart
+Customer -> (Checkout): Checkout cart
+Customer --> (View Order History): View order history
+(Checkout) --> (Payment Gateway): Submit payment
+(Payment Gateway) --> (Checkout): Confirm payment
+(Checkout) --> (Order Fulfillment): Submit order
+(Order Fulfillment) --> (Checkout): Confirm order
+Customer -> (Cancel Order): Cancel order
+}
+@enduml'
+/>
+
+</CustomBox>
+
+## 基本的な例
+
+PlantUML のユースケース図において、アクターは "actor"、ユースケースは "usecase" を使用して表現します。アクターとユースケースの間の関係は "->" を使って表します。
+
+<EditorPreview
+  placeholder='
+@startuml
+actor User
+usecase (View Products)
+User -> (View Products)
+@enduml
+'
+/>
+
+## STEP1
+
+- 商品の閲覧
+- 商品の検索
+- 商品の詳細表示
+- 商品のカートへの追加
+- カートの確認
+- 注文の確定
+- 注文のキャンセル
+- 注文履歴の閲覧
+
+これらのユースケースを、アクターと関連付けて、ユースケース図に表します。
+
+## STEP2
+
+rectangle は PlantUML において、四角形の箱を表すために使用される要素の 1 つです。この要素は、テキストで説明されたシステムまたは機能を表すために使用されます。四角形内には、システムや機能の名称や詳細を記述することができます。  
+ユースケースの横に":"をつけることで、アクションを記述することができます。
+矢印の"-"を増やすことで、矢印を長くすることができみやすくなります。
+
+<EditorPreview
+  placeholder='
+@startuml
+actor Customer
+
+rectangle "Online Store"{
+Customer -> (Browse Products): VIew Products
+}
+@enduml
+'
+/>
+
+## STEP3
+
+ユースケース図に Payment GateWay と Oreder Fulfillment をチェックアウトの後に追加しましょう。
+
+Payment Gateway は、オンライン決済の仲介サービスを提供する企業やサービスを指します。このサービスを通じて、お客様は注文に必要な支払いを処理することができます。Checkout には、Submit payment の関係があり、顧客からの支払いを受け取り、注文情報を受け取ります。その後、支払いゲートウェイは注文処理に成功したかどうかを確認するために、Checkout に Confirm payment の関係を返します。
+
+Order Fulfillment は、注文が正常に処理され、商品が出荷されるプロセスを指します。具体的には、注文の管理、在庫管理、出荷手配、配送追跡などが含まれます。オンラインストアにとって、正しい注文処理とスムーズな配送は非常に重要なプロセスです。Checkout には、Submit order の関係があり、注文処理に成功した場合、Order Fulfillment に注文情報を渡し、商品の出荷が開始されます。Order Fulfillment は、商品の出荷が完了した場合、Checkout に Confirm order の関係を返します。
+
+また、@startuml の下に"left to right direction"と記述すると図の向きを変えることができます。
+
+<EditorPreview placeholder='
+@startuml
+left to right direction
+actor Customer
+
+rectangle "Online Store" {
+Customer -> (Browse Products): View products
+Customer -> (Search Products): Search products
+Customer -> (View Product Details): View product details
+Customer -> (Add to Cart): Add product to cart
+Customer -> (View Cart): View cart
+Customer -> (Checkout): Checkout cart
+Customer --> (View Order History): View order history
+Customer -> (Cancel Order): Cancel order
+}
+@enduml
+'
+/>
+
+このような流れでユースケース図を作成することができます。
+
+<CustomBox position='center' direction='column'>
+  <ProblemList />
+</CustomBox>
+
+<Link href='https://plantuml.com/ja/use-case-diagram'>公式ドキュメントを見る</Link>
+
+<CustomBox>
+  <IconButton
+    text='Prev シーケンス図'
+    link='/learn/シーケンス図'
+    startIcon={<ArrowBackIosIcon />}
+  />
+  <IconButton
+    text='Next アクティビティ図'
+    link='/learn/アクティビティ図'
+    endIcon={<ArrowForwardIosIcon />}
+  />
+</CustomBox>

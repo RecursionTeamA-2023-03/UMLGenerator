@@ -1,0 +1,102 @@
+---
+title: 'アクティビティ図'
+---
+
+# アクティビティ図(新記法)
+## 基本
+<CheatSheetsEditorPreview placeholder='
+start
+'
+/>
+<CheatSheetsEditorPreview placeholder='
+:アクティビティA;
+'
+/>
+<CheatSheetsEditorPreview placeholder='
+:アクティビティB
+(改行);
+'
+/>
+<CheatSheetsEditorPreview placeholder='
+stop
+'
+/>
+<CheatSheetsEditorPreview placeholder='
+note right 
+ 注釈 
+ end note
+'
+/>
+
+## ループ処理
+<CheatSheetsEditorPreview placeholder='
+while (i < 10) 
+ :アクティビティ; 
+ endwhile
+'
+/>
+<CheatSheetsEditorPreview placeholder='
+repeat 
+ :アクティビティ; 
+ repeat while (i < 10)
+'
+/>
+
+## 分岐処理
+<CheatSheetsEditorPreview placeholder='
+if (x > 0) then (true) 
+ :アクティビティA; 
+ else if (x == 0) then (true) 
+ :アクティビティB; 
+ else (false) 
+ :アクティビティC; 
+ endif
+'
+/>
+<CheatSheetsEditorPreview placeholder='
+!pragma useVerticalIf on 
+ if (x > 0) then (true) 
+ :アクティビティA; 
+ else if (x == 0) then (true) 
+ :アクティビティB; 
+ else (false) 
+ :アクティビティC; 
+ endif
+'
+/>
+<CheatSheetsEditorPreview placeholder='
+if (x > 0) then (true) 
+ :アクティビティA; 
+ kill 
+ else if (x == 0) then (true) 
+ :アクティビティB; 
+ kill 
+ else (false) 
+ :アクティビティC; 
+ endif
+'
+/>
+
+## 並列処理
+<CheatSheetsEditorPreview placeholder='
+fork 
+ :アクティビティA; 
+ fork 
+ :アクティビティB; 
+ fork again 
+ :アクティビティC; 
+ end fork 
+ fork again 
+ :アクティビティD; 
+ end fork
+'
+/>
+
+## グループ化
+<CheatSheetsEditorPreview placeholder='
+group グループA 
+ :アクティビティA; 
+ :アクティビティB; 
+ end group
+'
+/>

@@ -1,0 +1,140 @@
+---
+title: "ワイヤーフレーム"
+---
+
+# ワイヤーフレーム
+
+## 基本のウィジェット
+<CheatSheetsEditorPreview placeholder='
+@startsalt
+{
+  Just plain text
+  [This is my button]
+  ()  Unchecked radio
+  (X) Checked radio
+  []  Unchecked box
+  [X] Checked box
+  "Enter text here   "
+  ^This is a droplist^
+}
+@endsalt
+' 
+/>
+
+## 色
+<CheatSheetsEditorPreview placeholder='
+@startsalt
+{
+  <color:Blue>Just plain text
+  [This is my default button]
+  [<color:green>This is my green button]
+  [<color:#9a9a9a>This is my disabled button]
+  []  <color:red>Unchecked box
+  [X] <color:green>Checked box
+  "Enter text here   "
+  ^This is a droplist^
+  ^<color:#9a9a9a>This is a disabled droplist^
+  ^<color:red>This is a red droplist^
+}
+@endsalt
+
+' 
+/>
+
+## グループボックス [^]
+<CheatSheetsEditorPreview placeholder='
+@startsalt
+{^"My group box"
+  Login    | "MyName   "
+  Password | "****     "
+  [Cancel] | [  OK   ]
+}
+@endsalt
+
+' 
+/>
+
+## 木構造ウィジェット
+<CheatSheetsEditorPreview placeholder='
+@startsalt
+{
+{T
+ + World
+ ++ America
+ +++ Canada
+ +++ USA
+ ++++ New York
+ ++++ Boston
+ +++ Mexico
+ ++ Europe
+ +++ Italy
+ +++ Germany
+ ++++ Berlin
+ ++ Africa
+}
+}
+@endsalt
+' 
+/>
+
+## 木構造と表 [T]
+<CheatSheetsEditorPreview placeholder='
+@startsalt
+{
+{T
++Region        | Population    | Age
++ World        | 7.13 billion  | 30
+++ America     | 964 million   | 30
++++ Canada     | 35 million    | 30
++++ USA        | 319 million   | 30
+++++ NYC       | 8 million     | 30
+++++ Boston    | 617 thousand  | 30
++++ Mexico     | 117 million   | 30
+++ Europe      | 601 million   | 30
++++ Italy      | 61 million    | 30
++++ Germany    | 82 million    | 30
+++++ Berlin    | 3 million     | 30
+++ Africa      | 1 billion     | 30
+}
+}
+@endsalt
+' 
+/>
+
+### 罫線の追加
+<CheatSheetsEditorPreview placeholder='
+@startsalt
+{
+..
+== with T!
+{T!
++Region        | Population    | Age
++ World        | 7.13 billion  | 30
+++ America     | 964 million   | 30
+}
+..
+== with T-
+{T-
++Region        | Population    | Age
++ World        | 7.13 billion  | 30
+++ America     | 964 million   | 30
+}
+..
+== with T+
+{T+
++Region        | Population    | Age
++ World        | 7.13 billion  | 30
+++ America     | 964 million   | 30
+}
+..
+== with T#
+{T#
++Region        | Population    | Age
++ World        | 7.13 billion  | 30
+++ America     | 964 million   | 30
+}
+..
+}
+@endsalt
+' 
+/>

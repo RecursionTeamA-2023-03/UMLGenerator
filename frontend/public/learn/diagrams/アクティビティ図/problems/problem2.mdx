@@ -1,0 +1,26 @@
+---
+title: 'FizzBuzz'
+diagram: 'アクティビティ図'
+ans: |
+  @startuml
+  start
+  :n = 1;
+  repeat
+  if (n % 15 == 0) then (FizzBuzz)
+      :print(FizzBuzz);
+  elseif (n % 5 == 0) then (Buzz)
+      :print(Buzz);
+  elseif (n % 3 == 0) then (Fizz)
+      :print(Fizz);
+  else (Other)
+      :print(n);
+  endif
+  :(n += 1);
+  repeat while(n <= 100) is (true)
+  stop
+  @enduml
+---
+
+# FizzBuzz
+
+1 から 100 までの数字を順番に出力し、3 で割り切れる場合は "Fizz"、5 で割り切れる場合は "Buzz"、3 と 5 で割り切れる場合は "FizzBuzz" と出力します。このアクティビティ図を作成してください。

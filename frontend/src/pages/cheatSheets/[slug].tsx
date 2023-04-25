@@ -1,9 +1,15 @@
 import { NextPage, InferGetStaticPropsType } from 'next'
 import { getAllPosts, getPostBySlug } from '../api/cheatSheets/getMdFiles'
-import markdownToHtml from '../api/cheatSheets/markdownToHtml'
 import AppBarWithDrawer from '@/components/common/templates/appBar'
-import { Box, List, ListItem, ListItemButton, ListItemText, Toolbar } from '@mui/material'
+import { Box, Collapse, List, ListItem, ListItemButton, ListItemText, Toolbar } from '@mui/material'
 import { useRouter } from 'next/router'
+import { MDXRemote } from 'next-mdx-remote'
+import { serialize } from 'next-mdx-remote/serialize'
+import TopicsCard from '../api/cheatSheets/toc'
+import { useEffect, useState } from 'react'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import tocbot from 'tocbot'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -30,14 +36,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }: any) => {
   const post = getPostBySlug(params.slug, ['slug', 'title', 'date', 'content'])
   const posts = getAllPosts(['slug'])
-  // Markdown を HTML に変換する
-  const tmpContent = await markdownToHtml(post.content)
-
-  // 枠線と改行を追記する
-  const addCustomReplaces = tmpContent
-    .replace(/<table>/g, '<table border="1">')
-    .replace(/-br-/g, '<br>')
-  const content = addCustomReplaces
+  const mdxSource = await serialize(post.content)
 
   // content を詰め直して返す
   return {
@@ -45,36 +44,71 @@ export const getStaticProps = async ({ params }: any) => {
       posts,
       post: {
         ...post,
-        content,
+        mdxSource,
       },
     },
   }
 }
 
+interface Open {
+  [key: number]: boolean
+}
+
+let openKeys: Open = { 0: true }
+
 const Post: NextPage<Props> = ({ posts, post }) => {
   const router = useRouter()
+
+  const [, setOpen] = useState<Open[]>([openKeys])
+
+  useEffect(() => {
+    openKeys = { 0: true }
+    setOpen([openKeys])
+    tocbot.refresh()
+  }, [])
+
+  const handleClick = async (id: number) => {
+    for (let i = 0; i < Object.keys(openKeys).length; i++) {
+      if (id != i) openKeys[i] = false
+    }
+
+    openKeys[id] = true
+    setOpen([openKeys])
+  }
 
   return (
     <>
       <AppBarWithDrawer withDrawer={true}>
         <List>
-          <ListItem key='introduction'>
-            <ListItemButton onClick={() => router.push(`/cheatSheets/`)}>
-              <ListItemText primary='Introduction' />
-            </ListItemButton>
-          </ListItem>
-          {posts.map((items) => (
-            <ListItem key={items.slug}>
-              <ListItemButton onClick={() => router.push(`/cheatSheets/${items.slug}`)}>
-                <ListItemText primary={items.slug} />
-              </ListItemButton>
-            </ListItem>
+          {posts.map((items, key) => (
+            <>
+              <ListItem>
+                <ListItemButton
+                  onClick={async () => {
+                    await router.push(`/cheatSheets/${items.slug}`)
+                    await handleClick(key)
+                  }}
+                >
+                  <ListItemText primary={items.slug} />
+                  {openKeys[key] ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+              </ListItem>
+              <Collapse in={openKeys[key]} unmountOnExit timeout={'auto'}>
+                <List component='div' disablePadding>
+                  <ListItemButton sx={{ pl: 4 }}>
+                    <TopicsCard />
+                  </ListItemButton>
+                </List>
+              </Collapse>
+            </>
           ))}
         </List>
       </AppBarWithDrawer>
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div className='cheatSheets'>
+          <MDXRemote {...post.mdxSource}></MDXRemote>
+        </div>
       </Box>
     </>
   )

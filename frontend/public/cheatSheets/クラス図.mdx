@@ -1,0 +1,174 @@
+---
+title: "クラス図"
+---
+
+# クラス図
+
+## プロパティ&メソッド
+
+<CheatSheetsEditorPreview placeholder="
+class ClassName { 
+  {static} String field1
+  Number field2 
+  Number field3 
+  -- 
+  {static} void method1()
+   Number method2()
+   Boolean method3()
+  }
+  " 
+/>
+
+## 可視性の定義
+
+<CheatSheetsEditorPreview placeholder="
+class ClassName { 
+ - private_field 
+ ~ package_private_field 
+ # protected_field 
+ + public_field 
+ -- 
+ - private_method() 
+  ~package_private_method() 
+ # protected_method() 
+ + public_method() 
+ }
+  " 
+/>
+
+## 抽象クラス
+
+<CheatSheetsEditorPreview placeholder="
+abstract class AbstractClassName { 
+ # field 
+ -- 
+ - {abstract} method1() 
+ # method2() 
+ # method3() 
+ }
+  " 
+/>
+
+## インタフェース
+
+<CheatSheetsEditorPreview placeholder="
+interface InterfaceName { 
+  
+ - field 
+
+ -- 
+
+ + method() 
+
+ }
+  " 
+/>
+
+## クラス間の関係
+
+<CheatSheetsEditorPreview placeholder="
+ Class01 <|-- Class02 
+ Class03 *-- Class04 
+ Class05 o-- Class06 
+ Class07 .. Class08 
+ Class09 -- Class10
+   " 
+/>
+ 
+<CheatSheetsEditorPreview placeholder="
+ Class11 <|.. Class12 
+ Class13 --> Class14 
+ Class15 ..> Class16 
+ Class17 ..|> Class18 
+ Class19 <--* Class20
+   " 
+/>
+
+<CheatSheetsEditorPreview placeholder="
+ Class21 #-- Class22 
+ Class23 x-- Class24 
+ Class25 }-- Class26 
+ Class27 +-- Class28 
+ Class29 ^-- Class30
+  " 
+/>
+
+## ラベル
+
+<CheatSheetsEditorPreview placeholder="
+ClassA *--  ClassB : contains
+" 
+/>
+
+## パッケージ
+
+<CheatSheetsEditorPreview placeholder="
+ package PackageA { 
+  
+ class ClassA { 
+  
+
+ } 
+
+ class ClassB { 
+  
+
+ } 
+
+ } 
+
+
+
+ package PackageB { 
+  
+   class ClassC { 
+  
+
+ } 
+
+ package PackageC { 
+  
+   class ClassD { 
+  
+
+ } 
+
+
+
+ class ClassE { 
+  
+
+ } 
+
+ } 
+
+ " 
+/>
+
+## 名前空間
+
+<CheatSheetsEditorPreview placeholder="
+namespace PackageA { 
+ class Abc { 
+  
+ } 
+ class Xyz { 
+  
+ } 
+ }  
+ namespace PackageB { 
+   class Abc { 
+  
+ } 
+ 
+ namespace PackageC { 
+   class Xyz { 
+  
+ } 
+ } 
+ } 
+ 
+ PackageA.Abc ..> PackageA.Xyz 
+ PackageB.Abc ..> PackageB.PackageC.Xyz
+" 
+/>
