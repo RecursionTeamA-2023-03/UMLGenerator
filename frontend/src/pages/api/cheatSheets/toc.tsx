@@ -9,7 +9,7 @@ export default function TopicsCard() {
       headingSelector: 'h2, h3',
       headingsOffset: 100,
     })
-
+    tocbot.destroy()
     return () => tocbot.refresh()
   }, [])
 

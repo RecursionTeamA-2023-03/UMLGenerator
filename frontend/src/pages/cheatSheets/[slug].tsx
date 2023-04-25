@@ -64,6 +64,7 @@ const Post: NextPage<Props> = ({ posts, post }) => {
   useEffect(() => {
     openKeys = { 0: true }
     setOpen([openKeys])
+    tocbot.refresh()
   }, [])
 
   const handleClick = (id: number) => {
