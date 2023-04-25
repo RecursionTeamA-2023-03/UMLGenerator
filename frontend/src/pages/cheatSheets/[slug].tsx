@@ -96,10 +96,8 @@ const Post: NextPage<Props> = ({ posts, post }) => {
               <Collapse
                 in={openKeys[key]}
                 unmountOnExit
-                timeout={'auto'}
-                onExit={() => {
-                  tocbot.destroy(), console.log('onExit')
-                }}
+                timeout={{ enter: 300,
+                  exit: 300,}}
               >
                 <List component='div' disablePadding>
                   <ListItemButton sx={{ pl: 4 }}>
