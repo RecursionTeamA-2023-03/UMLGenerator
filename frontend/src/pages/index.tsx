@@ -31,7 +31,9 @@ export default function Home() {
             </Button>
           </Box>
         </Box>
-        <Typography>サイトの説明やイメージ画像でルートページのデザインを改善する</Typography>
+        {
+          //  <Typography>サイトの説明やイメージ画像でルートページのデザインを改善する</Typography>
+        }
       </Box>
     </>
   )

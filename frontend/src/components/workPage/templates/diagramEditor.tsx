@@ -306,11 +306,9 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
               <Typography gutterBottom variant='h6'>
                 出力結果
               </Typography>
-              <Button onClick={handleOpenModal}>
-                <IconButton>
-                  <ZoomInIcon />
-                </IconButton>
-              </Button>
+              <IconButton onClick={handleOpenModal}>
+                <ZoomInIcon />
+              </IconButton>
             </CardContent>
             <Divider sx={{ mb: 1 }} />
             <CardMedia sx={{ textAlign: 'center' }}>
