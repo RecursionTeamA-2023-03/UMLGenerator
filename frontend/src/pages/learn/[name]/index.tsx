@@ -39,7 +39,11 @@ export default function LearnContent({ allDiagramData, currDiagramData, problems
       <>
         {problems.map((id: any) => {
           return (
-            <ProblemBox key={id} link={`/learn/${currDiagramData.id}/${id.id}`} title={id.title} />
+            <ProblemBox
+              key={id.title}
+              link={`/learn/${currDiagramData.id}/${id.id}`}
+              title={id.title}
+            />
           )
         })}
       </>
