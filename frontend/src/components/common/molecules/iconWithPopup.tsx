@@ -2,7 +2,6 @@ import { Logout } from '@mui/icons-material'
 import Link from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
-import Button from '../atoms/button'
 import withIconStyle, { PersonIcon } from '../atoms/icon'
 
 interface IconWithPopupProps {

@@ -1,8 +1,5 @@
-import Text from '../../../components/common/atoms/text'
 import LearnTemplate from '../../../components/learnPage/templates/learnTemplate'
-import { theme } from '../../../themes'
 import React from 'react'
-import Link from 'next/link'
 import {
   getAllDiagramNames,
   getDiagramData,

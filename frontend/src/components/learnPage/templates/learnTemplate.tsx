@@ -1,21 +1,12 @@
-import SideBar from '../../common/organisms/sidebar'
-import Header from '../../common/organisms/header'
 import Text from '@/components/common/atoms/text'
 import styled from 'styled-components'
 import { theme } from '@/themes'
-import { useState } from 'react'
 import BreadcrumbItem from '../atoms/breadcrumbItem'
 import Link from 'next/link'
 import AppBarWithDrawer from '@/components/common/templates/appBar'
 import { Box, List, ListItem, ListItemButton, ListItemText, Toolbar } from '@mui/material'
 import { useRouter } from 'next/router'
-import withIconStyle from '@/components/common/atoms/icon'
-import { Topic } from '@mui/icons-material'
 
-const ContentArea = styled.div`
-  display: flex;
-  height: 100vh;
-`
 const StyledListItem = styled(ListItem)`
   &.active {
     background-color: #f5f5f5;

@@ -1,16 +1,10 @@
-import Text from '../../../components/common/atoms/text'
 import LearnTemplate from '../../../components/learnPage/templates/learnTemplate'
-import { theme } from '../../../themes'
 import React, { useState } from 'react'
 import MonacoEditor from '@/components/common/atoms/editor'
 import { getDiagramDataList, getProblemDataList } from 'lib/diagram'
 import UmlPic from '@/components/common/organisms/umlPic'
-import { display } from '@mui/system'
 import styled from 'styled-components'
-import withIconStyle from '@/components/common/atoms/icon'
-import { ArrowDropDown } from '@mui/icons-material'
 import { MDXRemote } from 'next-mdx-remote'
-import { Grid, Paper, Typography } from '@mui/material'
 
 export const getStaticPaths = async () => {
   const diagrams = await getDiagramDataList()
