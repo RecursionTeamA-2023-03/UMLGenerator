@@ -18,15 +18,18 @@
 ※2 対応ブラウザ：下記PCブラウザでの動作のみ確認（Chrome, Brave, firefox）, Mobileは未対応
 ### 2. ローカルPCでのdevelopment server起動
 2-1. ソースコードをローカルに保存、依存パッケージのインストール
+
 2-2. バックエンドサーバーのDockerコンテナ立ち上げ
 ```
 docker-compose up -d
 ```
+
 2-3. フロントエンドサーバーの起動
 ```
 cd frontend
 npm run dev
 ```
+
 2-4. 対応ブラウザ(※2)で確認 [http://localhost:3000](http://localhost:3000)
 
 ## 技術構成とデプロイ先
@@ -56,4 +59,5 @@ npm run dev
 <img src="https://user-images.githubusercontent.com/69419077/234175343-ed285b0c-ad2a-494c-adcf-ad7b36d72c0b.png" width="300px">
 
 4. デプロイ図
+<img src="https://user-images.githubusercontent.com/69419077/234222345-fac6e805-af1e-413d-92e2-a72ec522a114.png" width="600px">
 
