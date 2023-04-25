@@ -3,12 +3,10 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import plantUmlEncoder from 'plantuml-encoder'
 import fileDownload from 'js-file-download'
 import { Project, Diagram } from '@/interfaces/dataTypes'
-import styled from 'styled-components'
-import { useState, Dispatch, SetStateAction, useEffect } from 'react'
+import { useState } from 'react'
 import UmlPic from '@/components/common/organisms/umlPic'
 import {
   Box,
-  CircularProgress,
   Typography,
   Button,
   Grid,
@@ -18,20 +16,25 @@ import {
   SelectChangeEvent,
   Card,
   CardContent,
-  Modal,
+  InputLabel,
+  FormControl,
   CardMedia,
+  Modal,
   IconButton,
   Divider,
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import ZoomInIcon from '@mui/icons-material/ZoomIn'
-import { useRouter } from 'next/router'
 import MonacoEditor from '@/components/common/atoms/editor'
 
+type Template = {
+  name: string
+  content: string[]
+}
+
 type Props = {
-  projectId: number
-  diagramId: number
-  setDiagramId: Dispatch<SetStateAction<number | null>>
+  template: Template
+  handleSelectTemplate: (name?: string) => void
 }
 
 type Data = (Project & { diagrams: Diagram[] })[]
@@ -51,30 +54,17 @@ const fetcher: Fetcher<Data, string> = async (url: string) => {
 const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 const picUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/plantuml`
 
-export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Props) {
-  const { data, isLoading, error, mutate } = useSWR(`${apiUrl}/project`, fetcher)
-  const [name, setName] = useState('')
-  const [content, setContent] = useState('')
+export default function TemplateEditor({ template, handleSelectTemplate }: Props) {
+  const [name, setName] = useState(template.name)
   const [nameEdit, setNameEdit] = useState(false)
+  const [content, setContent] = useState(template.content.join(''))
+  const [saveProjectId, setSaveProjectId] = useState<number>()
   const [saveType, setType] = useState('png')
   const [openModal, setOpenModal] = useState(false)
-
-  const router = useRouter()
-
-  const getDiagram = () =>
-    data
-      ?.find((project) => project.id === projectId)
-      ?.diagrams.find((diagram) => diagram.id === diagramId)
-
-  useEffect(() => {
-    const diagram = getDiagram()
-    setName(diagram?.name ?? '')
-    setContent(diagram?.content ?? '')
-  }, [data, projectId, diagramId])
+  const { data, mutate } = useSWR(`${apiUrl}/project`, fetcher)
 
   const handleResetName = () => {
-    const diagram = getDiagram()
-    setName(diagram?.name ?? '')
+    setName(template.name)
   }
 
   const handleChangeType = (event: SelectChangeEvent) => {
@@ -82,6 +72,28 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
   }
 
   const handleChangeContent = (newString: string) => setContent(newString)
+
+  const handleAddDiagram = async () => {
+    if (!data || !saveProjectId) return
+    await axios
+      .post(
+        `${apiUrl}/project/${saveProjectId}/diagram`,
+        {
+          name: name,
+          content: content,
+        },
+        axiosConfig,
+      )
+      .then((res: AxiosResponse<Diagram>) =>
+        mutate(
+          data.map((p) => {
+            if (p.id !== saveProjectId) return p
+            else return { ...p, diagrams: [...p.diagrams, res.data] }
+          }),
+        ),
+      )
+      .catch((e) => console.log(e))
+  }
 
   const handleSaveFile = async () => {
     const encodedUml = plantUmlEncoder.encode(content)
@@ -92,117 +104,18 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
     fileDownload(blob, fileName)
   }
 
-  const handleEditDiagramName = async (pId: number, dId: number, name: string) => {
-    const nextDiagramName = getUniqueDiagramName(pId, name)
-
-    if (!data || !nextDiagramName) return
-
-    await axios
-      .patch(
-        `${apiUrl}/project/${pId}/diagram/${dId}`,
-        {
-          name: nextDiagramName,
-        },
-        axiosConfig,
-      )
-      .then((res: AxiosResponse<Diagram>) =>
-        mutate(
-          data.map((p) => {
-            if (p.id !== pId) return p
-            else
-              return {
-                ...p,
-                diagrams: p.diagrams.map((d) => {
-                  if (d.id !== dId) return d
-                  else return res.data
-                }),
-              }
-          }),
-        ),
-      )
-      .catch((e) => console.log(e))
-  }
-
-  const getUniqueDiagramName = (projectId: number, name = 'Diagram_1') => {
-    if (!data) return
-
-    let nextDiagramName = name
-    const targetProject = data.find((p) => p.id === projectId)
-    targetProject?.diagrams?.forEach((d) => {
-      if (d.name === nextDiagramName) {
-        const nameArray = nextDiagramName.split('_')
-        if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
-          nameArray.push('1')
-        } else {
-          nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
-        }
-        nextDiagramName = nameArray.join('_')
-      }
-    })
-    return targetProject ? nextDiagramName : null
-  }
-
-  const handleEditDiagramContent = async (pId: number, dId: number, content: string) => {
-    if (!data) return
-
-    await axios
-      .patch(
-        `${apiUrl}/project/${pId}/diagram/${dId}`,
-        {
-          content: content,
-        },
-        axiosConfig,
-      )
-      .then((res: AxiosResponse<Diagram>) =>
-        mutate(
-          data.map((p) => {
-            if (p.id !== pId) return p
-            else
-              return {
-                ...p,
-                diagrams: p.diagrams.map((d) => {
-                  if (d.id !== dId) return d
-                  else return res.data
-                }),
-              }
-          }),
-        ),
-      )
-      .catch((e) => console.log(e))
-  }
-
-  const handleDeleteDiagram = async (pId: number, dId: number) => {
-    if (!data) return
-
-    await axios
-      .delete(`${apiUrl}/project/${pId}/diagram/${dId}`)
-      .then(() => {
-        setDiagramId(null)
-        mutate(
-          data.map((p) => {
-            if (p.id !== pId) return p
-            else return { ...p, diagrams: p.diagrams.filter((d) => d.id !== dId) }
-          }),
-        )
-      })
-      .catch((e) => console.log(e))
-  }
-
   const handleOpenModal = () => setOpenModal(true)
   const handleCloseModal = () => setOpenModal(false)
-
-  if (isLoading)
-    return (
-      <>
-        <CircularProgress />
-      </>
-    )
-
-  if (error) router.push('/')
 
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mb: '1rem' }}>
+        <Button variant='text' onClick={() => handleSelectTemplate()}>
+          <Typography variant='h5'>テンプレート</Typography>
+        </Button>
+        <Typography variant='h5' sx={{ pl: 1, pr: 1 }}>
+          {'/'}
+        </Typography>
         {!nameEdit ? (
           <>
             <Typography variant='h5'>{name}</Typography>
@@ -223,7 +136,6 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
               variant='contained'
               sx={{ ml: '0.5rem' }}
               onClick={() => {
-                handleEditDiagramName(projectId, diagramId, name)
                 setNameEdit(false)
               }}
             >
@@ -259,38 +171,48 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
               mt: '1rem',
             }}
           >
+            <FormControl variant='standard' sx={{ ml: '0.5rem', minWidth: 120 }}>
+              <InputLabel>保存先</InputLabel>
+              <Select
+                value={saveProjectId}
+                label='SaveProject'
+                onChange={(e) => setSaveProjectId(Number(e.target.value))}
+              >
+                {data &&
+                  data.map((project) => (
+                    <MenuItem key={project.id} value={project.id}>
+                      {project.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
             <Button
               variant='contained'
               sx={{ ml: '0.5rem' }}
-              onClick={() => handleEditDiagramContent(projectId, diagramId, content)}
+              disabled={saveProjectId ? false : true}
+              onClick={handleAddDiagram}
             >
               変更を保存
             </Button>
-            <Select
-              variant='standard'
-              sx={{ ml: '0.5rem' }}
-              defaultValue='png'
-              value={saveType}
-              label='SaveType'
-              onChange={handleChangeType}
-            >
-              <MenuItem value={'png'}>png</MenuItem>
-              <MenuItem value={'svg'}>svg</MenuItem>
-              <MenuItem value={'txt'}>ascii</MenuItem>
-            </Select>
+            <FormControl variant='standard' sx={{ ml: '0.5rem', minWidth: 60 }}>
+              <InputLabel>形式</InputLabel>
+              <Select
+                variant='standard'
+                sx={{ ml: '0.5rem' }}
+                defaultValue='png'
+                value={saveType}
+                label='SaveType'
+                onChange={handleChangeType}
+              >
+                <MenuItem value={'png'}>png</MenuItem>
+                <MenuItem value={'svg'}>svg</MenuItem>
+                <MenuItem value={'txt'}>ascii</MenuItem>
+              </Select>
+            </FormControl>
             <Button variant='outlined' sx={{ ml: '0.5rem' }} onClick={handleSaveFile}>
               ダウンロード
             </Button>
           </Box>
-          <DeleteButton
-            onClick={() => {
-              setName('')
-              setContent('')
-              handleDeleteDiagram(projectId, diagramId)
-            }}
-          >
-            このダイアグラムを削除
-          </DeleteButton>
         </Grid>
         <Grid item xs={5}>
           <Card variant='outlined' sx={{ height: '70vh' }}>
@@ -338,17 +260,3 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
     </>
   )
 }
-
-const DeleteButton = styled.button`
-  width: 100%;
-  color: red;
-  background-color: white;
-  border: 3px solid red;
-  border-radius: 5px;
-  margin-top: 1rem;
-
-  &:hover {
-    color: white;
-    background-color: red;
-  }
-`

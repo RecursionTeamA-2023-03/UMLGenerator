@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   CircularProgress,
+  Typography,
 } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import CollectionsIcon from '@mui/icons-material/Collections'
@@ -69,17 +70,17 @@ export default function WorkDrawerList({
   const getUniqueProjectName = (name = 'Project_1') => {
     if (!data) return
     let nextProjectName = name
-    data?.forEach((p) => {
-      if (p.name === nextProjectName) {
-        const nameArray = nextProjectName.split('_')
-        if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
-          nameArray.push('1')
-        } else {
-          nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
-        }
-        nextProjectName = nameArray.join('_')
+    const nameSet = new Set()
+    data.forEach((p) => nameSet.add(p.name))
+    while (nameSet.has(nextProjectName)) {
+      const nameArray = nextProjectName.split('_')
+      if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
+        nameArray.push('1')
+      } else {
+        nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
       }
-    })
+      nextProjectName = nameArray.join('_')
+    }
     return nextProjectName
   }
   return (
@@ -90,7 +91,7 @@ export default function WorkDrawerList({
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary='MyBoard' />
+            <ListItemText primary='マイボード' />
           </ListItemButton>
         </ListItem>
         <ListItem key='Template' disablePadding>
@@ -98,7 +99,7 @@ export default function WorkDrawerList({
             <ListItemIcon>
               <CollectionsIcon />
             </ListItemIcon>
-            <ListItemText primary='Template' />
+            <ListItemText primary='テンプレート' />
           </ListItemButton>
         </ListItem>
         <Divider />
@@ -107,6 +108,7 @@ export default function WorkDrawerList({
           <ListItemButton sx={{ justifyContent: 'end' }} onClick={handleAddProject}>
             <ListItemIcon sx={{ justifyContent: 'end' }}>
               <PlaylistAddIcon />
+              <Typography>追加</Typography>
             </ListItemIcon>
           </ListItemButton>
         </ListItem>

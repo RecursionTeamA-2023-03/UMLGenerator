@@ -5,6 +5,8 @@ type Props = {
   umlText: string
   width?: string
   height?: string
+  maxWidth?: string
+  maxHeight?: string
 }
 
 const fetcher: Fetcher<string, string> = async (url) => {
@@ -14,7 +16,13 @@ const fetcher: Fetcher<string, string> = async (url) => {
   return base64Img
 }
 
-export default function UmlPic({ umlText, width = '100%', height = 'auto' }: Props) {
+export default function UmlPic({
+  umlText,
+  width,
+  height = 'auto',
+  maxWidth = '400px',
+  maxHeight = '400px',
+}: Props) {
   const plantUmlEncoder = require('plantuml-encoder') // eslint-disable-line
   const encodedText = plantUmlEncoder.encode(umlText)
   const url = process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'
@@ -34,7 +42,7 @@ export default function UmlPic({ umlText, width = '100%', height = 'auto' }: Pro
   ) : (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      style={{ width: width, height: height, maxWidth: '400px', maxHeight: '400px' }}
+      style={{ width: width, height: height, maxWidth: maxWidth, maxHeight: maxHeight }}
       src={`data:image/png;base64, ${data}`}
       alt='your uml diagram'
     />
