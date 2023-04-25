@@ -10,12 +10,11 @@ export default function TopicsCard() {
       headingsOffset: 100,
     })
 
-    return () => tocbot.destroy()
+    return () => tocbot.refresh()
   }, [])
 
   return (
     <>
-      <h4>目次</h4>
       <div className='toc'></div>
       <link
         rel='stylesheet'
