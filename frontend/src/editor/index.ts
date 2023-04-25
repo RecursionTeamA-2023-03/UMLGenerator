@@ -1,8 +1,8 @@
 import { activityKeywords, activityRoot, activityTheme } from './activityDiagramSyntax'
 import { ganttKeywords } from './ganttDiagramSyntax'
 import { sequenceKeywords, sequenceRoot, sequenceTheme } from './sequenceDiagramSyntax'
-import { stateKeywords, stateRoot, stateTheme } from './stateDiagram.Syntax'
-import { usecaseKeywords, usecaseRoot, usecaseTheme } from './usecaseDiagram'
+import { stateKeywords, stateRoot, stateTheme } from './stateDiagramSyntax'
+import { usecaseKeywords, usecaseRoot, usecaseTheme } from './usecaseDiagramSyntax'
 
 export const plantumlConstants = ['@startuml', '@enduml', '@startgantt', '@endgantt']
 

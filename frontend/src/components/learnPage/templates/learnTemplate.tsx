@@ -37,7 +37,10 @@ const LearnTemplate = ({ children, sidebarData, data, problemNo }: LearnTemplate
             </ListItemButton>
           </StyledListItem>
           {sidebarData.map((data: any) => (
-            <StyledListItem key={data.id} className={currentPath === data.id ? 'active' : ''}>
+            <StyledListItem
+              key={data.id}
+              className={decodeURI(currentPath) === data.id ? 'active' : ''}
+            >
               <ListItemButton onClick={() => router.push(`/learn/${data.id}`)}>
                 <ListItemText primary={data.title} />
               </ListItemButton>
