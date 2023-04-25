@@ -1,0 +1,127 @@
+---
+title: '状態遷移図'
+---
+
+# 状態遷移図
+
+## 状態遷移図とは？
+
+状態遷移図は、システムやプロセスの振る舞いを表現するためのグラフィカルな表現方法であり、主にソフトウェア開発やシステム設計の分野で使用されます。
+ステート図では、オブジェクトが取りうる状態（ステート）をボックスで表し、状態間の遷移を矢印で表現します。
+
+1. ソフトウェア設計: ソフトウェアの状態やイベント、遷移条件、アクションを表現するために、状態遷移図が使用されます。ソフトウェアの振る舞いを明確にすることで、開発者やユーザーが理解しやすくなり、開発プロセスを改善することができます。
+2. システム設計: システムの状態や動作を表現するために、状態遷移図が使用されます。例えば、自動販売機の状態遷移図では、お金を投入する、商品を選択する、お金を返す、商品を発行するなどの状態や遷移が表現されます。
+3. プロセス設計: プロセスの状態やイベント、遷移条件、アクションを表現するために、状態遷移図が使用されます。例えば、ビジネスプロセスの状態遷移図では、タスクの開始、進行、完了、エラー処理などの状態や遷移が表現されます。
+4. コンピューターネットワーク: ネットワークの状態や遷移を表現するために、状態遷移図が使用されます。例えば、TCP/IP プロトコルの状態遷移図では、接続確立、データ転送、切断などの状態や遷移が表現されます。
+
+状態遷移図は、システムやプロセスの振る舞いを視覚的に表現することができるため、設計や開発の効率化や、コミュニケーションの改善などに役立ちます。
+
+それでは、TCP プロトコルの状態遷移図を作成しながら PlantUML の状態遷移図の書き方を学びましょう。
+
+<CustomBox position="center">
+<UmlPic umlText="
+@startuml
+title TCP State Transition Diagram
+
+[*] --> CLOSED
+
+CLOSED --> LISTEN : コネクションリクエストの待機
+CLOSED --> SYN_SENT : コネクションリクエストの送信
+LISTEN --> SYN_RECEIVED : コネクションリクエストを受信
+SYN_SENT --> ESTABLISHED : コネクションが確立された
+ESTABLISHED --> CLOSE_WAIT : 相手方から FIN を受信した後、データ送信を完了して CLOSE を送信する
+ESTABLISHED --> FIN_WAIT_1 : 自分自身から FIN を送信する
+ESTABLISHED --> FIN_WAIT_2 : 相手方から FIN を受信し、確認を送信する
+FIN_WAIT_1 --> FIN_WAIT_2 : 相手方から確認を受信する
+FIN_WAIT_2 --> TIME_WAIT : 相手方から FIN を受信した後、確認を送信してある程度の時間を待つ
+TIME_WAIT --> CLOSED : 待機時間が経過した後、コネクションを閉じる
+@enduml" />
+
+</CustomBox>
+
+## 基本的な例
+
+ステート図の始点と終点は、 [*] で示します。
+状態は state で示します。ボックスの中には、状態名や入出力アクション、入出力イベント、遷移条件などを記述することができます。
+遷移の矢印は、 --> で示します。遷移先には状態名を指定します。
+
+## STEP1
+
+まず、TCP の状態遷移図は、TCP の通信の状態を表すものです。通信が始まる前の状態は「CLOSED」、通信が終了した後の状態は再び「CLOSED」です。それ以外には、「LISTEN」、「SYN_SENT」、「SYN_RECEIVED」、「ESTABLISHED」などの状態があります。
+
+<EditorPreview
+  placeholder="
+@startuml
+title TCP State Transition Diagram
+[*] --> CLOSED
+'titleを使うと図に名前をつけることができます。
+@enduml
+"
+/>
+
+この状態遷移図では、最初に「[*]」が表示されています。これは、「CLOSED」以外の状態から始まることがないことを示しています。次に、「CLOSED」の状態が表示されています。
+
+## Step2
+
+次に、状態遷移を追加します。例えば、次のような状態遷移があります。
+
+- CLOSED から LISTEN への遷移：コネクションリクエストの待機
+- CLOSED から SYN_SENT への遷移：コネクションリクエストの送信
+- LISTEN から SYN_RECEIVED への遷移：コネクションリクエストを受信
+- SYN_SENT から ESTABLISHED への遷移：コネクションが確立された
+
+これらの状態遷移を追加しましょう。
+
+<EditorPreview
+  placeholder="
+@startuml
+title TCP State Transition Diagram
+[*] --> CLOSED
+CLOSED --> LISTEN : コネクションリクエストの待機
+'下に追加しましょう。
+@enduml
+"
+/>
+
+## Step3
+
+TCP には、さまざまな状態があり、それぞれの状態において、さまざまな動作が定義されています。以下の主要な状態遷移を追加しましょう。
+
+- ESTABLISHED から CLOSE_WAIT への遷移：相手方から FIN を受信した後、データ送信を完了して CLOSE を送信する
+- ESTABLISHED から FIN_WAIT_1 への遷移：自分自身から FIN を送信する
+- ESTABLISHED から FIN_WAIT_2 への遷移：相手方から FIN を受信し、確認を送信する
+- FIN_WAIT_1 から FIN_WAIT_2 への遷移：相手方から確認を受信する
+- FIN_WAIT_2 から TIME_WAIT への遷移：相手方から FIN を受信した後、確認を送信してある程度の時間を待つ
+- TIME_WAIT から CLOSED への遷移：待機時間が経過した後、コネクションを閉じる
+
+<EditorPreview
+  placeholder='
+@startuml
+title TCP State Transition Diagram
+[*] --> CLOSED
+CLOSED --> LISTEN : コネクションリクエストの待機
+CLOSED --> SYN_SENT : コネクションリクエストの送信
+LISTEN --> SYN_RECEIVED : コネクションリクエストを受信
+SYN_SENT --> ESTABLISHED : コネクションが確立された
+@enduml
+'
+/>
+
+このような流れで状態遷移図を作成することができます。
+
+<CustomBox position='center' direction='column'>
+  <ProblemList />
+</CustomBox>
+
+<CustomBox>
+  <IconButton
+    text='Prev アクティビティ図'
+    link='/learn/アクティビティ図'
+    startIcon={<ArrowBackIosIcon />}
+  />
+  <IconButton
+    text='Next ガントチャート'
+    link='/learn//ガントチャート'
+    endIcon={<ArrowForwardIosIcon />}
+  />
+</CustomBox>

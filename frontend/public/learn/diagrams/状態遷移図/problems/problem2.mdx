@@ -1,0 +1,51 @@
+---
+title: 'TCP/IPプロトコル'
+diagram: '状態遷移図'
+ans: '
+@startuml
+title TCP/IP State Transition Diagram
+
+[*] --> CLOSED : 初期状態
+
+CLOSED --> LISTEN : コネクションリクエストの待機
+CLOSED --> SYN_SENT : コネクションリクエストの送信
+
+LISTEN --> SYN_RECEIVED : コネクションリクエストを受信
+
+SYN_SENT --> SYN_RECEIVED : SYNパケットを受信した
+SYN_SENT --> ESTABLISHED : SYN-ACKパケットを受信した
+
+SYN_RECEIVED --> ESTABLISHED : SYN-ACKパケットを送信した
+
+ESTABLISHED --> CLOSE_WAIT : 相手方からFINを受信した後、データ送信を完了してCLOSEを送信する
+ESTABLISHED --> FIN_WAIT_1 : 自分自身からFINを送信する
+ESTABLISHED --> FIN_WAIT_2 : 相手方からFINを受信し、確認を送信する
+
+FIN_WAIT_1 --> CLOSING : 相手方からFINを受信し、ACKを送信する
+FIN_WAIT_1 --> TIME_WAIT : FINを受信していない状態で相手方からACKを受信した
+
+FIN_WAIT_2 --> TIME_WAIT : FINを送信し、相手方からACKを受信した
+FIN_WAIT_2 --> CLOSED : FINを送信して相手方からFINを受信した
+
+CLOSING --> TIME_WAIT : FINを送信し、相手方からFINとACKを受信した
+
+TIME_WAIT --> CLOSED : 待機時間が経過した後、コネクションを閉じる
+
+@enduml
+'
+---
+
+# TCP/IP プロトコル
+
+TCP/IP プロトコルの状態遷移図には、3 ウェイハンドシェイクに関する遷移だけでなく、TCP/IP 固有の FIN-WAIT-1 から CLOSING、FIN-WAIT-1 から TIME-WAIT、FIN-WAIT-2 から CLOSED、CLOSING から TIME-WAIT への遷移も追加する必要があります。具体的な遷移としては、SYN_SENT から SYN_RECEIVED、SYN_RECEIVED から ESTABLISHED、FIN_WAIT_1 から CLOSING、FIN_WAIT_1 から TIME_WAIT、FIN_WAIT_2 から TIME_WAIT、FIN_WAIT_2 から CLOSED、CLOSING から TIME_WAIT の遷移があります。
+
+- SYN_SENT --> SYN_RECEIVED : SYN パケットを受信した
+- SYN_RECEIVED --> ESTABLISHED : SYN-ACK パケットを送信した
+
+- FIN_WAIT_1 --> CLOSING : 相手方から FIN を受信し、ACK を送信する
+- FIN_WAIT_1 --> TIME_WAIT : FIN を受信していない状態で相手方から ACK を受信した
+
+- FIN_WAIT_2 --> TIME_WAIT : FIN を送信し、相手方から ACK を受信した
+- FIN_WAIT_2 --> CLOSED : FIN を送信して相手方から FIN を受信した
+
+- CLOSING --> TIME_WAIT : FIN を送信し、相手方から FIN と ACK を受信した
