@@ -93,12 +93,7 @@ const Post: NextPage<Props> = ({ posts, post }) => {
                   {openKeys[key] ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
               </ListItem>
-              <Collapse
-                in={openKeys[key]}
-                unmountOnExit
-                timeout={{ enter: 300,
-                  exit: 300,}}
-              >
+              <Collapse in={openKeys[key]} unmountOnExit timeout={{ enter: 1000, exit: 1000 }}>
                 <List component='div' disablePadding>
                   <ListItemButton sx={{ pl: 4 }}>
                     <TopicsCard />
