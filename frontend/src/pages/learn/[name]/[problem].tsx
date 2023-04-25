@@ -1,14 +1,9 @@
-import Text from '../../../components/common/atoms/text'
 import LearnTemplate from '../../../components/learnPage/templates/learnTemplate'
-import { theme } from '../../../themes'
 import React, { useState } from 'react'
 import MonacoEditor from '@/components/common/atoms/editor'
 import { getDiagramDataList, getProblemDataList } from 'lib/diagram'
 import UmlPic from '@/components/common/organisms/umlPic'
-import { display } from '@mui/system'
 import styled from 'styled-components'
-import withIconStyle from '@/components/common/atoms/icon'
-import { ArrowDropDown } from '@mui/icons-material'
 import { MDXRemote } from 'next-mdx-remote'
 
 export const getStaticPaths = async () => {
@@ -39,63 +34,48 @@ export const getStaticProps = async ({ params }: any) => {
   }
 }
 
+const AnswerWrapper = styled.div`
+  margin-top: 1rem;
+`
+
+const EditorWrapper = styled.div`
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  height: 40vh;
+  font-size: 0.9rem;
+`
+
+const UmlPicWrapper = styled.div`
+  padding: 1rem;
+  margin-top: 1rem;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+`
+
 export default function Problem({ currProblem, allData }: any) {
   const [umlText, setUmlText] = useState('')
-  const Wrapper = styled.div`
-    width: 50%;
-  `
 
-  const AnswerWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `
-
-  const AnswerPicWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60%;
-  `
-  const DownIcon = withIconStyle(ArrowDropDown)
   return (
     <LearnTemplate sidebarData={allData} data={currProblem} problemNo={currProblem.title}>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <Wrapper>
+      <div style={{ display: 'flex' }}>
+        <div style={{ flexGrow: 1, flexBasis: '0' }}>
           <MDXRemote {...currProblem.mdxSource} />
           <AnswerWrapper>
-            <Text variant='medium' fontColor={theme.colors.black}>
-              解答例
-            </Text>
-            <AnswerPicWrapper>
-              <UmlPic umlText={currProblem.ans} />
-            </AnswerPicWrapper>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>解答例</h3>
+            <UmlPic umlText={currProblem.ans} />
           </AnswerWrapper>
-        </Wrapper>
-        <div
-          style={{
-            height: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <div style={{ flex: 1, width: '50vw', height: '25%', border: '1px solid black' }}>
-            <MonacoEditor onChange={setUmlText} width='98%' />
-          </div>
-          <DownIcon fontSize='5rem' />
-          <div
-            style={{
-              flex: 1,
-              width: '25vw',
-              border: '1px solid black',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+        </div>
+        <div style={{ flexGrow: 1, flexBasis: '0' }}>
+          <EditorWrapper>
+            <MonacoEditor onChange={setUmlText} />
+          </EditorWrapper>
+          <UmlPicWrapper>
             <UmlPic umlText={umlText} />
-          </div>
+          </UmlPicWrapper>
         </div>
       </div>
     </LearnTemplate>

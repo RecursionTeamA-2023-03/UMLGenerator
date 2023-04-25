@@ -1,10 +1,6 @@
 import Text from '../../components/common/atoms/text'
 import LearnTemplate from '@/components/learnPage/templates/learnTemplate'
-import {
-  getAllDiagramNames,
-  getDiagramDataList,
-  getIntroductionMdxData,
-} from '../../../lib/diagram'
+import { getDiagramDataList, getIntroductionMdxData } from '../../../lib/diagram'
 import { MDXRemote } from 'next-mdx-remote'
 
 export const getStaticProps = async () => {

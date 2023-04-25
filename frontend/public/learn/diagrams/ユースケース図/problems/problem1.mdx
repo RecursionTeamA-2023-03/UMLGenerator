@@ -1,5 +1,24 @@
 ---
-title: 'sample'
+title: '学習サイト'
 diagram: 'ユースケース図'
-ans: 'A -> B: Message'
+ans: |
+  @startuml
+  left to right direction
+  actor User
+  rectangle "Learning Platform" {
+    User --> (Browse Content)
+    User --> (Purchase Content)
+    User --> (Watch Video Lesson)
+    User --> (Download PDF File)
+    User --> (Complete Practice Problems)
+    User --> (Take Quiz)
+    User --> (Take Test)
+  }
+  @enduml
 ---
+
+# 学習サイト
+
+あなたは、オンライン学習サイトのためのウェブアプリケーションを開発しています。このアプリケーションは、ユーザーが学習コンテンツを購入し、受講することができます。学習コンテンツには、ビデオレッスン、PDF ファイル、練習問題、クイズ、テストなどが含まれます。
+
+このアプリケーションのユースケース図を作成してください。ユーザーが行えるアクション、アクション間の関係、システムが提供する機能などを考慮してください。

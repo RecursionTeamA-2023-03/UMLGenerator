@@ -12,6 +12,10 @@ export const plantumlKeywords = [
   ...activityKeywords,
   ...stateKeywords,
   ...ganttKeywords,
+  'class',
+  'static',
+  'abstract',
+  'interface',
 ]
 
 export const plantumlRoot = [
@@ -26,7 +30,6 @@ export const plantumlRoot = [
     },
   },
   { regex: /".*?"/, action: 'string' },
-  { regex: /'[^']*'/, action: 'string' },
   { regex: /[{}()[\]]/, action: 'brackets' },
   { regex: /[;:]/, action: 'punctuation' },
   { regex: /^[0-9]+(\.[0-9]+)?$/, action: 'number' },
@@ -34,7 +37,7 @@ export const plantumlRoot = [
   ...activityRoot,
   ...usecaseRoot,
   ...stateRoot,
-  { regex: /'.*$/, action: 'comment' },
+  { regex: /^'+.*/, action: 'comment' },
 ]
 
 export const plantumlThemes = [

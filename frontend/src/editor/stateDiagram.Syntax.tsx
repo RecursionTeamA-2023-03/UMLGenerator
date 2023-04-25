@@ -1,4 +1,4 @@
-export const stateKeywords = []
+export const stateKeywords = ['state', 'title']
 
 export const stateRoot = []
 

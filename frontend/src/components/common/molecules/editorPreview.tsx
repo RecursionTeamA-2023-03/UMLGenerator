@@ -11,21 +11,28 @@ interface EditorPreviewProps {
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
   height: 100%;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  padding: 1.5rem;
+`
+
+const EditorWrapper = styled.div`
+  width: 50%;
+  height: 50vh;
+  max-width: 50%;
 `
 
 const UmlPicWrapper = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: center;
-  align-items: center;
   width: 50%;
-  height: 50%;
+  height: 100%;
   max-width: 50%;
-  max-height: 50%;
 `
 
 const EditorPreview = (props: EditorPreviewProps) => {
@@ -35,12 +42,9 @@ const EditorPreview = (props: EditorPreviewProps) => {
   const [umlText, setUmlText] = useState('')
   return (
     <Wrapper>
-      <MonacoEditor
-        onChange={setUmlText}
-        placeholder={props.placeholder}
-        width='50%'
-        height='50vh'
-      />
+      <EditorWrapper>
+        <MonacoEditor onChange={setUmlText} placeholder={props.placeholder} height='100%' />
+      </EditorWrapper>
       <UmlPicWrapper>
         <UmlPic umlText={umlText} />
       </UmlPicWrapper>

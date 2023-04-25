@@ -1,8 +1,5 @@
-import Text from '../../../components/common/atoms/text'
 import LearnTemplate from '../../../components/learnPage/templates/learnTemplate'
-import { theme } from '../../../themes'
 import React from 'react'
-import Link from 'next/link'
 import {
   getAllDiagramNames,
   getDiagramData,
@@ -39,7 +36,11 @@ export default function LearnContent({ allDiagramData, currDiagramData, problems
       <>
         {problems.map((id: any) => {
           return (
-            <ProblemBox key={id} link={`/learn/${currDiagramData.id}/${id.id}`} title={id.title} />
+            <ProblemBox
+              key={id.title}
+              link={`/learn/${currDiagramData.id}/${id.id}`}
+              title={id.title}
+            />
           )
         })}
       </>

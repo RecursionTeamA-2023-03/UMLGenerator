@@ -80,7 +80,6 @@ PlantUML でシーケン図を書く際、オブジェクト間のやり取り�
   'participant Frontend
   'participant Backend
   'participant Database
-'
 'User -> Frontend : ユーザー登録画面を表示
 'Frontend -> Backend : CSRF トークンのリクエストを送信
 'Backend -> Frontend : CSRF トークンを発行
@@ -165,6 +164,8 @@ Frontend -> User : ログイン成功
 <CustomBox position='center' direction='column'>
   <ProblemList />
 </CustomBox>
+
+<Link href='https://plantuml.com/ja/sequence-diagram'>公式ドキュメントを見る</Link>
 
 <CustomBox>
   <IconButton text='Prev イントロダクション' link='/learn' startIcon={<ArrowBackIosIcon />} />
