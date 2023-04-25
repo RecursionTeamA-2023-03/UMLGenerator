@@ -6,66 +6,83 @@ title: "ガントチャート"
 
 ## 日付
 ### 開始日
-<Editor
+<CheatSheetsEditorPreview
 placeholder="
-Project starts the 2023/4/1"
-imgPath="/cheatSheetsImg/gantt/開始日.png"
+@startgantt
+Project starts the 2023/4/1
+@endgantt
+"
 />
 ### 休日を定義
-<Editor
+<CheatSheetsEditorPreview
 placeholder="
+@startgantt
 saturday are closed 
  sunday are closed 
- 2023/4/10 is closed"
+ 2023/4/10 is closed
+ @endgantt
+ "
 />
 
 ## チャート
 ### タスク
-<Editor
+<CheatSheetsEditorPreview
 placeholder="
-[タスクA] lasts 3 days"
-imgPath="/cheatSheetsImg/gantt/タスクA.png"
+@startgantt
+[タスクA] lasts 3 days
+@endgantt
+"
 />
-<Editor
+<CheatSheetsEditorPreview
 placeholder="
-[タスクA] lasts 3 days and is colored in Fuchsia/FireBrick"
-imgPath="/cheatSheetsImg/gantt/タスクAカラー.png"
+@startgantt
+[タスクA] lasts 3 days and is colored in Fuchsia/FireBrick
+@endgantt
+"
 />
 
 
 ## 連続したタスク
-<Editor
+<CheatSheetsEditorPreview
 placeholder="
+@startgantt
 [タスクA] lasts 3 days 
  [タスクB] lasts 2 days and is colored in Fuchsia/FireBrick 
- [タスクB] starts at [タスクA]'s end"
-imgPath="/cheatSheetsImg/gantt/期間.png"
+ [タスクB] starts at [タスクA]'s end
+ @endgantt
+ "
 />
-<Editor
+<CheatSheetsEditorPreview
 placeholder="
+@startgantt
 [タスクA] lasts 3 days 
  [タスクB] lasts 2 days and is colored in Fuchsia/FireBrick 
- [タスクB] starts 3 day after [タスクA]'s end"
-imgPath="/cheatSheetsImg/gantt/期間after.png"
+ [タスクB] starts 3 day after [タスクA]'s end
+ @endgantt
+ "
 />
 
 
 ## マイルストーン
-<Editor
+<CheatSheetsEditorPreview
 placeholder="
+@startgantt
 [タスクA] lasts 3 days 
  [タスクB] lasts 2 days and is colored in Fuchsia/FireBrick 
  [終了] happens at [タスクA]'s end 
- [タスクB] starts at [タスクA]'s end"
-imgPath="/cheatSheetsImg/gantt/マイルストーン.png"
+ [タスクB] starts at [タスクA]'s end
+ @endgantt
+ "
 />
 
 ## グループ
-<Editor
+<CheatSheetsEditorPreview
 placeholder="
+@startgantt
 [タスクA] lasts 3 days 
   -- Step 2 -- 
  [タスクB] lasts 2 days and is colored in Fuchsia/FireBrick 
- [タスクB] starts at [タスクA]'s end"
-imgPath="/cheatSheetsImg/gantt/グループ.png"
+ [タスクB] starts at [タスクA]'s end
+ @endgantt
+ "
 />
