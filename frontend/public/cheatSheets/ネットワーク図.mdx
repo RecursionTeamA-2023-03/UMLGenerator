@@ -1,0 +1,80 @@
+---
+title: "コンポーネント図"
+---
+
+# コンポーネント図
+
+## ネットワーク
+<CheatSheetsEditorPreview placeholder='
+nwdiag {
+  network dmz {
+      address = "210.x.x.x/24"
+  }
+}
+  ' 
+/>
+
+## サーバー
+<CheatSheetsEditorPreview placeholder='
+nwdiag {
+  network dmz {
+      address = "210.x.x.x/24"
+
+      web01 [address = "210.x.x.1"];
+      web02 [address = "210.x.x.2"];
+  }
+}
+  ' 
+/>
+
+## グルーピング
+<CheatSheetsEditorPreview placeholder='
+nwdiag {
+  network Sample_front {
+    address = "192.168.10.0/24";
+
+    // define group
+    group web {
+      web01 [address = ".1"];
+      web02 [address = ".2"];
+    }
+  }
+}
+  ' 
+/>
+
+## カラー
+<CheatSheetsEditorPreview placeholder='
+nwdiag {
+  group {
+    color = "#FFaaaa";
+    web01;
+    db01;
+  }
+  group {
+    color = "#aaFFaa";
+    web02;
+    db02;
+  }
+  group {
+    color = "#aaaaFF";
+    web03;
+    db03;
+  }
+
+  network dmz {
+      web01;
+      web02;
+      web03;
+  }
+  network internal {
+      web01;
+      db01 ;
+      web02;
+      db02 ;
+      web03;
+      db03;
+  }
+}
+  ' 
+/>

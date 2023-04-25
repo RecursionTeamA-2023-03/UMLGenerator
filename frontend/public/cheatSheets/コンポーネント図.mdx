@@ -1,0 +1,109 @@
+---
+title: "コンポーネント図"
+---
+
+# コンポーネント図
+
+## コンポーネント
+<CheatSheetsEditorPreview placeholder='
+[First component]
+  ' 
+/>
+
+<CheatSheetsEditorPreview placeholder='
+[Another component]
+  ' 
+/>
+
+<CheatSheetsEditorPreview placeholder='
+component Comp3
+  ' 
+/>
+
+<CheatSheetsEditorPreview placeholder='
+component [Last\ncomponent]
+  ' 
+/>
+
+## インターフェース
+<CheatSheetsEditorPreview placeholder='
+() "Interface"
+  '
+/>
+
+## 要素間の関係
+<CheatSheetsEditorPreview placeholder='
+DataAccess - [First Component]
+  ' 
+/>
+<CheatSheetsEditorPreview placeholder='
+[First Component] ..> HTTP : use
+  '
+/>
+
+## ノート
+<CheatSheetsEditorPreview placeholder='
+[Component] as C
+
+note top of C: A top note
+  ' 
+/>
+
+<CheatSheetsEditorPreview placeholder='
+[Component] as C
+
+note bottom of C
+  A bottom note can also
+  be on several lines
+end note
+  ' 
+/>
+
+<CheatSheetsEditorPreview placeholder='
+[Component] as C
+
+note left of C
+  A left note can also
+  be on several lines
+end note
+  ' 
+/>
+
+<CheatSheetsEditorPreview placeholder='
+[Component] as C
+
+note right of C: A right note
+  ' 
+/>
+
+## グループ
+<CheatSheetsEditorPreview placeholder='
+package "Some Group" {
+  HTTP - [First Component]
+  [Another Component]
+}
+  ' 
+/>
+<CheatSheetsEditorPreview placeholder='
+node "Other Groups" {
+  FTP - [Second Component]
+}
+  ' 
+/>
+<CheatSheetsEditorPreview placeholder='
+cloud {
+  [Example 1]
+}
+  ' 
+/>
+<CheatSheetsEditorPreview placeholder='
+database "MySql" {
+  folder "This is my folder" {
+    [Folder 3]
+  }
+  frame "Foo" {
+    [Frame 4]
+  }
+}
+  ' 
+/>
