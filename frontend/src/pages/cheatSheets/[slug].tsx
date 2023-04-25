@@ -93,10 +93,17 @@ const Post: NextPage<Props> = ({ posts, post }) => {
                   {openKeys[key] ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
               </ListItem>
-              <Collapse in={openKeys[key]} unmountOnExit timeout={'auto'} onExit={()=>{tocbot.destroy(), console.log("onExit")}}>
+              <Collapse
+                in={openKeys[key]}
+                unmountOnExit
+                timeout={'auto'}
+                onExit={() => {
+                  tocbot.destroy(), console.log('onExit')
+                }}
+              >
                 <List component='div' disablePadding>
                   <ListItemButton sx={{ pl: 4 }}>
-                    <TopicsCard/>
+                    <TopicsCard />
                   </ListItemButton>
                 </List>
               </Collapse>

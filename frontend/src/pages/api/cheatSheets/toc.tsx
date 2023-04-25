@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import tocbot from 'tocbot'
 
 export default function TopicsCard() {
-
   useEffect(() => {
     console.log('useEffect')
     tocbot.init({
