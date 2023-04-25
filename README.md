@@ -37,12 +37,13 @@ npm run dev
 - APサーバー１: Typescript + NestJS + Prisma
 - APサーバー２: Servelet
 - DBサーバー: PostgreSQL
+
 ※3 バックエンドはDockerによりコンテナ化し、単一のEC2インスタンスにデプロイ
 
 ## 開発に関するリンク
 - 開発ログ: [https://github.com/RecursionTeamA-2023-03/devlog](https://github.com/RecursionTeamA-2023-03/devlog)
-- プロジェクト管理: Trello[https://trello.com/b/bbjX36wD/teama](https://trello.com/b/bbjX36wD/teama)
-- ワイヤーフレーム: Figma[https://www.figma.com/community/file/1232540049660815066](https://www.figma.com/community/file/1232540049660815066)
+- プロジェクト管理: [Trello](https://trello.com/b/bbjX36wD/teama)
+- ワイヤーフレーム: [Figma](https://www.figma.com/community/file/1232540049660815066)
 
 ## 各種ダイアグラム
 1. アクティビティ図
@@ -52,6 +53,7 @@ npm run dev
 <img src="https://user-images.githubusercontent.com/69419077/234167396-ebab38b5-0624-4e2d-b17a-78a61acb5689.png" width="500px">
 
 3. ER図
+<img src="https://user-images.githubusercontent.com/69419077/234175343-ed285b0c-ad2a-494c-adcf-ad7b36d72c0b.png" width="300px">
 
 4. デプロイ図
 
