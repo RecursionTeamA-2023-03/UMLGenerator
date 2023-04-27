@@ -9,7 +9,7 @@ import {
   CardContent,
   CardActionArea,
 } from '@mui/material'
-import { EditIcon } from '@/components/common/atoms/icon'
+import EditIcon from '@mui/icons-material/Edit'
 
 type Props = {
   projectId: number
