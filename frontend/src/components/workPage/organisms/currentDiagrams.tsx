@@ -1,20 +1,21 @@
-import { Project, Diagram } from '@/interfaces/dataTypes'
+import { Diagram } from '@/interfaces/dataTypes'
 import { useEffect, useState } from 'react'
 import { Box, Typography, Card, CardContent, CardActionArea } from '@mui/material'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import useProjectData from '@/hooks/useProjectData'
 
 type Props = {
-  projects?: (Project & { diagrams: Diagram[] })[]
   handleSelectDiagram: (dId: number, pId?: number | undefined) => void
 }
 
-export default function CurrentDiagrams({ projects, handleSelectDiagram }: Props) {
+export default function CurrentDiagrams({ handleSelectDiagram }: Props) {
+  const { data } = useProjectData()
   const [diagramArray, setDiagramArray] = useState<
     (Diagram & { projectId: number; projectName: string })[]
   >([])
   useEffect(() => {
     let arr: (Diagram & { projectId: number; projectName: string })[] = []
-    projects?.forEach((p) => {
+    data?.forEach((p) => {
       const dArr: (Diagram & { projectId: number; projectName: string })[] = p.diagrams.map((d) => {
         return { ...d, projectId: p.id, projectName: p.name }
       })
@@ -22,7 +23,7 @@ export default function CurrentDiagrams({ projects, handleSelectDiagram }: Props
       arr = arr.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()).slice(0, 3)
     })
     setDiagramArray(arr)
-  }, [projects])
+  }, [data])
 
   return (
     <>
