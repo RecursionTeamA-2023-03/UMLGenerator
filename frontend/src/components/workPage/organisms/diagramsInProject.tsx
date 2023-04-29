@@ -1,5 +1,4 @@
-import { Diagram } from '@/interfaces/dataTypes'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Box,
   Button,
@@ -8,28 +7,36 @@ import {
   Card,
   CardContent,
   CardActionArea,
+  CircularProgress,
 } from '@mui/material'
 import { EditIcon } from '@/components/common/atoms/icon'
+import useProjectData from '@/hooks/useProjectData'
+import { Project, Diagram } from '@/interfaces/dataTypes'
 
 type Props = {
   projectId: number
-  projectName: string
-  diagrams: Diagram[]
   handleSelectDiagram: (dId: number, pId?: number) => void
-  addDiagram: (projectId: number) => void
-  editProjectName: (id: number, name: string) => void
 }
 
-export default function DiagramsInProject({
-  projectId,
-  projectName,
-  diagrams,
-  handleSelectDiagram,
-  addDiagram,
-  editProjectName,
-}: Props) {
+export default function DiagramsInProject({ projectId, handleSelectDiagram }: Props) {
   const [nameEdit, setNameEdit] = useState(false)
-  const [name, setName] = useState(projectName)
+  const [name, setName] = useState('')
+  const [project, setProject] = useState<
+    | (Project & {
+        diagrams: Diagram[]
+      })
+    | undefined
+  >()
+
+  const { data, isLoading, handlers } = useProjectData()
+  useEffect(() => {
+    const p = data?.find((p) => p.id === projectId)
+    setProject(p)
+    if (p) setName(p.name)
+    setNameEdit(false)
+  }, [data, projectId])
+
+  if (isLoading) return <CircularProgress />
 
   return (
     <>
@@ -54,7 +61,7 @@ export default function DiagramsInProject({
               variant='contained'
               sx={{ ml: '0.5rem' }}
               onClick={() => {
-                editProjectName(projectId, name)
+                handlers.project.editName(projectId, name)
                 setNameEdit(false)
               }}
             >
@@ -64,7 +71,7 @@ export default function DiagramsInProject({
               variant='outlined'
               sx={{ ml: '0.5rem' }}
               onClick={() => {
-                setName(projectName)
+                setName(project?.name ?? '')
                 setNameEdit(false)
               }}
             >
@@ -82,7 +89,7 @@ export default function DiagramsInProject({
           p: '30px',
         }}
       >
-        {diagrams.map((d) => {
+        {project?.diagrams.map((d) => {
           return (
             <Card
               key={d.id}
@@ -109,7 +116,7 @@ export default function DiagramsInProject({
           )
         })}
         <Card
-          onClick={() => addDiagram(projectId)}
+          onClick={() => handlers.diagram.add(projectId)}
           sx={{
             height: '100px',
             width: '150px',

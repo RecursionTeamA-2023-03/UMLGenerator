@@ -1,8 +1,5 @@
-import useSWR, { Fetcher } from 'swr'
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import plantUmlEncoder from 'plantuml-encoder'
 import fileDownload from 'js-file-download'
-import { Project, Diagram } from '@/interfaces/dataTypes'
 import { useState } from 'react'
 import UmlPic from '@/components/common/organisms/umlPic'
 import {
@@ -26,6 +23,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit'
 import ZoomInIcon from '@mui/icons-material/ZoomIn'
 import MonacoEditor from '@/components/common/atoms/editor'
+import useProjectData from '@/hooks/useProjectData'
 
 type Template = {
   name: string
@@ -37,21 +35,6 @@ type Props = {
   handleSelectTemplate: (name?: string) => void
 }
 
-type Data = (Project & { diagrams: Diagram[] })[]
-
-const axiosConfig: AxiosRequestConfig = {
-  transformResponse: (data) =>
-    JSON.parse(data, (key, val) => {
-      if (key === 'createdAt' || key === 'updatedAt') return new Date(val)
-      else return val
-    }),
-}
-
-const fetcher: Fetcher<Data, string> = async (url: string) => {
-  return await axios.get(url, axiosConfig).then((res) => res.data)
-}
-
-const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 const picUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/plantuml`
 
 export default function TemplateEditor({ template, handleSelectTemplate }: Props) {
@@ -61,7 +44,7 @@ export default function TemplateEditor({ template, handleSelectTemplate }: Props
   const [saveProjectId, setSaveProjectId] = useState<number>()
   const [saveType, setType] = useState('png')
   const [openModal, setOpenModal] = useState(false)
-  const { data, mutate } = useSWR(`${apiUrl}/project`, fetcher)
+  const { data, handlers } = useProjectData()
 
   const handleResetName = () => {
     setName(template.name)
@@ -75,24 +58,7 @@ export default function TemplateEditor({ template, handleSelectTemplate }: Props
 
   const handleAddDiagram = async () => {
     if (!data || !saveProjectId) return
-    await axios
-      .post(
-        `${apiUrl}/project/${saveProjectId}/diagram`,
-        {
-          name: name,
-          content: content,
-        },
-        axiosConfig,
-      )
-      .then((res: AxiosResponse<Diagram>) =>
-        mutate(
-          data.map((p) => {
-            if (p.id !== saveProjectId) return p
-            else return { ...p, diagrams: [...p.diagrams, res.data] }
-          }),
-        ),
-      )
-      .catch((e) => console.log(e))
+    handlers.diagram.add(saveProjectId, name, content)
   }
 
   const handleSaveFile = async () => {

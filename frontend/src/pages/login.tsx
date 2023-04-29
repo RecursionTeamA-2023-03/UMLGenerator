@@ -8,14 +8,11 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import useSWR, { Fetcher } from 'swr'
-import axios, { AxiosRequestConfig, AxiosError } from 'axios'
-import { useRouter } from 'next/router'
-import { User } from '@/interfaces/dataTypes'
+import useAuth from '@/hooks/useAuth'
 
-function Copyright(props: any) {
+function Copyright() {
   return (
-    <Typography variant='body2' color='text.secondary' align='center' {...props}>
+    <Typography variant='body2' color='text.secondary' align='center' sx={{ mt: 8, mb: 4 }}>
       {'Copyright © '}
       <Link color='inherit' href='/'>
         uml-diagram-generator.vercel.app
@@ -26,33 +23,12 @@ function Copyright(props: any) {
   )
 }
 
-const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
-
-const axiosConfig: AxiosRequestConfig = {
-  transformResponse: (data) =>
-    JSON.parse(data, (key, val) => {
-      if (key === 'createdAt' || key === 'updatedAt') return new Date(val)
-      else return val
-    }),
-}
-const fetcher: Fetcher<User, string> = async (url: string) => {
-  return await axios.get(url, axiosConfig).then((res) => res.data)
-}
-
 export default function Login() {
-  const router = useRouter()
-  const { mutate } = useSWR<User, AxiosError>(`${apiUrl}/user`, fetcher)
+  const { login } = useAuth()
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    await axios
-      .post(`${apiUrl}/auth/login`, {
-        email: data.get('email'),
-        password: data.get('password'),
-      })
-      .then(() => mutate())
-      .then(() => router.push('/work'))
-      .catch((error) => alert(error.response.data.message))
+    await login(data.get('email') as string, data.get('password') as string)
   }
 
   return (
@@ -111,7 +87,7 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
+      <Copyright />
     </Container>
   )
 }

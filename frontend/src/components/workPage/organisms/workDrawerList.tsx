@@ -1,6 +1,3 @@
-import useSWR, { Fetcher } from 'swr'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { Project, Diagram } from '@/interfaces/dataTypes'
 import {
   Divider,
   List,
@@ -15,8 +12,8 @@ import HomeIcon from '@mui/icons-material/Home'
 import CollectionsIcon from '@mui/icons-material/Collections'
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'
 import FolderIcon from '@mui/icons-material/Folder'
+import useProjectData from '@/hooks/useProjectData'
 
-type Data = (Project & { diagrams: Diagram[] })[]
 type Props = {
   isMyBoard: boolean
   projectId: number | null
@@ -24,65 +21,14 @@ type Props = {
   handleSelectProject: (id: number) => void
 }
 
-const axiosConfig: AxiosRequestConfig = {
-  transformResponse: (data) =>
-    JSON.parse(data, (key, val) => {
-      if (key === 'createdAt' || key === 'updatedAt') return new Date(val)
-      else return val
-    }),
-}
-
-const fetcher: Fetcher<Data, string> = async (url: string) => {
-  return await axios.get(url, axiosConfig).then((res) => res.data)
-}
-
-const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
-
 export default function WorkDrawerList({
   isMyBoard,
   projectId,
   handleSelectBoard,
   handleSelectProject,
 }: Props) {
-  const { data, error, isLoading, mutate } = useSWR(`${apiUrl}/project`, fetcher)
-  const handleAddProject = async () => {
-    const nextProjectName = getUniqueProjectName()
+  const { data, isLoading, handlers } = useProjectData()
 
-    if (!data || !nextProjectName) return
-
-    await axios
-      .post(
-        `${apiUrl}/project`,
-        {
-          name: nextProjectName,
-        },
-        axiosConfig,
-      )
-      .then((res: AxiosResponse<Project>) => {
-        const newProject = { ...res.data, diagrams: [] }
-        mutate([...data, newProject])
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  const getUniqueProjectName = (name = 'Project_1') => {
-    if (!data) return
-    let nextProjectName = name
-    const nameSet = new Set()
-    data.forEach((p) => nameSet.add(p.name))
-    while (nameSet.has(nextProjectName)) {
-      const nameArray = nextProjectName.split('_')
-      if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
-        nameArray.push('1')
-      } else {
-        nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
-      }
-      nextProjectName = nameArray.join('_')
-    }
-    return nextProjectName
-  }
   return (
     <>
       <List>
@@ -105,7 +51,7 @@ export default function WorkDrawerList({
         <Divider />
         <ListItem key='UserProjects' sx={{ pl: '1rem' }}>
           <ListItemText primary='Projects' />
-          <ListItemButton sx={{ justifyContent: 'end' }} onClick={handleAddProject}>
+          <ListItemButton sx={{ justifyContent: 'end' }} onClick={handlers.project.add}>
             <ListItemIcon sx={{ justifyContent: 'end' }}>
               <PlaylistAddIcon />
               <Typography>追加</Typography>

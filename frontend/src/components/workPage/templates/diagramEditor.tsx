@@ -1,8 +1,5 @@
-import useSWR, { Fetcher } from 'swr'
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import plantUmlEncoder from 'plantuml-encoder'
 import fileDownload from 'js-file-download'
-import { Project, Diagram } from '@/interfaces/dataTypes'
 import styled from 'styled-components'
 import { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import UmlPic from '@/components/common/organisms/umlPic'
@@ -27,6 +24,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import ZoomInIcon from '@mui/icons-material/ZoomIn'
 import { useRouter } from 'next/router'
 import MonacoEditor from '@/components/common/atoms/editor'
+import useProjectData from '@/hooks/useProjectData'
 
 type Props = {
   projectId: number
@@ -34,25 +32,10 @@ type Props = {
   setDiagramId: Dispatch<SetStateAction<number | null>>
 }
 
-type Data = (Project & { diagrams: Diagram[] })[]
-
-const axiosConfig: AxiosRequestConfig = {
-  transformResponse: (data) =>
-    JSON.parse(data, (key, val) => {
-      if (key === 'createdAt' || key === 'updatedAt') return new Date(val)
-      else return val
-    }),
-}
-
-const fetcher: Fetcher<Data, string> = async (url: string) => {
-  return await axios.get(url, axiosConfig).then((res) => res.data)
-}
-
-const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
 const picUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/plantuml`
 
 export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Props) {
-  const { data, isLoading, error, mutate } = useSWR(`${apiUrl}/project`, fetcher)
+  const { data, isLoading, error, handlers } = useProjectData()
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
   const [nameEdit, setNameEdit] = useState(false)
@@ -92,102 +75,6 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
     fileDownload(blob, fileName)
   }
 
-  const handleEditDiagramName = async (pId: number, dId: number, name: string) => {
-    const nextDiagramName = getUniqueDiagramName(pId, name)
-
-    if (!data || !nextDiagramName) return
-
-    await axios
-      .patch(
-        `${apiUrl}/project/${pId}/diagram/${dId}`,
-        {
-          name: nextDiagramName,
-        },
-        axiosConfig,
-      )
-      .then((res: AxiosResponse<Diagram>) =>
-        mutate(
-          data.map((p) => {
-            if (p.id !== pId) return p
-            else
-              return {
-                ...p,
-                diagrams: p.diagrams.map((d) => {
-                  if (d.id !== dId) return d
-                  else return res.data
-                }),
-              }
-          }),
-        ),
-      )
-      .catch((e) => console.log(e))
-  }
-
-  const getUniqueDiagramName = (projectId: number, name = 'Diagram_1') => {
-    if (!data) return
-
-    let nextDiagramName = name
-    const targetProject = data.find((p) => p.id === projectId)
-    targetProject?.diagrams?.forEach((d) => {
-      if (d.name === nextDiagramName) {
-        const nameArray = nextDiagramName.split('_')
-        if (nameArray.length === 1 || Number.isNaN(Number(nameArray[nameArray.length - 1]))) {
-          nameArray.push('1')
-        } else {
-          nameArray[nameArray.length - 1] = (Number(nameArray[nameArray.length - 1]) + 1).toString()
-        }
-        nextDiagramName = nameArray.join('_')
-      }
-    })
-    return targetProject ? nextDiagramName : null
-  }
-
-  const handleEditDiagramContent = async (pId: number, dId: number, content: string) => {
-    if (!data) return
-
-    await axios
-      .patch(
-        `${apiUrl}/project/${pId}/diagram/${dId}`,
-        {
-          content: content,
-        },
-        axiosConfig,
-      )
-      .then((res: AxiosResponse<Diagram>) =>
-        mutate(
-          data.map((p) => {
-            if (p.id !== pId) return p
-            else
-              return {
-                ...p,
-                diagrams: p.diagrams.map((d) => {
-                  if (d.id !== dId) return d
-                  else return res.data
-                }),
-              }
-          }),
-        ),
-      )
-      .catch((e) => console.log(e))
-  }
-
-  const handleDeleteDiagram = async (pId: number, dId: number) => {
-    if (!data) return
-
-    await axios
-      .delete(`${apiUrl}/project/${pId}/diagram/${dId}`)
-      .then(() => {
-        setDiagramId(null)
-        mutate(
-          data.map((p) => {
-            if (p.id !== pId) return p
-            else return { ...p, diagrams: p.diagrams.filter((d) => d.id !== dId) }
-          }),
-        )
-      })
-      .catch((e) => console.log(e))
-  }
-
   const handleOpenModal = () => setOpenModal(true)
   const handleCloseModal = () => setOpenModal(false)
 
@@ -223,7 +110,7 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
               variant='contained'
               sx={{ ml: '0.5rem' }}
               onClick={() => {
-                handleEditDiagramName(projectId, diagramId, name)
+                handlers.diagram.editName(projectId, diagramId, name)
                 setNameEdit(false)
               }}
             >
@@ -262,7 +149,7 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
             <Button
               variant='contained'
               sx={{ ml: '0.5rem' }}
-              onClick={() => handleEditDiagramContent(projectId, diagramId, content)}
+              onClick={() => handlers.diagram.editContent(projectId, diagramId, content)}
             >
               変更を保存
             </Button>
@@ -286,7 +173,7 @@ export default function DiagramEditor({ projectId, diagramId, setDiagramId }: Pr
             onClick={() => {
               setName('')
               setContent('')
-              handleDeleteDiagram(projectId, diagramId)
+              handlers.diagram.delete(projectId, diagramId, () => setDiagramId(null))
             }}
           >
             このダイアグラムを削除

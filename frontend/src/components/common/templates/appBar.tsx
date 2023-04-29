@@ -12,11 +12,9 @@ import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import AccountTreeIcon from '@mui/icons-material/AccountTree'
 import SettingsIcon from '@mui/icons-material/Settings'
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import useSWR, { Fetcher } from 'swr'
-import { User } from '@/interfaces/dataTypes'
 import { useRouter } from 'next/router'
 import DrawerLeft from './drawer'
+import useAuth from '@/hooks/useAuth'
 
 const pages = [
   { name: 'work', link: 'work' },
@@ -25,22 +23,10 @@ const pages = [
 ]
 const settings = [
   //  { name: 'Account', link: 'acount', mode: 'login' },
-  { name: 'Signup', link: 'signUp', mode: 'logout' },
-  { name: 'Login', link: 'login', mode: 'logout' },
-  { name: 'Logout', link: 'logout', mode: 'login' },
+  { name: '新規登録', link: 'signUp', mode: 'logout' },
+  { name: 'ログイン', link: 'login', mode: 'logout' },
+  { name: 'ログアウト', link: 'logout', mode: 'login' },
 ]
-
-const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
-const axiosConfig: AxiosRequestConfig = {
-  transformResponse: (data) =>
-    JSON.parse(data, (key, val) => {
-      if (key === 'createdAt' || key === 'updatedAt') return new Date(val)
-      else return val
-    }),
-}
-const fetcher: Fetcher<User, string> = async (url: string) => {
-  return await axios.get(url, axiosConfig).then((res) => res.data)
-}
 
 type Props = {
   children?: React.ReactNode
@@ -48,7 +34,7 @@ type Props = {
 }
 
 function AppBarWithDrawer({ children, withDrawer = false }: Props) {
-  const { data, error, isLoading, mutate } = useSWR<User, AxiosError>(`${apiUrl}/user`, fetcher)
+  const { isLogin, logout } = useAuth()
   const [openDrawer, setDrawer] = React.useState<boolean>(true)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const router = useRouter()
@@ -67,20 +53,22 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
   const handleClickLink = (link: string) => {
     handleCloseUserMenu()
     if (link === 'logout') {
-      axios.post(`${apiUrl}/auth/logout`).then(() => router.push('/'))
+      logout()
     } else {
       router.push(`/${link}`)
     }
   }
 
-  if (!isLoading && error?.response?.status === 401 && router.pathname !== '/') router.push('/')
+  React.useEffect(() => {
+    if (!isLogin && router.pathname !== '/') router.push('/')
+  }, [isLogin, router])
 
   return (
     <>
       <AppBar position='fixed' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Container maxWidth='xl'>
           <Toolbar disableGutters>
-            {withDrawer && data && (
+            {withDrawer && isLogin && (
               <IconButton
                 size='large'
                 aria-label='drawer-menu'
@@ -111,9 +99,7 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
               UDG
             </Typography>
             <Box sx={{ flexGrow: 1, display: 'flex' }}>
-              {data &&
-                !error &&
-                !isLoading &&
+              {isLogin &&
                 pages.map((page) => (
                   <Button
                     key={page.name}
@@ -149,9 +135,7 @@ function AppBarWithDrawer({ children, withDrawer = false }: Props) {
               >
                 {settings
                   .filter((setting) =>
-                    data && !error && !isLoading
-                      ? setting.mode === 'login'
-                      : setting.mode === 'logout',
+                    isLogin ? setting.mode === 'login' : setting.mode === 'logout',
                   )
                   .map((setting) => (
                     <MenuItem key={setting.name} onClick={() => handleClickLink(setting.link)}>
