@@ -1,47 +1,30 @@
-import { Project, Diagram } from '@/interfaces/dataTypes'
 import styled from 'styled-components'
+import useProjectData from '@/hooks/useProjectData'
 import DiagramsInProject from '../organisms/diagramsInProject'
 import ProjectMembers from '../organisms/projectMembers'
+import { CircularProgress } from '@mui/material'
 
 type Props = {
-  project?: Project & { diagrams: Diagram[] }
-  editProjectName: (id: number, name: string) => void
+  projectId: number
   handleSelectDiagram: (dId: number, pId?: number) => void
-  addDiagram: (projectId: number) => void
-  deleteProject: (id: number) => void
+  handleRefreshPage: () => void
 }
 
-export default function ProjectBoard({
-  project,
-  handleSelectDiagram,
-  editProjectName,
-  addDiagram,
-  deleteProject,
-}: Props) {
+export default function ProjectBoard({ projectId, handleSelectDiagram, handleRefreshPage }: Props) {
+  const { isLoading, handlers } = useProjectData()
+
   const handleDeleteProject = () => {
-    if (confirm('Do you really want to delete this project?') && project) deleteProject(project.id)
+    if (confirm('Do you really want to delete this project?') && projectId)
+      handlers.project.delete(projectId, handleRefreshPage)
   }
   return (
     <>
-      {!project ? (
-        <></>
-      ) : (
-        <>
-          <DiagramsInProject
-            projectName={project.name}
-            projectId={project.id}
-            diagrams={project.diagrams}
-            handleSelectDiagram={handleSelectDiagram}
-            addDiagram={addDiagram}
-            editProjectName={editProjectName}
-          />
-          <div>
-            <p>メンバー</p>
-            {<ProjectMembers projectId={project.id} />}
-          </div>
-          <DeleteButton onClick={handleDeleteProject}>このプロジェクトを削除</DeleteButton>
-        </>
-      )}
+      <DiagramsInProject projectId={projectId} handleSelectDiagram={handleSelectDiagram} />
+      <div>
+        <p>メンバー</p>
+        {isLoading ? <CircularProgress /> : <ProjectMembers projectId={projectId} />}
+      </div>
+      <DeleteButton onClick={handleDeleteProject}>このプロジェクトを削除</DeleteButton>
     </>
   )
 }

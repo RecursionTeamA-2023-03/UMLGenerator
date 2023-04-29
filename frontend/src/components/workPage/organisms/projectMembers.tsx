@@ -1,6 +1,4 @@
 import { Fragment } from 'react'
-import useSWR, { Fetcher } from 'swr'
-import axios from 'axios'
 import {
   CircularProgress,
   List,
@@ -16,75 +14,34 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import useProjectMember from '@/hooks/useProjectMember'
+import useUserData from '@/hooks/useUserData'
 
 type Props = {
   projectId: number
 }
 
-type ProjectMember = {
-  name: string
-  email: string
-}
-
-type User = {
-  id: number
-  createdAt: Date
-  name: string
-  email: string
-}
-
-const apiUrl = `https://${process.env.NEXT_PUBLIC_AWS_DOMAIN || 'localhost'}:443/api`
-
-const memberFetcher: Fetcher<ProjectMember[], string> = async (url: string) => {
-  return await axios.get(url).then((res) => res.data)
-}
-const userFetcher: Fetcher<User, string> = async (url: string) => {
-  return await axios.get(url).then((res) => res.data)
-}
-
 export default function ProjectMembers({ projectId }: Props) {
   const [newMemberEmail, setNewMemberEmail] = useState('')
-  const {
-    data: members,
-    isLoading,
-    mutate,
-  } = useSWR(`${apiUrl}/project/${projectId}/members`, memberFetcher)
-  const { data: user } = useSWR(`${apiUrl}/user`, userFetcher)
+  const { data: members, isLoading, handlers } = useProjectMember(projectId)
+  const { data: user } = useUserData()
   const theme = useTheme()
   const router = useRouter()
 
   const handleDeleteMember = async (email: string) => {
-    const deleteMember = async () =>
-      await axios
-        .delete(`${apiUrl}/project/${projectId}/member`, {
-          data: {
-            email: email,
-          },
-        })
-        .then(() => mutate())
-        .catch((e) => alert(e.response.data.message))
-
     if (user?.email === email) {
       if (confirm('Do you really want to leave this project?')) {
         router.push('/work')
-        deleteMember()
+        await handlers.delete(email)
       }
     } else {
-      if (confirm('Do you really delete this member?')) deleteMember()
+      if (confirm('Do you really delete this member?')) await handlers.delete(email)
     }
   }
 
   const handleEmailChange = (email: string) => setNewMemberEmail(email)
   const handleInviteMember = async () =>
-    await axios
-      .post(`${apiUrl}/project/${projectId}/member`, {
-        email: newMemberEmail,
-      })
-      .then(() => {
-        mutate()
-        setNewMemberEmail('')
-      })
-      .catch((e) => alert(e.response.data.message))
+    await handlers.invite(newMemberEmail).then(() => setNewMemberEmail(''))
 
   return (
     <>
